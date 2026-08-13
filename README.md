@@ -23,17 +23,17 @@ Then open <http://localhost:8000>. Editing a file and refreshing is the whole de
 ## Layout
 
 ```
-index.html           all page content
-styles.css           all styling
-script.js            footer year + mobile nav toggle; page works with JS off
-assets/duck.svg        the logo — header mark, hero, and favicon
-assets/favicon.svg     copy of duck.svg
-assets/og-image.png    1200x630 social preview
-assets/icon-512.png    512px app icon
-assets/logo-source.jpg the logo JPEG the SVG is traced from
-assets/cover.jpg       the Spotify cover art, kept for reference
-tools/make-duck.py     regenerates the logo assets (see below)
-CNAME.example        rename to CNAME to attach greyduckrunning.com (see below)
+index.html              all page content
+styles.css              all styling
+script.js               footer year + mobile nav toggle; page works with JS off
+assets/duck.svg         the logo — header mark, hero, and favicon
+assets/favicon.svg      copy of duck.svg
+assets/og-image.png     1200x630 social preview
+assets/icon-512.png     512px app icon
+assets/logo-source.jpg  the logo JPEG the SVG is traced from
+assets/cover.jpg        the Spotify cover art, kept for reference
+tools/make-duck.py      regenerates the logo assets (see below)
+CNAME.example           rename to CNAME to attach greyduckrunning.com (see below)
 ```
 
 ---
@@ -148,7 +148,7 @@ DNS changes propagate on TTL, so keep the Squarespace site up until step 2 check
 - **The show is not in any podcast directory but Spotify.** No Apple Podcasts listing, so no public
   RSS feed. Submitting the feed to Apple and Pocket Casts would make the show findable and would
   also unlock a self-hosted episode list here.
-- **Host bios are written, not sourced.** The descriptions of Christian and Lauren in `#about` are
-  plausible filler matching the show's tone. Replace them with real bios.
-- **`assets/og-image.png` is not present**; social previews currently fall back to `cover.jpg`,
-  which is square. A 1200×630 version would preview better on Twitter/Facebook.
+- **Host bios are missing.** Christian and Lauren are listed by name and marked "Co-host" in
+  `#about`, with nothing else. An earlier draft had invented bios; those were deleted rather
+  than reworded, so what's there now is thin but true. Real bios are the main thing this page
+  is still waiting on.
