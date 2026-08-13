@@ -23,12 +23,15 @@ Then open <http://localhost:8000>. Editing a file and refreshing is the whole de
 ## Layout
 
 ```
-index.html          all page content
-styles.css          all styling + the pixel-duck mark (inline SVG data URI)
-script.js           footer year + mobile nav toggle; page works with JS off
-assets/cover.jpg    the show's real cover art, from Spotify
-assets/favicon.svg  pixel duck, generated from the mark in styles.css
-CNAME.example       rename to CNAME to attach greyduckrunning.com (see below)
+index.html           all page content
+styles.css           all styling
+script.js            footer year + mobile nav toggle; page works with JS off
+assets/duck.svg      the logo — used for the header mark, hero, and favicon
+assets/favicon.svg   copy of duck.svg
+assets/og-image.png  1200x630 social preview
+assets/icon-512.png  512px app icon
+assets/cover.jpg     the original Spotify cover art, kept for reference
+CNAME.example        rename to CNAME to attach greyduckrunning.com (see below)
 ```
 
 ---
@@ -47,9 +50,22 @@ The palette is **sampled from the show's actual Spotify cover art**, not invente
 
 The artwork is 8-bit pixel art, so the site follows that language: zero `border-radius`,
 3px black outlines, hard offset shadows (no blur), `Press Start 2P` for headings, and
-`image-rendering: pixelated` on the artwork so it stays crisp when scaled.
+`image-rendering: pixelated` so it stays crisp when scaled.
 
 Dark mode is supported via `prefers-color-scheme`.
+
+### The logo
+
+`assets/duck.svg` is a redraw of the podcast's own duck. The source images (the Spotify
+cover and the Instagram logo) are small JPEGs with uneven proportions — the body is wider
+than it is tall in an irregular way, the tail has a detached stub, and the beak is lumpy.
+Rather than trace those artifacts, the duck is reconstructed from circles and ellipses on a
+32x32 grid, then given a uniform 1px outline. The head is a true circle, so it never reads
+as squished, and the whole shape is verified to be a single connected blob.
+
+Because it's SVG on an integer grid, it scales to any size without blurring and can be
+recoloured by editing five fill values. It's used for the header mark, the hero, and the
+favicon, and `og-image.png` / `icon-512.png` are rendered from the same grid.
 
 ---
 
@@ -74,22 +90,23 @@ of setup it was not listed in Apple Podcasts, so no feed URL was available.
 
 ## Deploying to GitHub Pages
 
-The repo is private. **GitHub Pages on a private repo requires a paid plan** (Pro, Team, or
-Enterprise). On a free plan you must either make the repo public or deploy somewhere else
-(Netlify and Cloudflare Pages both serve private repos free).
+The repo is public, so Pages works on a free plan with no upgrade needed.
 
-To enable Pages: **Settings → Pages → Source: GitHub Actions**. The workflow in
-`.github/workflows/pages.yml` publishes the repo root on every push to `main`.
+To enable it: **Settings → Pages → Source: GitHub Actions**. The workflow in
+`.github/workflows/pages.yml` publishes the repo root on every push to `main`. Nothing is
+published until you turn that on.
 
 ---
 
 ## Attaching greyduckrunning.com
 
-> [!IMPORTANT]
-> `greyduckrunning.com` is **currently live on Squarespace** (nameservers `nsb1–4.squarespacedns.com`,
-> serving HTTP 200 as of setup). Pointing DNS at GitHub Pages **takes that site down** and replaces
-> it with this one. That is a deliberate cutover, so nothing in this repo does it automatically —
-> the `CNAME` file ships defused as `CNAME.example`.
+`greyduckrunning.com` currently resolves to a **Squarespace parking page** — the default
+"We're under construction" template, with no real content, no socials, and no branding of its
+own. Nameservers are `nsb1–4.squarespacedns.com`. There is nothing of value to preserve, so
+cutting over costs nothing but the DNS edit.
+
+The `CNAME` file still ships defused as `CNAME.example`, because arming it before DNS points at
+GitHub just puts Pages into an error state. Rename it as part of the cutover, not before.
 
 When you're ready to cut over:
 
@@ -112,11 +129,16 @@ DNS changes propagate on TTL, so keep the Squarespace site up until step 2 check
 
 ## Known gaps
 
-- **Socials are unverified beyond Instagram.** Only
-  [instagram.com/greyduckrunning](https://www.instagram.com/greyduckrunning) is wired up, and it was
-  supplied directly rather than confirmed programmatically — Instagram serves a login wall to
-  automated readers. Slots for Facebook / Strava / email are commented out in the `#follow` section
-  of `index.html`; open each URL yourself before uncommenting.
+- **Instagram is the only known social account.** Five web searches plus a read of
+  `greyduckrunning.com` turned up no Facebook page, Strava club, YouTube channel, or contact
+  address — the show has essentially no indexed web presence outside Spotify. Only
+  [instagram.com/greyduckrunning](https://www.instagram.com/greyduckrunning) is wired up, and that
+  came from the hosts rather than from a search (Instagram serves a login wall to automated
+  readers, so it could not be confirmed programmatically). Slots for Facebook / Strava / email are
+  commented out in the `#follow` section of `index.html`; open each URL yourself before uncommenting.
+- **The show is not in any podcast directory but Spotify.** No Apple Podcasts listing, so no public
+  RSS feed. Submitting the feed to Apple and Pocket Casts would make the show findable and would
+  also unlock a self-hosted episode list here.
 - **Host bios are written, not sourced.** The descriptions of Christian and Lauren in `#about` are
   plausible filler matching the show's tone. Replace them with real bios.
 - **`assets/og-image.png` is not present**; social previews currently fall back to `cover.jpg`,
