@@ -33,7 +33,7 @@ assets/icon-512.png     512px app icon
 assets/logo-source.jpg  the logo JPEG the SVG is traced from
 assets/cover.jpg        the Spotify cover art, kept for reference
 tools/make-duck.py      regenerates the logo assets (see below)
-CNAME.example           rename to CNAME to attach greyduckrunning.com (see below)
+CNAME                   attaches greyduckrunning.com (see below)
 ```
 
 ---
@@ -117,42 +117,63 @@ of setup it was not listed in Apple Podcasts, so no feed URL was available.
 
 ---
 
-## Deploying to GitHub Pages
+## Deploying
 
-The repo is public, so Pages works on a free plan with no upgrade needed.
+Pages is enabled and serving from the `main` branch root — **Settings → Pages → Source:
+Deploy from a branch**. There is no build step, so nothing needs to compile; pushing to
+`main` publishes.
 
-To enable it: **Settings → Pages → Source: GitHub Actions**. The workflow in
-`.github/workflows/pages.yml` publishes the repo root on every push to `main`. Nothing is
-published until you turn that on.
+There is deliberately no Actions workflow. An earlier one used `actions/deploy-pages`, which
+requires Pages to be set to "GitHub Actions" as its source. It failed on every push while
+Pages was off, and once Pages was switched on as a branch deploy it became a second builder
+racing the built-in one. Branch deploys are the simpler fit for a site that is already just
+files.
 
 ---
 
-## Attaching greyduckrunning.com
+## The domain
 
-`greyduckrunning.com` currently resolves to a **Squarespace parking page** — the default
-"We're under construction" template, with no real content, no socials, and no branding of its
-own. Nameservers are `nsb1–4.squarespacedns.com`. There is nothing of value to preserve, so
-cutting over costs nothing but the DNS edit.
+`CNAME` contains `greyduckrunning.com`. GitHub created it when the custom domain was set in
+Settings; do not delete it, or the domain setting is dropped on the next deploy.
 
-The `CNAME` file still ships defused as `CNAME.example`, because arming it before DNS points at
-GitHub just puts Pages into an error state. Rename it as part of the cutover, not before.
+**DNS still points at Squarespace, which is why GitHub reports `NotServedByPagesError`.** The
+nameservers are `nsb1–4.squarespacedns.com`, and the apex still answers with Squarespace's
+IPs (`198.185.159.x`, `198.49.23.x`). Until that changes, the domain cannot serve this site —
+nothing in this repo can fix it, because the records live in the Squarespace account.
 
-When you're ready to cut over:
+In Squarespace, under **Domains → greyduckrunning.com → DNS Settings**, replace the apex `A`
+records with GitHub's four:
 
-1. `git mv CNAME.example CNAME`, commit, push.
-2. Enable Pages (above) and confirm the site loads at `<user>.github.io/greyduckrunning-site`.
-3. In Squarespace DNS, replace the existing `A` records for the apex with GitHub's four:
-   ```
-   185.199.108.153
-   185.199.109.153
-   185.199.110.153
-   185.199.111.153
-   ```
-4. Point `www` at `<user>.github.io` via `CNAME`.
-5. In **Settings → Pages → Custom domain**, enter `greyduckrunning.com`, then tick
-   **Enforce HTTPS** once the certificate provisions (can take up to ~24h).
+```
+185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+```
 
-DNS changes propagate on TTL, so keep the Squarespace site up until step 2 checks out.
+Optionally add the IPv6 `AAAA` records too:
+
+```
+2606:50c0:8000::153
+2606:50c0:8001::153
+2606:50c0:8002::153
+2606:50c0:8003::153
+```
+
+And point `www` at `garrettmflynn.github.io` with a `CNAME` record, replacing the existing
+`ext-sq.squarespace.com`.
+
+Two things that commonly go wrong here:
+
+- If the domain is still **connected to a Squarespace site**, Squarespace will keep
+  reinstating its own records. Disconnect it there first.
+- **Enforce HTTPS** stays greyed out until DNS resolves to GitHub and a certificate issues.
+  That can take up to 24h. Tick it once it becomes available — until then the site is
+  served over HTTP only.
+
+Propagation follows the old records' TTL, so allow up to a few hours before re-checking.
+GitHub re-runs the check automatically, and **Settings → Pages** will clear the error on its
+own once the records resolve.
 
 ---
 
