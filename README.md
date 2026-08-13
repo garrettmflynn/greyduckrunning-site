@@ -100,6 +100,15 @@ The script asserts that every coloured pixel on the boundary is black, and fails
 than emitting an open shape. All the original character is kept: the large eye and pupil,
 the wedge beak, the pointed tail, the wing line, the belly, and the orange feet.
 
+**Display it at whole-number scales only.** The SVG is a 54x36 grid drawn with
+`shape-rendering: crispEdges`. At a fractional scale — it was rendering at 1.074x in the
+header and 6.13x in the hero — each source pixel lands on a fractional device pixel, so some
+draw one device pixel wide and their neighbours draw two. That unevenness reads as aliasing
+and was blamed on the artwork more than once; it is purely a CSS sizing problem. The sizes in
+`styles.css` are therefore fixed multiples (1x in the header, 6x in the hero, stepping to 5x
+and 4x at breakpoints) rather than fluid percentages, because a fluid width cannot stay on
+whole numbers.
+
 Being SVG on an integer grid, it scales to any size without blurring and recolours by
 editing five fill values. Regenerating is only needed if the logo itself changes; the run
 is deterministic and reproduces the committed SVG byte for byte.

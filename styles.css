@@ -285,3 +285,70 @@ h2 { font-family: var(--font-pixel); font-size: clamp(17px, 2.5vw, 24px); line-h
 @media (min-width: 1500px) {
   :root { --wrap: 1200px; }
 }
+
+/* ============================================================
+   Integer pixel scaling
+   ------------------------------------------------------------
+   duck.svg is a 54x36 grid drawn with shape-rendering:crispEdges.
+   At a fractional scale (it was rendering at 1.074x and 6.13x) each
+   source pixel lands on a fractional device pixel, so some draw one
+   device pixel wide and their neighbours draw two. That unevenness
+   is what read as aliasing — it was never the artwork.
+
+   So every displayed size is a whole multiple of 54x36. Sizes step
+   between multiples at breakpoints rather than scaling fluidly,
+   because a fluid width cannot stay on whole numbers.
+   ============================================================ */
+
+.brand-mark {                      /* 1x */
+  width: 54px; height: 36px;
+  aspect-ratio: auto;
+}
+
+.cover-plate img {                 /* 6x */
+  width: 324px; height: 216px;
+  max-width: 100%;
+  margin-inline: auto;
+}
+.cover-plate { display: flex; justify-content: center; }
+
+@media (max-width: 1080px) {
+  .cover-plate img { width: 270px; height: 180px; }   /* 5x */
+}
+@media (max-width: 900px) {
+  .hero-art { max-width: none; }
+  .cover-plate img { width: 324px; height: 216px; }   /* 6x again, full width available */
+}
+@media (max-width: 430px) {
+  .cover-plate img { width: 216px; height: 144px; }   /* 4x */
+}
+
+/* ---------- header: title + subtitle ---------- */
+.brand-name { font-size: 15px; }
+.brand-sub  { font-size: 7px; }
+
+/* ---------- hero title + subtitle ---------- */
+h1 { margin-bottom: 14px; }
+.hero-sub {
+  font-family: var(--font-pixel);
+  font-size: clamp(10px, 1.25vw, 13px);
+  line-height: 1.7;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 28px;
+}
+
+/* ---------- header CTA: Spotify-led, not a shouty orange slab ---------- */
+.header-cta {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.header-cta .ico-spotify { fill: #1DB954; width: 18px; height: 18px; }
+.header-cta:hover { background: var(--paper); }
+
+@media (max-width: 620px) {
+  .header-cta span { display: none; }      /* glyph only when tight */
+  .header-cta { padding: 11px; }
+}
