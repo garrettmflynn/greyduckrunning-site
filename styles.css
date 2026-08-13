@@ -215,8 +215,18 @@ h2 {
    Constrain the prose to a readable measure, NOT the wrapper. `.about` sits on
    the same element as `.wrap`, so a max-width here shrinks the whole container
    and re-centres it — which pushed this section's left edge 136px inboard of
-   every other section. */
-.about > :first-child { max-width: 720px; }
+   every other section.
+
+   Capped in ch so it tracks the font rather than a guessed pixel value.
+   Comfortable reading is 45-75 characters per line; at full section width this
+   prose runs to 118, which is why it is not full-bleed even though the coverage
+   list below it is — that list is two columns of ~56 characters, so it already
+   reads short.
+
+   Note 1ch is the width of the "0" glyph, not of an average character. In Inter
+   a digit is about 1.22x the average lowercase letter, so 56ch lands near 68
+   real characters. Measure it; do not assume ch means characters. */
+.about > :first-child { max-width: 56ch; }
 
 .covers {
   list-style: none; margin: 44px 0 0; padding: 0;
