@@ -1,59 +1,166 @@
-W = H = 32
+#!/usr/bin/env python3
+"""Rebuild assets/duck.svg (and the PNG derivatives) from the podcast's logo.
 
-def build():
-    g = [['.' for _ in range(W)] for _ in range(H)]
-    def ell(cx, cy, rx, ry, ch):
-        for y in range(H):
-            for x in range(W):
-                if ((x+.5-cx)/rx)**2 + ((y+.5-cy)/ry)**2 <= 1: g[y][x] = ch
+The logo we were given is a small JPEG, so it carries compression noise. This
+traces it back to its native pixel grid, repairs the noise, and emits vector
+output — the artwork is preserved exactly, just made resolution-independent.
 
-    # ---- silhouette: one connected shape, built before outlining ----
-    ell(13.5, 18.0, 11.0, 6.0, 'G')      # body
-    ell(20.5, 9.5, 5.7, 5.7, "G")        # head, a true circle
-    ell(18.0, 14.0, 5.0, 4.5, 'G')       # neck
+    python3 tools/make-duck.py path/to/logo.jpg
 
-    # tail: a blunt wedge off the back, thick enough to avoid 1px specks
-    for y in range(12, 19):
-        for x in range(2, 7):
-            if 2 <= (y - 12) + (x - 2) <= 8: g[y][x] = 'G'
+Requires Pillow. Only needed if the logo itself changes; assets/duck.svg is
+committed, so normal site work never runs this.
+"""
+import sys, pathlib
+from collections import Counter
+from PIL import Image
 
-    ell(13.0, 20.0, 6.5, 2.4, 'L')       # belly highlight
+# The five colours the artwork uses, sampled from the Spotify cover.
+PAL = {'W': (255, 255, 255), 'G': (176, 176, 176), 'K': (0, 0, 0),
+       'L': (200, 200, 200), 'O': (248, 104, 0)}
+HEX = {'G': '#B0B0B0', 'K': '#000000', 'L': '#C8C8C8', 'O': '#F86800', 'E': '#FFFFFF'}
+GRID = 30  # native pixel grid of the source logo
 
-    # ---- 1px uniform outline over the silhouette ----
-    out = [r[:] for r in g]
-    for y in range(H):
-        for x in range(W):
-            if g[y][x] == '.': continue
-            if any(not (0 <= x+dx < W and 0 <= y+dy < H) or g[y+dy][x+dx] == '.'
-                   for dx, dy in ((1,0),(-1,0),(0,1),(0,-1))):
-                out[y][x] = 'K'
-    g = out
 
-    # ---- features drawn explicitly on top, each with its own outline ----
-    # beak: an orange wedge off the right of the head
-    beak = {
-        (26,9):'K',(27,9):'K',(28,9):'K',(29,9):'K',
-        (26,10):'O',(27,10):'O',(28,10):'O',(29,10):'K',
-        (26,11):'O',(27,11):'O',(28,11):'K',
-        (26,12):'K',(27,12):'K',
-    }
-    for (x,y),c in beak.items(): g[y][x] = c
+def snap(p):
+    return min(PAL, key=lambda k: sum((a - b) ** 2 for a, b in zip(p, PAL[k])))
 
-    # eye: white block, black pupil
-    for y in range(7, 10):
-        for x in range(21, 24): g[y][x] = 'E'
-    g[8][22] = 'P'
 
-    # feet: orange run on the body's underside, keeping a black edge below it
-    ys = [y for y in range(H) if any(c != '.' for c in g[y])]
-    b = max(ys)
-    for x in range(10, 17):
-        if g[b-1][x] != '.': g[b-1][x] = 'O'
+def trace(path, n=GRID):
+    """Downsample to the native grid, majority-voting each cell."""
+    im = Image.open(path).convert('RGB')
+    w, h = im.size
+    cw, ch = w / n, h / n
+    out = []
+    for gy in range(n):
+        row = []
+        for gx in range(n):
+            x0, y0 = int(gx * cw), int(gy * ch)
+            x1, y1 = int((gx + 1) * cw), int((gy + 1) * ch)
+            mx, my = max(1, (x1 - x0) // 4), max(1, (y1 - y0) // 4)
+            votes = Counter(snap(im.getpixel((x, y)))
+                            for y in range(y0 + my, y1 - my)
+                            for x in range(x0 + mx, x1 - mx))
+            row.append(votes.most_common(1)[0][0] if votes else 'W')
+        out.append(row)
+    return out
+
+
+def despeckle(src):
+    """Drop belly-grey pixels with no belly-grey neighbour — JPEG ringing, not design.
+
+    Neighbours are read from `src`, never from the copy being written, or one
+    repair changes the next pixel's neighbourhood and the fix cascades.
+    """
+    n = len(src)
+    g = [r[:] for r in src]
+    for y in range(n):
+        for x in range(n):
+            if src[y][x] != 'L':
+                continue
+            nb = [src[y + dy][x + dx] for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))
+                  if 0 <= x + dx < n and 0 <= y + dy < n]
+            if nb.count('L') == 0:
+                g[y][x] = 'G'
     return g
 
-g = build()
-for r in g: print(''.join(r))
 
-# Run:  python3 tools/make-duck.py
-# Prints the 32x32 grid. The committed assets/duck.svg was generated from this;
-# edit the primitives above and re-emit if the logo ever needs adjusting.
+def fill_holes(g):
+    """Paint enclosed background regions white.
+
+    The duck's eye is a gap in the artwork that reads white only because the
+    source sits on a white square. Left alone it would go transparent in SVG.
+    """
+    n = len(g)
+    seen, stack = set(), []
+    for i in range(n):
+        for p in ((i, 0), (i, n - 1), (0, i), (n - 1, i)):
+            if g[p[1]][p[0]] == 'W':
+                stack.append(p)
+    seen.update(stack)
+    while stack:
+        x, y = stack.pop()
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < n and 0 <= ny < n and g[ny][nx] == 'W' and (nx, ny) not in seen:
+                seen.add((nx, ny))
+                stack.append((nx, ny))
+    for y in range(n):
+        for x in range(n):
+            if g[y][x] == 'W' and (x, y) not in seen:
+                g[y][x] = 'E'
+    return g
+
+
+def crop(g):
+    n = len(g)
+    ys = [y for y in range(n) if any(c != 'W' for c in g[y])]
+    xs = [x for x in range(n) if any(g[y][x] != 'W' for y in ys)]
+    return [g[y][min(xs):max(xs) + 1] for y in range(min(ys), max(ys) + 1)]
+
+
+def to_svg(grid):
+    """Merge horizontal runs into rects, grouped by colour."""
+    h, w = len(grid), len(grid[0])
+    parts = {}
+    for y, row in enumerate(grid):
+        x = 0
+        while x < w:
+            c, run = row[x], 1
+            while x + run < w and row[x + run] == c:
+                run += 1
+            if c in HEX:
+                parts.setdefault(HEX[c], []).append(
+                    f"<rect x='{x}' y='{y}' width='{run}' height='1'/>")
+            x += run
+    order = [HEX[k] for k in ('G', 'L', 'E', 'O', 'K') if HEX[k] in parts]
+    body = ''.join(f"<g fill='{c}'>" + ''.join(parts[c]) + "</g>" for c in order)
+    return (f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {w} {h}' "
+            f"shape-rendering='crispEdges' role='img' "
+            f"aria-label='Grey Duck Running'>{body}</svg>\n")
+
+
+def to_png(grid, scale):
+    h, w = len(grid), len(grid[0])
+    C = {k: v for k, v in PAL.items()}
+    C['E'] = (255, 255, 255)
+    im = Image.new('RGBA', (w * scale, h * scale), (0, 0, 0, 0))
+    px = im.load()
+    for y, row in enumerate(grid):
+        for x, ch in enumerate(row):
+            if ch == 'W':
+                continue
+            c = C[ch] + (255,)
+            for dy in range(scale):
+                for dx in range(scale):
+                    px[x * scale + dx, y * scale + dy] = c
+    return im
+
+
+def main():
+    src = sys.argv[1] if len(sys.argv) > 1 else 'assets/logo-source.jpg'
+    root = pathlib.Path(__file__).resolve().parent.parent
+    assets = root / 'assets'
+
+    grid = crop(fill_holes(despeckle(trace(src))))
+    h, w = len(grid), len(grid[0])
+    print(f'duck: {w}x{h} (aspect {w/h:.2f}:1)')
+
+    svg = to_svg(grid)
+    (assets / 'duck.svg').write_text(svg)
+    (assets / 'favicon.svg').write_text(svg)
+
+    card = Image.new('RGB', (1200, 630), (248, 248, 248))
+    d = to_png(grid, 30)
+    card.paste(d, ((1200 - d.width) // 2, (630 - d.height) // 2), d)
+    card.save(assets / 'og-image.png')
+
+    icon = Image.new('RGB', (512, 512), (248, 248, 248))
+    d2 = to_png(grid, 16)
+    icon.paste(d2, ((512 - d2.width) // 2, (512 - d2.height) // 2), d2)
+    icon.save(assets / 'icon-512.png')
+
+    print('wrote duck.svg, favicon.svg, og-image.png, icon-512.png')
+
+
+if __name__ == '__main__':
+    main()

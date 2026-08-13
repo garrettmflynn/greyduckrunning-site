@@ -26,11 +26,13 @@ Then open <http://localhost:8000>. Editing a file and refreshing is the whole de
 index.html           all page content
 styles.css           all styling
 script.js            footer year + mobile nav toggle; page works with JS off
-assets/duck.svg      the logo — used for the header mark, hero, and favicon
-assets/favicon.svg   copy of duck.svg
-assets/og-image.png  1200x630 social preview
-assets/icon-512.png  512px app icon
-assets/cover.jpg     the original Spotify cover art, kept for reference
+assets/duck.svg        the logo — header mark, hero, and favicon
+assets/favicon.svg     copy of duck.svg
+assets/og-image.png    1200x630 social preview
+assets/icon-512.png    512px app icon
+assets/logo-source.jpg the logo JPEG the SVG is traced from
+assets/cover.jpg       the Spotify cover art, kept for reference
+tools/make-duck.py     regenerates the logo assets (see below)
 CNAME.example        rename to CNAME to attach greyduckrunning.com (see below)
 ```
 
@@ -56,16 +58,23 @@ Dark mode is supported via `prefers-color-scheme`.
 
 ### The logo
 
-`assets/duck.svg` is a redraw of the podcast's own duck. The source images (the Spotify
-cover and the Instagram logo) are small JPEGs with uneven proportions — the body is wider
-than it is tall in an irregular way, the tail has a detached stub, and the beak is lumpy.
-Rather than trace those artifacts, the duck is reconstructed from circles and ellipses on a
-32x32 grid, then given a uniform 1px outline. The head is a true circle, so it never reads
-as squished, and the whole shape is verified to be a single connected blob.
+`assets/duck.svg` is the podcast's own duck, vectorised — not a redraw. The source is a
+150x150 JPEG, which traces cleanly back to a native 30x30 pixel grid. All of the original
+detail is kept: the large eye with its pupil, the wedge beak, the pointed tail, the black
+wing line across the body, the belly, and the orange feet. The duck is 28x17, a 1.65:1
+aspect — it is genuinely a wide duck, and squaring it up makes it look wrong.
 
-Because it's SVG on an integer grid, it scales to any size without blurring and can be
-recoloured by editing five fill values. It's used for the header mark, the hero, and the
-favicon, and `og-image.png` / `icon-512.png` are rendered from the same grid.
+Two pixels were repaired: isolated belly-grey specks that are JPEG ringing rather than
+design. The eye is a gap in the original artwork that reads white only because the source
+sits on a white square, so enclosed regions are explicitly filled — otherwise the eye goes
+transparent in SVG.
+
+`tools/make-duck.py` regenerates `duck.svg`, `favicon.svg`, `og-image.png` and
+`icon-512.png` from `assets/logo-source.jpg`, and reproduces the committed SVG byte for
+byte. You only need it if the logo itself changes.
+
+Being SVG on an integer grid, it scales to any size without blurring and recolours by
+editing five fill values.
 
 ---
 
