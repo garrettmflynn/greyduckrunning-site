@@ -83,7 +83,7 @@ a { color: inherit; }
    the outline is a uniform 1px. Resolution-independent — scale it anywhere. */
 .brand-mark {
   display: block;
-  width: 56px; aspect-ratio: 28 / 17;
+  width: 58px; aspect-ratio: 56 / 36;
   flex: none;
   background-repeat: no-repeat;
   background-position: center;
@@ -128,7 +128,6 @@ a { color: inherit; }
 .hero { padding: 72px 0 64px; }
 .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
 
-
 h1 { margin: 0 0 26px; font-family: var(--font-pixel); line-height: 1.42; letter-spacing: -.01em; }
 .h1-line { display: block; font-size: clamp(20px, 3.6vw, 34px); }
 .h1-hl { color: var(--beak); margin-top: 6px; }
@@ -150,13 +149,6 @@ h1 { margin: 0 0 26px; font-family: var(--font-pixel); line-height: 1.42; letter
 .btn-primary { background: var(--beak); color: #000; }
 .btn-ghost { background: var(--surface); color: var(--ink); }
 .ico { width: 17px; height: 17px; fill: currentColor; flex: none; }
-
-/* ---------- hero stats ---------- */
-.stat-row { list-style: none; margin: 40px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0; border: var(--border-w) solid var(--ink); background: var(--surface); }
-.stat-row li { flex: 1 1 150px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; border-right: var(--border-w) solid var(--ink); }
-.stat-row li:last-child { border-right: 0; }
-.stat-k { font-family: var(--font-pixel); font-size: 8px; color: var(--beak); letter-spacing: .08em; }
-.stat-v { font-size: 15px; font-weight: 600; }
 
 /* ---------- hero art ---------- */
 .hero-art { text-align: center; }
@@ -185,13 +177,12 @@ h1 { margin: 0 0 26px; font-family: var(--font-pixel); line-height: 1.42; letter
 
 .kicker { font-family: var(--font-pixel); font-size: 9px; color: var(--beak); letter-spacing: .12em; margin: 0 0 16px; }
 h2 { font-family: var(--font-pixel); font-size: clamp(17px, 2.5vw, 24px); line-height: 1.5; margin: 0 0 18px; }
-.section-head { max-width: 62ch; margin-bottom: 44px; }
 .sub { color: var(--muted); margin: 0; font-size: 17px; }
 
 /* ---------- player ---------- */
 .player-plate {
-  border: var(--border-w) solid var(--ink); box-shadow: var(--shadow);
-  background: var(--surface); padding: 14px; line-height: 0;
+  border: var(--border-w) solid var(--ink); box-shadow: var(--shadow-sm);
+  background: var(--surface); padding: 12px; line-height: 0; margin-top: 32px;
 }
 .player-plate iframe { display: block; }
 
@@ -267,6 +258,4 @@ h2 { font-family: var(--font-pixel); font-size: clamp(17px, 2.5vw, 24px); line-h
   body { font-size: 16px; }
   .brand-sub { display: none; }
   .btn { font-size: 10px; padding: 14px 18px; }
-  .stat-row li { flex: 1 1 100%; border-right: 0; border-bottom: var(--border-w) solid var(--ink); }
-  .stat-row li:last-child { border-bottom: 0; }
-}
+    }

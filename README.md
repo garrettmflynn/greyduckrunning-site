@@ -58,23 +58,32 @@ Dark mode is supported via `prefers-color-scheme`.
 
 ### The logo
 
-`assets/duck.svg` is the podcast's own duck, vectorised — not a redraw. The source is a
-150x150 JPEG, which traces cleanly back to a native 30x30 pixel grid. All of the original
-detail is kept: the large eye with its pupil, the wedge beak, the pointed tail, the black
-wing line across the body, the belly, and the orange feet. The duck is 28x17, a 1.65:1
-aspect — it is genuinely a wide duck, and squaring it up makes it look wrong.
+`assets/duck.svg` is the podcast's own duck, vectorised — not a redraw. The logo was drawn
+in **Excel**, as coloured cells on a spreadsheet grid, then screenshotted and downscaled to
+a 150x150 JPEG. So there is a real pixel grid underneath (28x17 cells), but the downscale
+damaged it. `tools/make-duck.py` recovers it in four steps:
 
-Two pixels were repaired: isolated belly-grey specks that are JPEG ringing rather than
-design. The eye is a gap in the original artwork that reads white only because the source
-sits on a white square, so enclosed regions are explicitly filled — otherwise the eye goes
-transparent in SVG.
+1. **Trace to the cell grid**, with orange and black winning on *presence* rather than
+   majority. A one-cell outline survives the downscale as roughly 3px inside a 5px cell, so
+   a plain majority vote hands that cell to the grey beside it and the outline dissolves.
+   This is why earlier versions had no black edge across the top of the head or under the
+   feet — the artwork has them, the JPEG lost them, and a naive trace lost them again.
+2. **Close the outline**, growing black outward into the background rather than recolouring
+   edge pixels — recolouring would turn the orange feet and beak black. Where the artwork
+   already has an outline this is a no-op.
+3. **Despeckle** isolated belly-grey pixels (JPEG ringing). Black is deliberately never
+   despeckled: a legitimate outline can be one isolated pixel, such as the beak tip.
+4. **Smooth once with Scale2x**, which rounds staircase diagonals without inventing any
+   colour outside the palette, so the result is still true pixel art. The output is 56x36.
+   A second pass was tried and rejected — it thickens and lumps the outline.
 
-`tools/make-duck.py` regenerates `duck.svg`, `favicon.svg`, `og-image.png` and
-`icon-512.png` from `assets/logo-source.jpg`, and reproduces the committed SVG byte for
-byte. You only need it if the logo itself changes.
+The script asserts that every coloured pixel on the boundary is black, and fails rather
+than emitting an open shape. All the original character is kept: the large eye and pupil,
+the wedge beak, the pointed tail, the wing line, the belly, and the orange feet.
 
 Being SVG on an integer grid, it scales to any size without blurring and recolours by
-editing five fill values.
+editing five fill values. Regenerating is only needed if the logo itself changes; the run
+is deterministic and reproduces the committed SVG byte for byte.
 
 ---
 
@@ -82,8 +91,8 @@ editing five fill values.
 
 **Change copy** — it's all literal text in `index.html`. No templating.
 
-**Episodes** — there is no hardcoded episode list to maintain. The Spotify embed in the
-`#listen` section always shows the newest episode and updates itself as new ones publish.
+**Episodes** — there is no hardcoded episode list to maintain. The Spotify embed sits in the
+hero and always shows the newest episode, updating itself as new ones publish.
 If the show ever gets a public RSS feed, that would open up a self-hosted episode list; as
 of setup it was not listed in Apple Podcasts, so no feed URL was available.
 
