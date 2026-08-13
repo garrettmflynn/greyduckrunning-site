@@ -92,7 +92,11 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
 /* ------------------------------------------------------------
-   The duck
+   The duck  —  DORMANT
+
+   Nothing on the page references these right now; the logo is
+   withdrawn until a full-resolution original turns up. The rules
+   and assets are kept so restoring it is a one-line change.
 
    assets/duck.png is the podcast's own artwork, untouched except
    that the white background is flood-filled to transparent from
@@ -181,10 +185,11 @@ a { color: inherit; }
 
 /* ---------- hero ---------- */
 .hero { padding: 84px 0 0; }
-.hero-grid {
-  display: grid; grid-template-columns: 1.15fr .85fr;
-  gap: 56px; align-items: center;
-}
+.hero-inner { max-width: 720px; }
+
+/* Two-column hero, for when the logo comes back.
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
+*/
 
 h1 {
   margin: 0 0 14px;
@@ -276,8 +281,6 @@ h2 {
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .hero { padding-top: 56px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero-art { order: -1; }
   .covers { grid-template-columns: 1fr; gap: 0; }
   .section { padding: 72px 0; }
   .player { margin-top: 40px; }

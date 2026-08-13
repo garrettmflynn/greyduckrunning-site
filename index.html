@@ -14,11 +14,13 @@
 <meta property="og:site_name" content="Grey Duck Running">
 <meta property="og:title" content="Grey Duck Running">
 <meta property="og:description" content="A podcast for the mediocre runner. Midwest endurance events — running, biking, hiking and more.">
-<meta property="og:image" content="assets/og-image.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<!-- og:image withdrawn with the logo — a share card renders it at 6x, which is
+     exactly where the source damage shows. Restore alongside the logo:
+     <meta property="og:image" content="assets/og-image.png">
+     <meta property="og:image:width" content="1200">
+     <meta property="og:image:height" content="630"> -->
 <meta property="og:url" content="https://greyduckrunning.com/">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://greyduckrunning.com/">
 <link rel="icon" href="assets/favicon.png" type="image/png">
@@ -37,7 +39,6 @@
   "name": "Grey Duck Running",
   "description": "A podcast for the mediocre runner. Covering Midwest endurance events including running, biking, hiking and more.",
   "url": "https://greyduckrunning.com/",
-  "image": "https://greyduckrunning.com/assets/og-image.png",
   "inLanguage": "en",
   "author": [
     { "@type": "Person", "name": "Christian" },
@@ -57,7 +58,8 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="#top" aria-label="Grey Duck Running — home">
-      <img class="brand-mark" src="assets/duck.png" width="143" height="90" alt="">
+      <!-- Logo withdrawn until a full-resolution original is available.
+           Restore with: <img class="brand-mark" src="assets/duck.png" width="142" height="89" alt=""> -->
       <span class="brand-text">
         <span class="brand-name">Grey Duck Running</span>
         <span class="brand-sub">Midwest Endurance Podcast</span>
@@ -74,7 +76,7 @@
 <main id="main">
 
   <section class="hero" id="top">
-    <div class="wrap hero-grid">
+    <div class="wrap hero-inner">
       <div class="hero-copy">
         <h1 class="reveal">Grey Duck Running</h1>
         <p class="hero-sub reveal">A podcast for the <em>mediocre runner</em>.</p>
@@ -85,10 +87,12 @@
         </p>
       </div>
 
-      <div class="hero-art reveal" data-delay="1">
-        <img src="assets/duck.svg" width="142" height="89"
-             alt="The Grey Duck Running logo: a pixel-art grey duck with an orange beak.">
-      </div>
+      <!-- Hero logo withdrawn until a full-resolution original is available.
+           Restore with:
+           <div class="hero-art reveal" data-delay="1">
+             <img src="assets/duck.svg" width="142" height="89"
+                  alt="The Grey Duck Running logo: a pixel-art grey duck with an orange beak.">
+           </div> -->
     </div>
 
     <div class="wrap">
