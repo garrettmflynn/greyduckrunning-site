@@ -179,6 +179,10 @@ a { color: inherit; }
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--line); }
 .btn-outline:hover { border-color: var(--faint); background: var(--raised); }
 
+/* Belt and braces: the sprite also carries width/height attributes and an inline
+   style. Relying on this rule alone means that between first paint and styles.css
+   loading, an SVG with no dimensions renders at its default 300x150 and pushes the
+   header down — a visible jump on a cold load. */
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .ico { width: 19px; height: 19px; fill: currentColor; flex: none; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
