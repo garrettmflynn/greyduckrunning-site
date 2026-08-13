@@ -6,11 +6,17 @@
 <title>Grey Duck Running Podcast — A podcast for the mediocre runner</title>
 <meta name="description" content="A podcast for the mediocre runner. Christian and Lauren cover Midwest endurance events — running, biking, hiking and more.">
 
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F8F8F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14140F" media="(prefers-color-scheme: dark)">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Grey Duck Running Podcast">
 <meta property="og:title" content="Grey Duck Running Podcast">
 <meta property="og:description" content="A podcast for the mediocre runner. Midwest endurance events — running, biking, hiking and more.">
 <meta property="og:image" content="assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://greyduckrunning.com/">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -20,9 +26,31 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
 
 <link rel="stylesheet" href="styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "PodcastSeries",
+  "name": "Grey Duck Running",
+  "alternateName": "Grey Duck Running Podcast",
+  "description": "A podcast for the mediocre runner. Covering Midwest endurance events including running, biking, hiking and more.",
+  "url": "https://greyduckrunning.com/",
+  "image": "https://greyduckrunning.com/assets/og-image.png",
+  "inLanguage": "en",
+  "author": [
+    { "@type": "Person", "name": "Christian" },
+    { "@type": "Person", "name": "Lauren" }
+  ],
+  "sameAs": [
+    "https://open.spotify.com/show/033LBDWqdgBps2G7CM41d2",
+    "https://www.instagram.com/greyduckrunning"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -39,20 +67,11 @@
       </span>
     </a>
 
-    <nav class="site-nav" aria-label="Primary">
-      <a href="#about">About</a>
-      <a href="#follow">Follow</a>
-    </nav>
-
-    <button class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
+    <a class="header-cta" href="https://open.spotify.com/show/033LBDWqdgBps2G7CM41d2" target="_blank" rel="noopener">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.586 14.424a.623.623 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 1 1-.277-1.215c3.809-.871 7.077-.496 9.712 1.115.293.18.386.563.207.857Zm1.223-2.722a.78.78 0 0 1-1.072.257c-2.688-1.652-6.786-2.13-9.965-1.166a.78.78 0 1 1-.453-1.492c3.63-1.102 8.146-.568 11.233 1.329a.78.78 0 0 1 .257 1.072Zm.105-2.835c-3.223-1.914-8.54-2.09-11.617-1.156a.935.935 0 1 1-.543-1.79c3.532-1.072 9.404-.865 13.115 1.338a.935.935 0 1 1-.955 1.608Z"/></svg>
+      <span>FOLLOW</span>
+    </a>
   </div>
-
-  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
-    <a href="#about">About</a>
-    <a href="#follow">Follow</a>
-  </nav>
 </header>
 
 <main id="main">
@@ -62,18 +81,14 @@
     <div class="wrap hero-grid">
 
       <div class="hero-copy">
-        <h1>
-          <span class="h1-line">A PODCAST</span>
-          <span class="h1-line">FOR THE</span>
-          <span class="h1-line h1-hl">MEDIOCRE<br>RUNNER</span>
-        </h1>
+        <h1 class="reveal">A podcast for the <span class="h1-hl">mediocre&nbsp;runner</span></h1>
 
-        <p class="lede">
+        <p class="lede reveal" data-delay="1">
           Christian and Lauren cover endurance events around the Upper Midwest —
           running, biking, hiking and more. New episodes most weeks.
         </p>
 
-        <div class="player-plate">
+        <div class="player-plate reveal" data-delay="2">
           <iframe
             title="Grey Duck Running Podcast on Spotify"
             src="https://open.spotify.com/embed/show/033LBDWqdgBps2G7CM41d2?utm_source=generator"
@@ -84,9 +99,9 @@
         </div>
       </div>
 
-      <div class="hero-art">
+      <div class="hero-art reveal" data-delay="1">
         <div class="cover-plate">
-          <img src="assets/duck.svg" width="56" height="36"
+          <img src="assets/duck.svg" width="54" height="36"
                alt="The Grey Duck Running logo: a pixel-art grey duck with an orange beak.">
         </div>
       </div>
@@ -105,7 +120,7 @@
   <!-- ══════════════════════ About ══════════════════════ -->
   <section class="section section-alt" id="about">
     <div class="wrap about-grid">
-      <div>
+      <div class="reveal">
         <h2>About the show</h2>
         <p>
           Grey Duck Running is a podcast about endurance events in the Upper Midwest. Christian and
@@ -122,28 +137,19 @@
           <li><strong>Hiking</strong> Trails and long days out across the Upper Midwest.</li>
           <li><strong>Previews and recaps</strong> What a course is like and whether it's worth signing up for.</li>
         </ul>
-
-        <div class="hosts">
-          <!-- TODO: replace with real bios from Christian and Lauren. Left blank on purpose
-               rather than filled with invented detail. -->
-          <div class="host">
-            <span class="host-avatar">C</span>
-            <div><h3>Christian</h3><p>Co-host</p></div>
-          </div>
-          <div class="host">
-            <span class="host-avatar host-avatar-b">L</span>
-            <div><h3>Lauren</h3><p>Co-host</p></div>
-          </div>
-        </div>
       </div>
 
-      <aside class="fact-card">
+      <aside class="fact-card reveal" data-delay="1">
         <h3>AT A GLANCE</h3>
         <dl class="facts">
           <div><dt>Hosts</dt><dd>Christian and Lauren</dd></div>
           <div><dt>Region</dt><dd>Upper Midwest</dd></div>
           <div><dt>Episodes</dt><dd>About an hour, most weeks</dd></div>
         </dl>
+        <!-- Host bios go here once Christian and Lauren supply them. The two
+             name cards that used to sit at the bottom of this section carried no
+             information beyond "Co-host", so they were removed rather than left
+             looking unfinished. -->
       </aside>
     </div>
   </section>

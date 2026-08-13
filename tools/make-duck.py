@@ -21,7 +21,6 @@ PAL = {'W': (255, 255, 255), 'G': (176, 176, 176), 'K': (0, 0, 0),
        'L': (200, 200, 200), 'O': (248, 104, 0)}
 HEX = {'G': '#B0B0B0', 'K': '#000000', 'L': '#C8C8C8', 'O': '#F86800', 'E': '#FFFFFF'}
 
-CELLS_X, CELLS_Y = 28, 17   # the Excel grid the duck was drawn on
 SMOOTH_PASSES = 1           # Scale2x rounds; 2 passes thickens the outline
 
 
@@ -29,7 +28,56 @@ def snap(px):
     return min(PAL, key=lambda k: sum((a - b) ** 2 for a, b in zip(px, PAL[k])))
 
 
-def trace(path, nx=CELLS_X, ny=CELLS_Y):
+def ink_bbox(im):
+    W, H = im.size
+    xs = [x for x in range(W) if any(snap(im.getpixel((x, y))) != 'W' for y in range(H))]
+    ys = [y for y in range(H) if any(snap(im.getpixel((x, y))) != 'W' for x in range(W))]
+    return min(xs), min(ys), max(xs) + 1, max(ys) + 1
+
+
+def derive_grid(im):
+    """Find the Excel grid, assuming its cells are square.
+
+    Do not hardcode this. Guessing the column count one too high stretches every
+    cell horizontally and the duck comes out wider than it is — which is exactly
+    what "squished" was. Instead: for each candidate column count the cell size
+    follows from the ink width, and the row count follows from the cell size. The
+    true grid is the one where that implied row count lands on a whole number,
+    because only then are the cells actually square.
+
+    COLUMNS is pinned rather than auto-detected, and that is a deliberate
+    retreat. Three independent ways of recovering the grid from this JPEG were
+    tried and all three returned flat, signal-free curves:
+
+      - lattice fit to colour-change positions: every candidate misaligned
+        23-25%, no winner
+      - cell-colour uniformity: climbs smoothly 85% -> 97% as the grid gets
+        finer, no knee, so it always picks the finest candidate and oversamples
+      - run lengths as whole multiples of the cell: deviation 0.26-0.29 for
+        every candidate
+
+    The source was downscaled by a non-integer factor with interpolation, which
+    destroyed the cell boundaries. Oversampling it is what produced ragged edges
+    and visibly uneven pixel sizes, so guessing fine is worse than guessing
+    coarse.
+
+    27 is used because it is the column count whose square cells imply a nearly
+    whole number of rows (89 / 5.26 = 16.92, so 17), and because with black
+    included the run lengths do cluster at 5/6, 10/11 and 15/16 — one, two and
+    three cells of 5.26px landing either side of a pixel boundary.
+
+    If the original spreadsheet ever turns up, delete all of this and read the
+    grid off it exactly.
+    """
+    COLUMNS = 27
+    x0, y0, x1, y1 = ink_bbox(im)
+    bw, bh = x1 - x0, y1 - y0
+    cell = bw / COLUMNS
+    rows = bh / cell
+    return COLUMNS, round(rows), cell, abs(rows - round(rows))
+
+
+def trace(path, nx, ny):
     """Downsample to the Excel cell grid.
 
     Not a plain majority vote. A one-cell outline, once the screenshot was
@@ -39,10 +87,7 @@ def trace(path, nx=CELLS_X, ny=CELLS_Y):
     thresholds instead, which is what keeps the crown and the feet.
     """
     im = Image.open(path).convert('RGB')
-    W, H = im.size
-    xs = [x for x in range(W) if any(snap(im.getpixel((x, y))) != 'W' for y in range(H))]
-    ys = [y for y in range(H) if any(snap(im.getpixel((x, y))) != 'W' for x in range(W))]
-    x0, x1, y0, y1 = min(xs), max(xs) + 1, min(ys), max(ys) + 1
+    x0, y0, x1, y1 = ink_bbox(im)
     cw, ch = (x1 - x0) / nx, (y1 - y0) / ny
 
     grid = []
@@ -179,7 +224,10 @@ def verify(g):
 
 
 def build(path):
-    g = fill_holes(trace(path))
+    im = Image.open(path).convert('RGB')
+    nx, ny, cell, residual = derive_grid(im)
+    print(f'grid: {nx}x{ny} cells @ {cell:.2f}px square (residual {residual:.2f} cell)')
+    g = fill_holes(trace(path, nx, ny))
     g = close_outline(g)
     g = despeckle(g)
     g = fill_holes(g)
@@ -232,7 +280,7 @@ def main():
 
     grid = build(src)
     h, w = len(grid), len(grid[0])
-    print(f'duck: {w}x{h} ({CELLS_X}x{CELLS_Y} cells, {SMOOTH_PASSES} smoothing pass)')
+    print(f'duck: {w}x{h} px ({SMOOTH_PASSES} smoothing pass)')
 
     svg = to_svg(grid)
     (assets / 'duck.svg').write_text(svg)

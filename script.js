@@ -1,51 +1,46 @@
-/* Grey Duck Running Podcast — minimal progressive enhancement.
-   No dependencies. Everything here is optional; the page works without JS. */
+/* Grey Duck Running Podcast — progressive enhancement only.
+   Nothing here is required; the page is fully readable with JS disabled. */
 
 (function () {
   'use strict';
+
+  // Mark that JS is running. The reveal styles hang off this class, so with JS
+  // off the elements are simply visible rather than stuck at opacity 0.
+  document.documentElement.classList.add('js');
 
   // Current year in the footer.
   var year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
 
-  // Mobile nav toggle.
-  var toggle = document.querySelector('.nav-toggle');
-  var nav = document.getElementById('mobile-nav');
+  var reveals = document.querySelectorAll('.reveal');
 
-  if (toggle && nav) {
-    var setOpen = function (open) {
-      toggle.setAttribute('aria-expanded', String(open));
-      if (open) {
-        nav.hidden = false;
-        nav.setAttribute('data-open', '');
-      } else {
-        nav.removeAttribute('data-open');
-        nav.hidden = true;
-      }
-    };
+  var reduced = window.matchMedia &&
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    setOpen(false);
-
-    toggle.addEventListener('click', function () {
-      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
-    });
-
-    // Close after tapping a link.
-    nav.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') setOpen(false);
-    });
-
-    // Close on Escape.
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        setOpen(false);
-        toggle.focus();
-      }
-    });
-
-    // Reset when returning to desktop width.
-    window.addEventListener('resize', function () {
-      if (window.innerWidth > 900) setOpen(false);
-    });
+  // Show everything at once if motion is unwanted or the browser is too old
+  // for IntersectionObserver.
+  if (reduced || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < reveals.length; i++) reveals[i].classList.add('is-in');
+    return;
   }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      io.unobserve(entry.target);   // reveal once, then stop watching
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+  reveals.forEach(function (el) { io.observe(el); });
+
+  // Anything already on screen at load should not wait for a scroll event.
+  requestAnimationFrame(function () {
+    reveals.forEach(function (el) {
+      if (el.getBoundingClientRect().top < window.innerHeight) {
+        el.classList.add('is-in');
+        io.unobserve(el);
+      }
+    });
+  });
 })();

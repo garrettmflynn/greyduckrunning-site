@@ -60,8 +60,22 @@ Dark mode is supported via `prefers-color-scheme`.
 
 `assets/duck.svg` is the podcast's own duck, vectorised — not a redraw. The logo was drawn
 in **Excel**, as coloured cells on a spreadsheet grid, then screenshotted and downscaled to
-a 150x150 JPEG. So there is a real pixel grid underneath (28x17 cells), but the downscale
-damaged it. `tools/make-duck.py` recovers it in four steps:
+a 150x150 JPEG. So there is a real pixel grid underneath, but the downscale damaged it.
+
+**The grid is pinned at 27 columns, not detected.** Three independent ways of recovering it
+from the JPEG were tried, and all three produced flat curves with no winner: fitting a
+lattice to colour-change positions (every candidate misaligned 23–25%), scoring how uniform
+each cell's colour is (climbs smoothly 85% → 97% as the grid gets finer, no knee, so it
+always picks the finest and oversamples), and checking run lengths against whole multiples
+of the cell (deviation 0.26–0.29 everywhere). The source was downscaled by a non-integer
+factor with interpolation and the cell boundaries are simply gone. Oversampling is what
+produced the ragged edges and uneven pixel sizes in earlier versions, so guessing fine is
+worse than guessing coarse. 27 is used because its square cells imply a nearly whole number
+of rows (89 / 5.26 = 16.92 → 17), and because with black included the run lengths do cluster
+at 5/6, 10/11 and 15/16 — one, two and three cells of 5.26px landing either side of a pixel
+boundary. **If the original spreadsheet turns up, read the grid off it and delete all that.**
+
+From there `tools/make-duck.py` runs four steps:
 
 1. **Trace to the cell grid**, with orange and black winning on *presence* rather than
    majority. A one-cell outline survives the downscale as roughly 3px inside a 5px cell, so
@@ -74,8 +88,13 @@ damaged it. `tools/make-duck.py` recovers it in four steps:
 3. **Despeckle** isolated belly-grey pixels (JPEG ringing). Black is deliberately never
    despeckled: a legitimate outline can be one isolated pixel, such as the beak tip.
 4. **Smooth once with Scale2x**, which rounds staircase diagonals without inventing any
-   colour outside the palette, so the result is still true pixel art. The output is 56x36.
+   colour outside the palette, so the result is still true pixel art. The output is 54x36.
    A second pass was tried and rejected — it thickens and lumps the outline.
+
+One known difference from the source: the outline reads heavier here. In Excel it is a cell
+*border*, a hairline on the gridline, whereas this renders it as a full cell — that is the
+standard pixel-art reading and it holds up at small sizes, but side by side the original is
+finer. The spreadsheet would fix this too.
 
 The script asserts that every coloured pixel on the boundary is black, and fails rather
 than emitting an open shape. All the original character is kept: the large eye and pupil,
@@ -147,9 +166,10 @@ DNS changes propagate on TTL, so keep the Squarespace site up until step 2 check
 
 ## Known gaps
 
-- **Host bios are missing — the one thing blocking this page.** Christian and Lauren are listed
-  by name and marked "Co-host" in `#about`, and nothing more. An earlier draft had invented bios;
-  they were deleted rather than reworded, so what's there is thin but true.
+- **Host bios are missing — the one thing blocking this page.** The two name cards that used to
+  sit at the bottom of `#about` carried nothing beyond "Co-host", so they were removed rather
+  than left looking unfinished; the names still appear in the About copy and the At a Glance
+  card. An earlier draft had invented bios, deleted rather than reworded.
 
   Episode one, *Uncle Sam Wants YOU to Listen to Our Podcast* (Jul 7, 59 min), is where they
   introduce themselves and cover how they got into running — but that is audio only. Spotify
