@@ -26,8 +26,8 @@ Then open <http://localhost:8000>. Editing a file and refreshing is the whole de
 index.html              all page content
 styles.css              all styling
 script.js               footer year + scroll reveals; page works with JS off
-assets/duck.svg         the logo — header mark, hero, and favicon
-assets/favicon.svg      copy of duck.svg
+assets/duck.png         the logo, background removed — header mark and hero
+assets/favicon.png      copy of duck.png
 assets/og-image.png     1200x630 social preview
 assets/icon-512.png     512px app icon
 assets/logo-source.jpg  the logo JPEG the SVG is traced from
@@ -65,60 +65,31 @@ Dark mode is supported via `prefers-color-scheme`.
 
 ### The logo
 
-`assets/duck.svg` is the podcast's own duck, vectorised — not a redraw. The logo was drawn
-in **Excel**, as coloured cells on a spreadsheet grid, then screenshotted and downscaled to
-a 150x150 JPEG. So there is a real pixel grid underneath, but the downscale damaged it.
+`assets/duck.png` is the podcast's own artwork with the white background removed, and the
+white un-blended out of the antialiased edge pixels so the outline does not glow as a pale
+halo on a dark background. Nothing else is changed.
 
-**The grid is pinned at 27 columns, not detected.** Three independent ways of recovering it
-from the JPEG were tried, and all three produced flat curves with no winner: fitting a
-lattice to colour-change positions (every candidate misaligned 23–25%), scoring how uniform
-each cell's colour is (climbs smoothly 85% → 97% as the grid gets finer, no knee, so it
-always picks the finest and oversamples), and checking run lengths against whole multiples
-of the cell (deviation 0.26–0.29 everywhere). The source was downscaled by a non-integer
-factor with interpolation and the cell boundaries are simply gone. Oversampling is what
-produced the ragged edges and uneven pixel sizes in earlier versions, so guessing fine is
-worse than guessing coarse. 27 is used because its square cells imply a nearly whole number
-of rows (89 / 5.26 = 16.92 → 17), and because with black included the run lengths do cluster
-at 5/6, 10/11 and 15/16 — one, two and three cells of 5.26px landing either side of a pixel
-boundary. **If the original spreadsheet turns up, read the grid off it and delete all that.**
+**It is not enlarged, and that is a hard constraint of the source.** The only file available
+is a 150px JPEG whose downscale severed the hairline outline. Traced at native resolution,
+with no grid assumption at all, the black outline comes apart into **43 disconnected pieces**
+and the feet into 3. Those breaks are in the file; enlarging magnifies every one of them.
+The site therefore shows the duck at or near natural size, where it reads exactly as it does
+on Spotify and Instagram.
 
-From there `tools/make-duck.py` runs four steps:
+Three attempts to reconstruct it as clean vector pixel art were abandoned, and it is worth
+knowing why before trying again:
 
-1. **Trace to the cell grid**, with orange and black winning on *presence* rather than
-   majority. A one-cell outline survives the downscale as roughly 3px inside a 5px cell, so
-   a plain majority vote hands that cell to the grey beside it and the outline dissolves.
-   This is why earlier versions had no black edge across the top of the head or under the
-   feet — the artwork has them, the JPEG lost them, and a naive trace lost them again.
-2. **Close the outline**, growing black outward into the background rather than recolouring
-   edge pixels — recolouring would turn the orange feet and beak black. Where the artwork
-   already has an outline this is a no-op.
-3. **Despeckle** isolated belly-grey pixels (JPEG ringing). Black is deliberately never
-   despeckled: a legitimate outline can be one isolated pixel, such as the beak tip.
-4. **Smooth once with Scale2x**, which rounds staircase diagonals without inventing any
-   colour outside the palette, so the result is still true pixel art. The output is 54x36.
-   A second pass was tried and rejected — it thickens and lumps the outline.
+| Attempt | Result |
+|---|---|
+| Recover the Excel grid, three ways — lattice fit, cell-colour uniformity, run-length multiples | All three returned flat, signal-free curves. The source was downscaled by a non-integer factor, so cell boundaries no longer exist. |
+| Trace at a pinned grid and rebuild the outline | Outline weight came out roughly twice the original, because Excel draws the border as a hairline on the gridline, not as a filled cell. |
+| Snap every pixel to the four brand colours | Worse. The intermediate greys were holding the outline together visually; hardening them turned a continuous edge into a dotted one. |
 
-One known difference from the source: the outline reads heavier here. In Excel it is a cell
-*border*, a hairline on the gridline, whereas this renders it as a full cell — that is the
-standard pixel-art reading and it holds up at small sizes, but side by side the original is
-finer. The spreadsheet would fix this too.
-
-The script asserts that every coloured pixel on the boundary is black, and fails rather
-than emitting an open shape. All the original character is kept: the large eye and pupil,
-the wedge beak, the pointed tail, the wing line, the belly, and the orange feet.
-
-**Display it at whole-number scales only.** The SVG is a 54x36 grid drawn with
-`shape-rendering: crispEdges`. At a fractional scale — it was rendering at 1.074x in the
-header and 6.13x in the hero — each source pixel lands on a fractional device pixel, so some
-draw one device pixel wide and their neighbours draw two. That unevenness reads as aliasing
-and was blamed on the artwork more than once; it is purely a CSS sizing problem. The sizes in
-`styles.css` are therefore fixed multiples (1x in the header, 6x in the hero, stepping to 5x
-and 4x at breakpoints) rather than fluid percentages, because a fluid width cannot stay on
-whole numbers.
-
-Being SVG on an integer grid, it scales to any size without blurring and recolours by
-editing five fill values. Regenerating is only needed if the logo itself changes; the run
-is deterministic and reproduces the committed SVG byte for byte.
+> [!IMPORTANT]
+> **A larger export fixes all of this.** The original spreadsheet, or a full-size screenshot
+> taken before downscaling, would make a crisp, freely scalable, recolourable vector trivial —
+> and would let the logo be used at any size. `tools/make-duck.py` is the workaround, not the
+> answer.
 
 ---
 

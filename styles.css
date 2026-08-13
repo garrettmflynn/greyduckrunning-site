@@ -94,31 +94,44 @@ a { color: inherit; }
 /* ------------------------------------------------------------
    The duck
 
-   duck.svg is a 41x26 pixel grid rendered with crispEdges. At a
-   fractional scale each source pixel lands on a fractional device
-   pixel, so some draw one device pixel wide and their neighbours
-   draw two — which reads as aliasing. Every size below is a whole
-   multiple of 41x26, and steps between multiples at breakpoints
-   rather than scaling fluidly, because a fluid width cannot stay
-   on whole numbers.
+   assets/duck.png is the podcast's own artwork, untouched except
+   that the white background is flood-filled to transparent from
+   the border. The eye is enclosed white, never reached by the
+   fill, so it stays opaque.
+
+   An earlier attempt snapped every pixel to four flat colours to
+   "clean up" the JPEG. That made it worse: the soft grey pixels
+   along the outline were what visually held the line together,
+   and hardening them turned a continuous edge into a dotted one.
+   Leave the antialiasing alone.
+
+   It is NOT scaled up. The only source available is a 150px JPEG
+   whose downscale severed the hairline outline: traced at native
+   resolution the black outline comes apart into 43 disconnected
+   pieces, and the feet into three. Those breaks are in the file,
+   not introduced here, and no tracing can put back information
+   that is gone. Enlarging it magnifies every gap, which is what
+   made earlier versions look broken. So it is shown at or below
+   its natural size, where it reads exactly as it does on Spotify.
+
+   Smooth resampling, not pixelated: on a degraded source, letting
+   the browser resample reads far cleaner than hard pixel edges.
+
+   A larger export — the original spreadsheet, or a full-size
+   screenshot — would make a crisp, freely scalable vector trivial.
    ------------------------------------------------------------ */
 .brand-mark {
   display: block;
-  width: 41px; height: 26px;          /* 1x */
+  width: auto; height: 34px;
   flex: none;
-  background: url("assets/duck.svg") center / contain no-repeat;
-  image-rendering: pixelated;
 }
-.brand-mark-sm { width: 41px; height: 26px; }
 
 .hero-art img {
-  width: 328px; height: 208px;        /* 8x */
-  image-rendering: pixelated;
+  width: 100%;
+  max-width: 213px;              /* 1.5x native; beyond this the gaps show */
+  height: auto;
   margin-inline: auto;
 }
-@media (max-width: 1024px) { .hero-art img { width: 287px; height: 182px; } }  /* 7x */
-@media (max-width: 900px)  { .hero-art img { width: 328px; height: 208px; } }  /* 8x */
-@media (max-width: 420px)  { .hero-art img { width: 205px; height: 130px; } }  /* 5x */
 
 /* ---------- header ---------- */
 .site-header {
