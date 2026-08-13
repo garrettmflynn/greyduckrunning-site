@@ -171,12 +171,6 @@ a { color: inherit; }
   gap: 56px; align-items: center;
 }
 
-.eyebrow {
-  margin: 0 0 18px;
-  font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--accent);
-}
-
 h1 {
   margin: 0 0 14px;
   font-size: clamp(40px, 6.2vw, 68px);
@@ -217,13 +211,17 @@ h2 {
 .body-lg { color: var(--muted); font-size: 17.5px; margin: 0 0 18px; }
 .sub { color: var(--muted); margin: 0; font-size: 17px; }
 
-/* ---------- about ---------- */
-.about-grid {
-  display: grid; grid-template-columns: 1.5fr .85fr;
-  gap: 64px; align-items: start;
-}
+/* ---------- about ----------
+   Constrain the prose to a readable measure, NOT the wrapper. `.about` sits on
+   the same element as `.wrap`, so a max-width here shrinks the whole container
+   and re-centres it — which pushed this section's left edge 136px inboard of
+   every other section. */
+.about > :first-child { max-width: 720px; }
 
-.covers { list-style: none; margin: 34px 0 0; padding: 0; display: grid; gap: 2px; }
+.covers {
+  list-style: none; margin: 44px 0 0; padding: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px;
+}
 .covers li {
   padding: 18px 0;
   border-top: 1px solid var(--line);
@@ -234,24 +232,6 @@ h2 {
   font-size: 16px; font-weight: 620; letter-spacing: -.012em;
 }
 .covers p { margin: 0; color: var(--muted); font-size: 15.5px; }
-
-/* ---------- card ---------- */
-.card {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--raised);
-  padding: 28px;
-  box-shadow: var(--shadow);
-}
-.card-title {
-  margin: 0 0 20px;
-  font-size: 13px; font-weight: 650; letter-spacing: .05em; text-transform: uppercase;
-  color: var(--faint);
-}
-.facts { margin: 0; display: grid; gap: 18px; }
-.facts > div { display: grid; gap: 2px; }
-.facts dt { font-size: 13.5px; color: var(--faint); }
-.facts dd { margin: 0; font-size: 16px; font-weight: 560; letter-spacing: -.012em; }
 
 /* ---------- follow ---------- */
 .follow { border-top: 1px solid var(--line); background: var(--raised); }
@@ -285,7 +265,7 @@ h2 {
   .hero { padding-top: 56px; }
   .hero-grid { grid-template-columns: 1fr; gap: 40px; }
   .hero-art { order: -1; }
-  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .covers { grid-template-columns: 1fr; gap: 0; }
   .section { padding: 72px 0; }
   .player { margin-top: 40px; }
 }
@@ -302,5 +282,4 @@ h2 {
 @media print {
   .site-header, .player, .follow { display: none; }
   body { background: #fff; color: #000; font-size: 12pt; }
-  .card { box-shadow: none; }
 }
