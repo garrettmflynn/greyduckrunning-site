@@ -127,11 +127,13 @@ a { color: inherit; }
 }
 
 .hero-art img {
-  width: 100%;
-  max-width: 213px;              /* 1.5x native; beyond this the gaps show */
-  height: auto;
+  width: 284px; height: 178px;   /* exactly 2x the 142x89 grid */
+  max-width: 100%;
+  image-rendering: pixelated;
   margin-inline: auto;
 }
+@media (max-width: 900px) { .hero-art img { width: 284px; height: 178px; } }
+@media (max-width: 380px) { .hero-art img { width: 142px; height: 89px; } }
 
 /* ---------- header ---------- */
 .site-header {

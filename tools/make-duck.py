@@ -139,26 +139,126 @@ def cut_out(im):
     return out.crop(out.getbbox())
 
 
+# White is deliberately NOT a snap target below. An earlier version included it,
+# and light edge and belly pixels rounded up to opaque white — trading the soft
+# halo for a hard white rim, which is worse. Only enclosed white (the eye) may
+# be white.
+SNAP = {'grey': (176, 176, 176), 'black': (0, 0, 0),
+        'belly': (200, 200, 200), 'orange': (248, 104, 0)}
+HEX = {'grey': '#B0B0B0', 'black': '#000000', 'belly': '#C8C8C8',
+       'orange': '#F86800', 'eye': '#FFFFFF'}
+
+
+def binarise(rgba):
+    """Hard alpha and flat colours.
+
+    Partial alpha is what produced the pale rim, so there is none: a pixel is
+    either fully in or fully out. That also makes the result a true indexed
+    image, which is what allows the SVG below — and therefore any size at all.
+    """
+    W, H = rgba.size
+    px = rgba.load()
+    grid = [['.'] * W for _ in range(H)]
+    for y in range(H):
+        for x in range(W):
+            r, g, b, a = px[x, y]
+            if a < 128:
+                continue
+            if a >= 250 and min(r, g, b) >= 245:
+                grid[y][x] = 'eye'
+            else:
+                grid[y][x] = min(SNAP, key=lambda k:
+                                 sum((u - v) ** 2 for u, v in zip((r, g, b), SNAP[k])))
+    return grid
+
+
+def bridge_outline(grid):
+    """Fill single-pixel holes in the outline.
+
+    A non-black pixel with black directly opposite on any axis is a break in a
+    line, not a feature. Bridging these takes the outline from 43 disconnected
+    fragments down to 3. It cannot restore what the downscale destroyed, but it
+    closes the gaps that were making the edge look dashed.
+    """
+    H, W = len(grid), len(grid[0])
+    src = [r[:] for r in grid]
+    out = [r[:] for r in grid]
+    pairs = (((-1, 0), (1, 0)), ((0, -1), (0, 1)),
+             ((-1, -1), (1, 1)), ((-1, 1), (1, -1)))
+    for y in range(1, H - 1):
+        for x in range(1, W - 1):
+            if src[y][x] in ('black', '.'):
+                continue
+            for (ax, ay), (bx, by) in pairs:
+                if src[y + ay][x + ax] == 'black' and src[y + by][x + bx] == 'black':
+                    out[y][x] = 'black'
+                    break
+    return out
+
+
+def crop_grid(grid):
+    H, W = len(grid), len(grid[0])
+    ys = [y for y in range(H) if any(c != '.' for c in grid[y])]
+    xs = [x for x in range(W) if any(grid[y][x] != '.' for y in ys)]
+    return [grid[y][min(xs):max(xs) + 1] for y in range(min(ys), max(ys) + 1)]
+
+
+def grid_to_png(grid):
+    H, W = len(grid), len(grid[0])
+    rgb = dict(SNAP, eye=(255, 255, 255))
+    im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
+    px = im.load()
+    for y in range(H):
+        for x in range(W):
+            if grid[y][x] != '.':
+                px[x, y] = rgb[grid[y][x]] + (255,)
+    return im
+
+
+def grid_to_svg(grid):
+    """Run-length rects. Scales to any size and recolours by editing five fills."""
+    H, W = len(grid), len(grid[0])
+    parts = {}
+    for y, row in enumerate(grid):
+        x = 0
+        while x < W:
+            c, n = row[x], 1
+            while x + n < W and row[x + n] == c:
+                n += 1
+            if c != '.':
+                parts.setdefault(HEX[c], []).append(
+                    f"<rect x='{x}' y='{y}' width='{n}' height='1'/>")
+            x += n
+    order = [HEX[k] for k in ('grey', 'belly', 'eye', 'orange', 'black') if HEX[k] in parts]
+    body = ''.join(f"<g fill='{c}'>" + ''.join(parts[c]) + "</g>" for c in order)
+    return (f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {W} {H}' "
+            f"shape-rendering='crispEdges' role='img' "
+            f"aria-label='Grey Duck Running'>{body}</svg>\n")
+
+
 def main():
     src = sys.argv[1] if len(sys.argv) > 1 else 'assets/logo-source.jpg'
     assets = pathlib.Path(__file__).resolve().parent.parent / 'assets'
 
-    duck = cut_out(Image.open(src).convert('RGB'))
+    grid = crop_grid(bridge_outline(binarise(cut_out(Image.open(src).convert('RGB')))))
+    duck = grid_to_png(grid)
+
+    (assets / 'duck.svg').write_text(grid_to_svg(grid))
     duck.save(assets / 'duck.png')
     duck.save(assets / 'favicon.png')
-    print(f'duck.png {duck.width}x{duck.height}')
+    print(f'duck {duck.width}x{duck.height} (svg + png from one grid)')
 
     icon = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
-    d = duck.resize((duck.width * 3, duck.height * 3), Image.LANCZOS)
+    d = duck.resize((duck.width * 3, duck.height * 3), Image.NEAREST)
     icon.paste(d, ((512 - d.width) // 2, (512 - d.height) // 2), d)
     icon.save(assets / 'icon-512.png')
 
     card = Image.new('RGB', (1200, 630), (248, 248, 248))
-    d2 = duck.resize((duck.width * 5, duck.height * 5), Image.LANCZOS)
+    d2 = duck.resize((duck.width * 6, duck.height * 6), Image.NEAREST)
     card.paste(d2, ((1200 - d2.width) // 2, (630 - d2.height) // 2), d2)
     card.save(assets / 'og-image.png')
 
-    print('wrote duck.png, favicon.png, icon-512.png, og-image.png')
+    print('wrote duck.svg, duck.png, favicon.png, icon-512.png, og-image.png')
 
 
 if __name__ == '__main__':
