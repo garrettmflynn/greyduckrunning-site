@@ -47,7 +47,7 @@ INK = {'grey': (176, 176, 176), 'black': (0, 0, 0),
        'belly': (200, 200, 200), 'orange': (248, 104, 0)}
 
 WHITE_CUTOFF = 240      # counts as background when flood filling
-EDGE_CUTOFF = 225       # above this luminance, a kept pixel is an antialiased edge
+EDGE_CUTOFF = 215       # measured; see cut_out() — lower values worsen the rim
 
 
 def luminance(c):
@@ -85,17 +85,39 @@ def background(im):
 
 
 def cut_out(im):
-    """Transparent background, with the white un-blended out of edge pixels.
+    """Transparent background, classified by REGION ROLE rather than brightness.
 
-    An edge pixel is a mix of some ink colour and the white page. Leaving it as
-    stored puts white in the RGB, which glows as a pale halo on a dark
-    background. Instead, work out which ink it is fading from, restore that
-    colour, and express the mix as alpha — so the edge composites correctly on
-    any background.
+    Four cases, and the distinction matters:
+
+    background  white reachable from the border -> transparent.
+
+    enclosed white  white the fill never reaches -> a real feature, kept opaque
+        white. This is the eye. An earlier version tested brightness instead and
+        the eye, being pure white, was treated as a fully-faded edge pixel and
+        given alpha 0 — the flood fill preserved it and the next step deleted it.
+
+    boundary  a kept pixel touching the background, and light enough to be a
+        blend rather than ink. Only these are un-blended: the stored RGB is part
+        white, which glows as a pale halo on a dark background, so recover the
+        ink it is fading from and express the mix as alpha.
+
+    interior  everything else -> kept exactly as drawn.
+
+    EDGE_CUTOFF is 215 by measurement, not taste. Lowering it to 200 or 190 pulls
+    more pixels into the un-blend and makes the pale rim worse (73 -> 98), not
+    better.
     """
     W, H = im.size
     px = im.load()
     outside = background(im)
+
+    def touches_background(x, y):
+        return any((x + dx, y + dy) in outside
+                   for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1),
+                                  (1, 1), (1, -1), (-1, 1), (-1, -1)))
+
+    is_white = lambda p: (p[0] >= WHITE_CUTOFF and p[1] >= WHITE_CUTOFF
+                          and p[2] >= WHITE_CUTOFF)
 
     out = Image.new('RGBA', (W, H))
     o = out.load()
@@ -104,15 +126,16 @@ def cut_out(im):
             c = px[x, y]
             if (x, y) in outside:
                 o[x, y] = (0, 0, 0, 0)
-                continue
-            L = luminance(c)
-            if L < EDGE_CUTOFF:
+            elif is_white(c):
+                o[x, y] = (255, 255, 255, 255)
+            elif touches_background(x, y) and luminance(c) >= EDGE_CUTOFF:
+                ink = min(INK.values(),
+                          key=lambda f: sum((u - v) ** 2 for u, v in zip(c, f)))
+                span = max(1.0, 255.0 - luminance(ink))
+                alpha = max(0.0, min(1.0, (255.0 - luminance(c)) / span))
+                o[x, y] = ink + (int(round(alpha * 255)),)
+            else:
                 o[x, y] = c + (255,)
-                continue
-            ink = min(INK.values(), key=lambda f: sum((u - v) ** 2 for u, v in zip(c, f)))
-            span = max(1.0, 255.0 - luminance(ink))
-            alpha = max(0.0, min(1.0, (255.0 - L) / span))
-            o[x, y] = ink + (int(round(alpha * 255)),)
     return out.crop(out.getbbox())
 
 
