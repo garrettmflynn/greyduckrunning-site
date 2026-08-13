@@ -47,7 +47,7 @@ The palette is **sampled from the show's actual Spotify cover art**, not invente
 | Paper white | `#F8F8F8` | 54.8% | page background |
 | Duck grey | `#B0B0B0` | 23.4% | duck body, avatars |
 | Outline black | `#000000` | 11.0% | borders, text |
-| Belly grey | `#C8C8C8` | 5.1% | duck belly |
+| Belly grey | `#C8C8C8` | 5.1% | *(retired — merged into duck grey)* |
 | Beak orange | `#F86800` | 1.2% | accents, primary buttons |
 
 **The logo is pixel art. The site deliberately is not.** An earlier version pushed the pixel
@@ -65,9 +65,14 @@ Dark mode is supported via `prefers-color-scheme`.
 
 ### The logo
 
-`assets/duck.png` is the podcast's own artwork with the white background removed, and the
-white un-blended out of the antialiased edge pixels so the outline does not glow as a pale
-halo on a dark background. Nothing else is changed.
+`assets/duck.svg` is the logo, flattened to **three inks — black, grey, orange** — plus white
+for the eye. The belly highlight was a second grey two shades off the first; at the sizes this
+is shown that is detail nobody reads, and it only made the shape noisier. The eye keeps its
+white because dropping it costs the eye entirely: at header size a grey eye with a black pupil
+reads as a smudge.
+
+The background is removed by flood fill, and alpha is binary — a pixel is fully in or fully
+out — so there is no partial-alpha edge to glow as a halo on dark backgrounds.
 
 **It is not enlarged, and that is a hard constraint of the source.** The only file available
 is a 150px JPEG whose downscale severed the hairline outline. Traced at native resolution,

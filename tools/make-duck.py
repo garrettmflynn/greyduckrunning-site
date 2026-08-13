@@ -44,7 +44,7 @@ from PIL import Image
 
 # The colours the artwork uses, white excluded — white is background here.
 INK = {'grey': (176, 176, 176), 'black': (0, 0, 0),
-       'belly': (200, 200, 200), 'orange': (248, 104, 0)}
+       'belly': (200, 200, 200), 'orange': (248, 104, 0)}   # cut_out only
 
 WHITE_CUTOFF = 240      # counts as background when flood filling
 EDGE_CUTOFF = 215       # measured; see cut_out() — lower values worsen the rim
@@ -143,10 +143,12 @@ def cut_out(im):
 # and light edge and belly pixels rounded up to opaque white — trading the soft
 # halo for a hard white rim, which is worse. Only enclosed white (the eye) may
 # be white.
-SNAP = {'grey': (176, 176, 176), 'black': (0, 0, 0),
-        'belly': (200, 200, 200), 'orange': (248, 104, 0)}
-HEX = {'grey': '#B0B0B0', 'black': '#000000', 'belly': '#C8C8C8',
-       'orange': '#F86800', 'eye': '#FFFFFF'}
+# Three inks. The belly highlight (#C8C8C8) is gone — at the sizes this is
+# shown, a second grey two shades off the first is detail nobody reads, and it
+# only made the shape noisier. Belly pixels fall into the main grey.
+SNAP = {'grey': (176, 176, 176), 'black': (0, 0, 0), 'orange': (248, 104, 0)}
+HEX = {'grey': '#B0B0B0', 'black': '#000000', 'orange': '#F86800',
+       'eye': '#FFFFFF'}
 
 
 def binarise(rgba):
@@ -229,7 +231,7 @@ def grid_to_svg(grid):
                 parts.setdefault(HEX[c], []).append(
                     f"<rect x='{x}' y='{y}' width='{n}' height='1'/>")
             x += n
-    order = [HEX[k] for k in ('grey', 'belly', 'eye', 'orange', 'black') if HEX[k] in parts]
+    order = [HEX[k] for k in ('grey', 'eye', 'orange', 'black') if HEX[k] in parts]
     body = ''.join(f"<g fill='{c}'>" + ''.join(parts[c]) + "</g>" for c in order)
     return (f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {W} {H}' "
             f"shape-rendering='crispEdges' role='img' "
