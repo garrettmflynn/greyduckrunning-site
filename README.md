@@ -25,7 +25,7 @@ Then open <http://localhost:8000>. Editing a file and refreshing is the whole de
 ```
 index.html              all page content
 styles.css              all styling
-script.js               footer year + mobile nav toggle; page works with JS off
+script.js               footer year + scroll reveals; page works with JS off
 assets/duck.svg         the logo — header mark, hero, and favicon
 assets/favicon.svg      copy of duck.svg
 assets/og-image.png     1200x630 social preview
@@ -50,9 +50,16 @@ The palette is **sampled from the show's actual Spotify cover art**, not invente
 | Belly grey | `#C8C8C8` | 5.1% | duck belly |
 | Beak orange | `#F86800` | 1.2% | accents, primary buttons |
 
-The artwork is 8-bit pixel art, so the site follows that language: zero `border-radius`,
-3px black outlines, hard offset shadows (no blur), `Press Start 2P` for headings, and
-`image-rendering: pixelated` so it stays crisp when scaled.
+**The logo is pixel art. The site deliberately is not.** An earlier version pushed the pixel
+language across everything — arcade typeface, hard offset shadows, chunky black borders, a
+scrolling marquee — and it read as a novelty rather than a podcast worth trusting. The
+continuity now comes from two things only: the palette above, and the duck itself shown at
+whole-number scale so it stays crisp. Everything else is ordinary modern layout — Inter,
+soft shadows, rounded cards, generous whitespace.
+
+`--accent` is the logo's `#F86800` nudged to `#E85D04` so it passes contrast as text; the
+Spotify green `#1DB954` is used only on the Spotify buttons, where it is the recognised
+convention rather than decoration.
 
 Dark mode is supported via `prefers-color-scheme`.
 

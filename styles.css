@@ -1,65 +1,79 @@
 /* ============================================================
-   Grey Duck Running Podcast
-   Palette sampled directly from the show's Spotify cover art:
-     #F8F8F8 paper (55%) · #B0B0B0 duck grey (23%) · #000000 outline (11%)
-     #C8C8C8 belly (5%)  · #F86800 beak orange (1.2%)
-   Aesthetic follows the artwork: 8-bit pixel art — hard edges,
-   zero border-radius, chunky black outlines, offset hard shadows.
+   Grey Duck Running
+
+   The logo is 8-bit pixel art. The site deliberately is not.
+   An earlier version pushed the pixel language everywhere —
+   arcade typeface, hard offset shadows, chunky black borders —
+   and it read as a novelty rather than a podcast people would
+   trust. The continuity now comes from the palette, which is
+   sampled from the artwork, and from the duck itself being
+   shown at whole-number scale so it stays crisp. Everything
+   else is ordinary, quiet, modern layout.
+
+   Palette sampled from the cover art:
+     #B0B0B0 duck grey · #F86800 beak orange · #C8C8C8 belly
+   Orange carries through as the single accent.
    ============================================================ */
 
 :root {
-  --paper:   #F8F8F8;
-  --ink:     #000000;
-  --duck:    #B0B0B0;
-  --belly:   #C8C8C8;
-  --beak:    #F86800;
+  --paper:    #FFFFFF;
+  --raised:   #FAFAF9;
+  --ink:      #14161A;
+  --muted:    #5F6570;
+  --faint:    #8A9099;
+  --line:     #E4E6EA;
+  --accent:   #E85D04;          /* the logo orange, nudged for text contrast */
+  --accent-soft: #FFF1E8;
+  --spotify:  #1DB954;
 
-  --surface: #FFFFFF;
-  --muted:   #5A5A5A;
-  --rule:    #000000;
+  --radius:   14px;
+  --radius-sm: 10px;
+  --shadow:   0 1px 2px rgba(16,18,22,.04), 0 8px 24px rgba(16,18,22,.06);
+  --shadow-lg: 0 2px 4px rgba(16,18,22,.05), 0 18px 44px rgba(16,18,22,.10);
 
-  --border-w: 3px;
-  --shadow-o: 6px;             /* hard shadow offset */
-  --shadow: var(--shadow-o) var(--shadow-o) 0 var(--ink);
-  --shadow-sm: 4px 4px 0 var(--ink);
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
 
-  --font-pixel: "Press Start 2P", "Courier New", ui-monospace, monospace;
-  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-               "Helvetica Neue", Arial, sans-serif;
-
-  --wrap: 1120px;
+  --wrap: 1080px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper:   #14140F;
-    --ink:     #F8F8F8;
-    --surface: #1E1E18;
-    --muted:   #A8A8A0;
-    --duck:    #8E8E8E;
-    --belly:   #6E6E6E;
-    --rule:    #F8F8F8;
-    --shadow: var(--shadow-o) var(--shadow-o) 0 var(--ink);
-    --shadow-sm: 4px 4px 0 var(--ink);
+    --paper:  #0F1112;
+    --raised: #16191B;
+    --ink:    #F3F4F5;
+    --muted:  #A2A9B2;
+    --faint:  #767D86;
+    --line:   #262A2E;
+    --accent: #FF8A3D;
+    --accent-soft: #2A1B10;
+    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
+    --shadow-lg: 0 2px 4px rgba(0,0,0,.4), 0 18px 44px rgba(0,0,0,.44);
   }
 }
 
-/* ---------- reset-ish ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
 }
 
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-body);
+  font-family: var(--font);
   font-size: 17px;
   line-height: 1.65;
+  letter-spacing: -.003em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -69,286 +83,224 @@ a { color: inherit; }
 
 .skip-link {
   position: absolute; left: -9999px; top: 0; z-index: 100;
-  background: var(--beak); color: #000; padding: 12px 20px;
-  font-family: var(--font-pixel); font-size: 11px;
-  border: var(--border-w) solid var(--ink);
+  background: var(--ink); color: var(--paper);
+  padding: 12px 20px; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 600; text-decoration: none;
 }
-.skip-link:focus { left: 8px; top: 8px; }
+.skip-link:focus { left: 12px; top: 12px; }
 
-:focus-visible { outline: 3px solid var(--beak); outline-offset: 3px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
-/* ---------- pixel duck mark ----------
-   Single source of truth: assets/duck.svg. Rebuilt from the podcast's own
-   logo but reconstructed from circles/ellipses so the curves are regular and
-   the outline is a uniform 1px. Resolution-independent — scale it anywhere. */
+/* ------------------------------------------------------------
+   The duck
+
+   duck.svg is a 54x36 pixel grid rendered with crispEdges. At a
+   fractional scale each source pixel lands on a fractional device
+   pixel, so some draw one device pixel wide and their neighbours
+   draw two — which reads as aliasing. Every size below is a whole
+   multiple of 54x36, and steps between multiples at breakpoints
+   rather than scaling fluidly, because a fluid width cannot stay
+   on whole numbers.
+   ------------------------------------------------------------ */
 .brand-mark {
   display: block;
-  width: 58px; aspect-ratio: 56 / 36;
+  width: 54px; height: 36px;          /* 1x */
   flex: none;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  background: url("assets/duck.svg") center / contain no-repeat;
   image-rendering: pixelated;
-  background-image: url("assets/duck.svg");
 }
+.brand-mark-sm { width: 54px; height: 36px; }
+
+.hero-art img {
+  width: 324px; height: 216px;        /* 6x */
+  image-rendering: pixelated;
+  margin-inline: auto;
+}
+@media (max-width: 1024px) { .hero-art img { width: 270px; height: 180px; } }  /* 5x */
+@media (max-width: 900px)  { .hero-art img { width: 324px; height: 216px; } }  /* 6x */
+@media (max-width: 420px)  { .hero-art img { width: 216px; height: 144px; } }  /* 4x */
 
 /* ---------- header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;
-  background: var(--paper);
-  border-bottom: var(--border-w) solid var(--rule);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--line);
 }
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; }
-
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; min-height: 72px;
+}
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.brand-text { display: flex; flex-direction: column; gap: 4px; }
-.brand-name { font-family: var(--font-pixel); font-size: 14px; letter-spacing: .02em; line-height: 1; }
-.brand-sub  { font-family: var(--font-pixel); font-size: 7px; color: var(--muted); letter-spacing: .08em; line-height: 1; }
-
-/* ---------- hero ---------- */
-.hero { padding: 72px 0 64px; }
-.hero-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 56px; align-items: center; }
-
-h1 {
-  margin: 0 0 26px;
-  font-family: var(--font-pixel);
-  font-size: clamp(19px, 2.7vw, 30px);
-  line-height: 1.55;
-  letter-spacing: -.01em;
-  text-transform: uppercase;
-  text-wrap: balance;          /* even line lengths where supported */
-}
-.h1-hl { color: var(--beak); }
-
-.lede { font-size: 18px; max-width: 54ch; margin: 0 0 32px; color: var(--muted); }
+.brand-text { display: flex; flex-direction: column; }
+.brand-name { font-size: 16px; font-weight: 650; letter-spacing: -.015em; line-height: 1.25; }
+.brand-sub  { font-size: 12.5px; color: var(--faint); line-height: 1.3; }
 
 /* ---------- buttons ---------- */
-.btn-row { display: flex; flex-wrap: wrap; gap: 16px; }
-.btn-row-center { justify-content: center; }
 .btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--font-pixel); font-size: 11px; letter-spacing: .04em;
-  text-decoration: none; padding: 16px 22px;
-  border: var(--border-w) solid var(--ink); box-shadow: var(--shadow-sm);
-  transition: transform .08s steps(2), box-shadow .08s steps(2);
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  font-size: 15px; font-weight: 600; letter-spacing: -.01em;
+  text-decoration: none; white-space: nowrap;
+  padding: 12px 20px; border-radius: 999px;
+  border: 1px solid transparent;
+  transition: background-color .18s ease, border-color .18s ease,
+              transform .18s ease, box-shadow .18s ease, opacity .18s ease;
 }
-.btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
-.btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
-.btn-primary { background: var(--beak); color: #000; }
-.btn-ghost { background: var(--surface); color: var(--ink); }
-.ico { width: 17px; height: 17px; fill: currentColor; flex: none; }
+.btn-sm { padding: 9px 16px; font-size: 14.5px; }
+.btn:active { transform: translateY(1px); }
 
-/* ---------- hero art ---------- */
-.hero-art { text-align: center; }
-.cover-plate {
-  border: var(--border-w) solid var(--ink); box-shadow: var(--shadow);
-  background: #F8F8F8; padding: 26px 22px; line-height: 0;
+.btn-spotify { background: var(--spotify); color: #fff; }
+.btn-spotify:hover { background: #1ed15f; box-shadow: 0 6px 18px rgba(29,185,84,.28); }
+
+.btn-outline { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-outline:hover { border-color: var(--faint); background: var(--raised); }
+
+.ico { width: 19px; height: 19px; fill: currentColor; flex: none; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+@media (max-width: 560px) {
+  .btn-sm .btn-label { display: none; }
+  .btn-sm { padding: 10px; }
 }
-.cover-plate img { width: 100%; image-rendering: pixelated; }
 
-/* ---------- marquee ---------- */
-.marquee {
-  border-block: var(--border-w) solid var(--rule);
-  background: var(--beak); color: #000;
-  overflow: hidden; padding: 12px 0;
+/* ---------- hero ---------- */
+.hero { padding: 84px 0 0; }
+.hero-grid {
+  display: grid; grid-template-columns: 1.15fr .85fr;
+  gap: 56px; align-items: center;
 }
-.marquee-track { display: flex; gap: 28px; width: max-content; animation: slide 26s linear infinite; }
-.marquee-track span, .marquee-track b { font-family: var(--font-pixel); font-size: 11px; letter-spacing: .06em; }
-.marquee-track b { font-weight: 400; }
-@keyframes slide { to { transform: translateX(-50%); } }
 
-/* ---------- sections ---------- */
-/* Sticky header is ~76px + 3px rule; keep anchored headings clear of it. */
-.section, .hero { scroll-margin-top: 96px; }
-.section { padding: 88px 0; }
-.section-alt { background: var(--surface); border-block: var(--border-w) solid var(--rule); }
+.eyebrow {
+  margin: 0 0 18px;
+  font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent);
+}
 
-.kicker { font-family: var(--font-pixel); font-size: 9px; color: var(--beak); letter-spacing: .12em; margin: 0 0 16px; }
-h2 { font-family: var(--font-pixel); font-size: clamp(17px, 2.5vw, 24px); line-height: 1.5; margin: 0 0 18px; }
-.sub { color: var(--muted); margin: 0; font-size: 17px; }
+h1 {
+  margin: 0 0 14px;
+  font-size: clamp(40px, 6.2vw, 68px);
+  font-weight: 700; line-height: 1.03; letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.hero-sub {
+  margin: 0 0 22px;
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-weight: 500; line-height: 1.4; letter-spacing: -.018em;
+  color: var(--muted);
+}
+.hero-sub em { font-style: normal; color: var(--accent); }
+
+.lede { margin: 0; font-size: 17.5px; color: var(--muted); max-width: 54ch; }
 
 /* ---------- player ---------- */
-.player-plate {
-  border: var(--border-w) solid var(--ink); box-shadow: var(--shadow-sm);
-  background: var(--surface); padding: 12px; line-height: 0; margin-top: 32px;
+.player {
+  margin-top: 52px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  line-height: 0;
+  background: var(--raised);
 }
-.player-plate iframe { display: block; }
+.player iframe { display: block; }
+
+/* ---------- sections ---------- */
+.section { padding: 96px 0; scroll-margin-top: 88px; }
+.hero { scroll-margin-top: 88px; }
+
+h2 {
+  margin: 0 0 20px;
+  font-size: clamp(27px, 3.4vw, 36px);
+  font-weight: 680; line-height: 1.15; letter-spacing: -.028em;
+}
+.body-lg { color: var(--muted); font-size: 17.5px; margin: 0 0 18px; }
+.sub { color: var(--muted); margin: 0; font-size: 17px; }
 
 /* ---------- about ---------- */
-.about-grid { display: grid; grid-template-columns: 1.4fr .9fr; gap: 56px; align-items: start; }
-.about-grid p { color: var(--muted); }
-
-.fact-card {
-  border: var(--border-w) solid var(--ink); box-shadow: var(--shadow);
-  background: var(--paper); padding: 28px;
-}
-.fact-card h3 { font-family: var(--font-pixel); font-size: 10px; letter-spacing: .1em; margin: 0 0 20px; color: var(--beak); }
-.facts { margin: 0; display: grid; gap: 14px; }
-.facts > div { display: grid; gap: 3px; padding-bottom: 14px; border-bottom: 1px solid var(--duck); }
-.facts > div:last-child { border-bottom: 0; padding-bottom: 0; }
-.facts dt { font-family: var(--font-pixel); font-size: 8px; letter-spacing: .06em; color: var(--muted); }
-.facts dd { margin: 0; font-size: 15px; font-weight: 600; }
-.pull {
-  font-family: var(--font-pixel); font-size: 11px; line-height: 1.8;
-  margin: 26px 0 0; padding-top: 22px; border-top: var(--border-w) solid var(--ink);
+.about-grid {
+  display: grid; grid-template-columns: 1.5fr .85fr;
+  gap: 64px; align-items: start;
 }
 
-/* ---------- what we cover (inside About) ---------- */
-.covers { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 0;
-          border: var(--border-w) solid var(--ink); background: var(--paper); }
-.covers li { padding: 13px 16px; font-size: 15px; color: var(--muted);
-             border-bottom: 1px solid var(--duck); }
-.covers li:last-child { border-bottom: 0; }
-.covers strong { display: block; font-family: var(--font-pixel); font-size: 9px;
-                 color: var(--ink); letter-spacing: .04em; margin-bottom: 6px; }
-
-/* ---------- follow (compact bar) ---------- */
-.section-follow {
-  background: var(--surface);
-  border-top: var(--border-w) solid var(--rule);
-  padding: 26px 0;
+.covers { list-style: none; margin: 34px 0 0; padding: 0; display: grid; gap: 2px; }
+.covers li {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
 }
-.follow-inner { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-.follow-copy { margin: 0; margin-right: auto; font-family: var(--font-pixel); font-size: 11px; }
+.covers li:last-child { border-bottom: 1px solid var(--line); }
+.covers h3 {
+  margin: 0 0 4px;
+  font-size: 16px; font-weight: 620; letter-spacing: -.012em;
+}
+.covers p { margin: 0; color: var(--muted); font-size: 15.5px; }
+
+/* ---------- card ---------- */
+.card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--raised);
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  margin: 0 0 20px;
+  font-size: 13px; font-weight: 650; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--faint);
+}
+.facts { margin: 0; display: grid; gap: 18px; }
+.facts > div { display: grid; gap: 2px; }
+.facts dt { font-size: 13.5px; color: var(--faint); }
+.facts dd { margin: 0; font-size: 16px; font-weight: 560; letter-spacing: -.012em; }
+
+/* ---------- follow ---------- */
+.follow { border-top: 1px solid var(--line); background: var(--raised); }
+.follow-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 32px; flex-wrap: wrap;
+}
+.follow h2 { margin-bottom: 8px; }
 
 /* ---------- footer ---------- */
-.site-footer { border-top: var(--border-w) solid var(--rule); padding: 34px 0; background: var(--paper); }
-.footer-inner { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
-.footer-inner p { margin: 0; font-family: var(--font-pixel); font-size: 9px; letter-spacing: .06em; }
-.footer-note { color: var(--muted); font-family: var(--font-body) !important; font-size: 14px !important; letter-spacing: 0 !important; }
+.site-footer { border-top: 1px solid var(--line); padding: 32px 0; }
+.footer-inner { display: flex; align-items: center; gap: 14px; }
+.footer-inner p { margin: 0; font-size: 14.5px; color: var(--faint); }
+
+/* ---------- scroll reveal ----------
+   Elements are only hidden once JS confirms it can reveal them, so
+   with JS off nothing is ever stuck invisible. */
+.js .reveal { opacity: 0; transform: translateY(12px); }
+.js .reveal.is-in {
+  opacity: 1; transform: none;
+  transition: opacity .5s cubic-bezier(.22,.61,.36,1),
+              transform .5s cubic-bezier(.22,.61,.36,1);
+}
+.js .reveal[data-delay="1"].is-in { transition-delay: .07s; }
+.js .reveal[data-delay="2"].is-in { transition-delay: .14s; }
+
+::selection { background: var(--accent); color: #fff; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
+  .hero { padding-top: 56px; }
   .hero-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero-art { order: -1; max-width: 320px; margin-inline: auto; }
+  .hero-art { order: -1; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero { padding: 48px 0; }
-  .section { padding: 64px 0; }
+  .section { padding: 72px 0; }
+  .player { margin-top: 40px; }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 560px) {
   body { font-size: 16px; }
   .brand-sub { display: none; }
-  .btn { font-size: 10px; padding: 14px 18px; }
-  .follow-inner { justify-content: center; text-align: center; }
-  .follow-copy { margin-right: 0; width: 100%; }
+  .follow-inner { align-items: flex-start; }
+  .btn { width: 100%; }
+  .btn-sm { width: auto; }
 }
-
-/* ============================================================
-   Polish
-   ============================================================ */
-
-/* ---------- header call-to-action (replaces the nav) ---------- */
-.header-cta {
-  display: inline-flex; align-items: center; gap: 9px;
-  font-family: var(--font-pixel); font-size: 10px; letter-spacing: .04em;
-  text-decoration: none; padding: 12px 16px;
-  background: var(--beak); color: #000;
-  border: var(--border-w) solid var(--ink); box-shadow: 3px 3px 0 var(--ink);
-  transition: transform .08s steps(2), box-shadow .08s steps(2);
-}
-.header-cta:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
-.header-cta:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
-
-/* ---------- scroll reveal ----------
-   Stepped easing so motion matches the 8-bit language rather than gliding.
-   Elements start visible and are only hidden once JS confirms it can reveal
-   them, so with JS off nothing is ever stuck invisible. */
-.js .reveal { opacity: 0; transform: translateY(14px); }
-.js .reveal.is-in {
-  opacity: 1; transform: none;
-  transition: opacity .45s steps(6), transform .45s steps(6);
-}
-.js .reveal[data-delay="1"].is-in { transition-delay: .09s; }
-.js .reveal[data-delay="2"].is-in { transition-delay: .18s; }
-
-/* ---------- duck idle float ---------- */
-@media (prefers-reduced-motion: no-preference) {
-  .cover-plate img { animation: bob 4.5s steps(3, end) infinite alternate; }
-  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-7px); } }
-}
-
-/* ---------- selection + scrollbar ---------- */
-::selection { background: var(--beak); color: #000; }
-
-/* ---------- link underlines that respect descenders ---------- */
-.covers a, .lede a, .about-grid a { text-underline-offset: 3px; }
 
 /* ---------- print ---------- */
 @media print {
-  .site-header, .marquee, .section-follow, .player-plate { display: none; }
+  .site-header, .player, .follow { display: none; }
   body { background: #fff; color: #000; font-size: 12pt; }
-  .cover-plate { box-shadow: none; }
-}
-
-/* ---------- wide screens: keep the measure readable ---------- */
-@media (min-width: 1500px) {
-  :root { --wrap: 1200px; }
-}
-
-/* ============================================================
-   Integer pixel scaling
-   ------------------------------------------------------------
-   duck.svg is a 54x36 grid drawn with shape-rendering:crispEdges.
-   At a fractional scale (it was rendering at 1.074x and 6.13x) each
-   source pixel lands on a fractional device pixel, so some draw one
-   device pixel wide and their neighbours draw two. That unevenness
-   is what read as aliasing — it was never the artwork.
-
-   So every displayed size is a whole multiple of 54x36. Sizes step
-   between multiples at breakpoints rather than scaling fluidly,
-   because a fluid width cannot stay on whole numbers.
-   ============================================================ */
-
-.brand-mark {                      /* 1x */
-  width: 54px; height: 36px;
-  aspect-ratio: auto;
-}
-
-.cover-plate img {                 /* 6x */
-  width: 324px; height: 216px;
-  max-width: 100%;
-  margin-inline: auto;
-}
-.cover-plate { display: flex; justify-content: center; }
-
-@media (max-width: 1080px) {
-  .cover-plate img { width: 270px; height: 180px; }   /* 5x */
-}
-@media (max-width: 900px) {
-  .hero-art { max-width: none; }
-  .cover-plate img { width: 324px; height: 216px; }   /* 6x again, full width available */
-}
-@media (max-width: 430px) {
-  .cover-plate img { width: 216px; height: 144px; }   /* 4x */
-}
-
-/* ---------- header: title + subtitle ---------- */
-.brand-name { font-size: 15px; }
-.brand-sub  { font-size: 7px; }
-
-/* ---------- hero title + subtitle ---------- */
-h1 { margin-bottom: 14px; }
-.hero-sub {
-  font-family: var(--font-pixel);
-  font-size: clamp(10px, 1.25vw, 13px);
-  line-height: 1.7;
-  letter-spacing: .02em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0 0 28px;
-}
-
-/* ---------- header CTA: Spotify-led, not a shouty orange slab ---------- */
-.header-cta {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 3px 3px 0 var(--ink);
-}
-.header-cta .ico-spotify { fill: #1DB954; width: 18px; height: 18px; }
-.header-cta:hover { background: var(--paper); }
-
-@media (max-width: 620px) {
-  .header-cta span { display: none; }      /* glyph only when tight */
-  .header-cta { padding: 11px; }
+  .card { box-shadow: none; }
 }
