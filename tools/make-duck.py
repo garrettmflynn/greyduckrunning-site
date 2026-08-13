@@ -21,7 +21,7 @@ PAL = {'W': (255, 255, 255), 'G': (176, 176, 176), 'K': (0, 0, 0),
        'L': (200, 200, 200), 'O': (248, 104, 0)}
 HEX = {'G': '#B0B0B0', 'K': '#000000', 'L': '#C8C8C8', 'O': '#F86800', 'E': '#FFFFFF'}
 
-SMOOTH_PASSES = 1           # Scale2x rounds; 2 passes thickens the outline
+SMOOTH_PASSES = 0           # see COLUMNS note: the grid is already fine enough
 
 
 def snap(px):
@@ -61,15 +61,22 @@ def derive_grid(im):
     and visibly uneven pixel sizes, so guessing fine is worse than guessing
     coarse.
 
-    27 is used because it is the column count whose square cells imply a nearly
-    whole number of rows (89 / 5.26 = 16.92, so 17), and because with black
-    included the run lengths do cluster at 5/6, 10/11 and 15/16 — one, two and
-    three cells of 5.26px landing either side of a pixel boundary.
+    41 is used because it matches the OUTLINE WEIGHT of the source. The black
+    border is a hairline — about 3px of a 5.26px cell, roughly 1/47th of the
+    duck's width — because in Excel it is a cell border drawn on the gridline,
+    not a filled cell. Tracing at 27 columns renders that hairline as a whole
+    cell, which comes out about twice as heavy as the original and reads blobby.
+    At 41 columns a cell is 3.46px, so the border occupies roughly one cell and
+    keeps its true weight. Finer still (47, 54) is thinner but starts breaking
+    the outline into gaps, because it oversamples a degraded JPEG.
+
+    No Scale2x pass at this resolution: the grid is fine enough that the
+    staircases are already small, and smoothing only thickens things again.
 
     If the original spreadsheet ever turns up, delete all of this and read the
     grid off it exactly.
     """
-    COLUMNS = 27
+    COLUMNS = 41
     x0, y0, x1, y1 = ink_bbox(im)
     bw, bh = x1 - x0, y1 - y0
     cell = bw / COLUMNS
@@ -287,12 +294,12 @@ def main():
     (assets / 'favicon.svg').write_text(svg)
 
     card = Image.new('RGB', (1200, 630), (248, 248, 248))
-    d = to_png(grid, 15)
+    d = to_png(grid, 20)
     card.paste(d, ((1200 - d.width) // 2, (630 - d.height) // 2), d)
     card.save(assets / 'og-image.png')
 
     icon = Image.new('RGB', (512, 512), (248, 248, 248))
-    d2 = to_png(grid, 8)
+    d2 = to_png(grid, 12)
     icon.paste(d2, ((512 - d2.width) // 2, (512 - d2.height) // 2), d2)
     icon.save(assets / 'icon-512.png')
 

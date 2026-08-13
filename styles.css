@@ -94,31 +94,31 @@ a { color: inherit; }
 /* ------------------------------------------------------------
    The duck
 
-   duck.svg is a 54x36 pixel grid rendered with crispEdges. At a
+   duck.svg is a 41x26 pixel grid rendered with crispEdges. At a
    fractional scale each source pixel lands on a fractional device
    pixel, so some draw one device pixel wide and their neighbours
    draw two — which reads as aliasing. Every size below is a whole
-   multiple of 54x36, and steps between multiples at breakpoints
+   multiple of 41x26, and steps between multiples at breakpoints
    rather than scaling fluidly, because a fluid width cannot stay
    on whole numbers.
    ------------------------------------------------------------ */
 .brand-mark {
   display: block;
-  width: 54px; height: 36px;          /* 1x */
+  width: 41px; height: 26px;          /* 1x */
   flex: none;
   background: url("assets/duck.svg") center / contain no-repeat;
   image-rendering: pixelated;
 }
-.brand-mark-sm { width: 54px; height: 36px; }
+.brand-mark-sm { width: 41px; height: 26px; }
 
 .hero-art img {
-  width: 324px; height: 216px;        /* 6x */
+  width: 328px; height: 208px;        /* 8x */
   image-rendering: pixelated;
   margin-inline: auto;
 }
-@media (max-width: 1024px) { .hero-art img { width: 270px; height: 180px; } }  /* 5x */
-@media (max-width: 900px)  { .hero-art img { width: 324px; height: 216px; } }  /* 6x */
-@media (max-width: 420px)  { .hero-art img { width: 216px; height: 144px; } }  /* 4x */
+@media (max-width: 1024px) { .hero-art img { width: 287px; height: 182px; } }  /* 7x */
+@media (max-width: 900px)  { .hero-art img { width: 328px; height: 208px; } }  /* 8x */
+@media (max-width: 420px)  { .hero-art img { width: 205px; height: 130px; } }  /* 5x */
 
 /* ---------- header ---------- */
 .site-header {
@@ -211,22 +211,10 @@ h2 {
 .body-lg { color: var(--muted); font-size: 17.5px; margin: 0 0 18px; }
 .sub { color: var(--muted); margin: 0; font-size: 17px; }
 
-/* ---------- about ----------
-   Constrain the prose to a readable measure, NOT the wrapper. `.about` sits on
-   the same element as `.wrap`, so a max-width here shrinks the whole container
-   and re-centres it — which pushed this section's left edge 136px inboard of
-   every other section.
-
-   Capped in ch so it tracks the font rather than a guessed pixel value.
-   Comfortable reading is 45-75 characters per line; at full section width this
-   prose runs to 118, which is why it is not full-bleed even though the coverage
-   list below it is — that list is two columns of ~56 characters, so it already
-   reads short.
-
-   Note 1ch is the width of the "0" glyph, not of an average character. In Inter
-   a digit is about 1.22x the average lowercase letter, so 56ch lands near 68
-   real characters. Measure it; do not assume ch means characters. */
-.about > :first-child { max-width: 56ch; }
+/* ---------- about ---------- */
+/* Prose runs the full section width by request. Note this puts it at ~118
+   characters per line, above the 45-75 that reads comfortably — if it ever
+   feels hard to track back to the next line, that is why. */
 
 .covers {
   list-style: none; margin: 44px 0 0; padding: 0;
