@@ -154,7 +154,11 @@ a { color: inherit; }
 .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 .brand-text { display: flex; flex-direction: column; }
 .brand-name { font-size: 16px; font-weight: 650; letter-spacing: -.015em; line-height: 1.25; }
-.brand-sub  { font-size: 12.5px; color: var(--faint); line-height: 1.3; }
+.brand-sub  {
+  font-size: 12.5px; color: var(--faint); line-height: 1.3;
+  white-space: nowrap;        /* never wrap to a second line under the wordmark */
+}
+@media (max-width: 400px) { .brand-sub { font-size: 11.5px; } }
 
 /* ---------- buttons ---------- */
 .btn {
@@ -292,7 +296,6 @@ h2 {
 
 @media (max-width: 560px) {
   body { font-size: 16px; }
-  .brand-sub { display: none; }
   .follow-inner { align-items: flex-start; }
   .btn { width: 100%; }
   .btn-sm { width: auto; }
