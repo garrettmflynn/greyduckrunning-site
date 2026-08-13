@@ -147,17 +147,40 @@ DNS changes propagate on TTL, so keep the Squarespace site up until step 2 check
 
 ## Known gaps
 
-- **Instagram is the only known social account.** Five web searches plus a read of
-  `greyduckrunning.com` turned up no Facebook page, Strava club, YouTube channel, or contact
-  address — the show has essentially no indexed web presence outside Spotify. Only
-  [instagram.com/greyduckrunning](https://www.instagram.com/greyduckrunning) is wired up, and that
-  came from the hosts rather than from a search (Instagram serves a login wall to automated
-  readers, so it could not be confirmed programmatically). Slots for Facebook / Strava / email are
-  commented out in the `#follow` section of `index.html`; open each URL yourself before uncommenting.
+- **Host bios are missing — the one thing blocking this page.** Christian and Lauren are listed
+  by name and marked "Co-host" in `#about`, and nothing more. An earlier draft had invented bios;
+  they were deleted rather than reworded, so what's there is thin but true.
+
+  Episode one, *Uncle Sam Wants YOU to Listen to Our Podcast* (Jul 7, 59 min), is where they
+  introduce themselves and cover how they got into running — but that is audio only. Spotify
+  has no transcript for this show, and with no RSS feed there is no file to work from, so the
+  intro cannot be recovered without someone listening to it. **Two sentences each from the
+  hosts is the fastest fix**, and better than anything reconstructed second-hand.
+
+- **Instagram is the only social account, now confirmed.**
+  [instagram.com/greyduckrunning](https://www.instagram.com/greyduckrunning) appears in the hosts'
+  own episode descriptions across several episodes, so it is source-verified rather than taken on
+  trust. Five web searches plus a read of `greyduckrunning.com` turned up no Facebook page, Strava
+  club, YouTube channel, or contact address — the show has essentially no indexed web presence
+  outside Spotify. Slots for the others are commented out in the `#follow` section of `index.html`.
+
 - **The show is not in any podcast directory but Spotify.** No Apple Podcasts listing, so no public
   RSS feed. Submitting the feed to Apple and Pocket Casts would make the show findable and would
   also unlock a self-hosted episode list here.
-- **Host bios are missing.** Christian and Lauren are listed by name and marked "Co-host" in
-  `#about`, with nothing else. An earlier draft had invented bios; those were deleted rather
-  than reworded, so what's there now is thin but true. Real bios are the main thing this page
-  is still waiting on.
+
+### Verified from episode descriptions
+
+Facts drawn from the hosts' own episode notes, in case they are useful for copy later:
+
+| Fact | Source |
+|---|---|
+| 6 episodes, launched Jul 7 2026 | full episode list |
+| Runtimes 54 min – 1 hr 7 min | episode list — this is what "about an hour" on the page rests on |
+| Lauren rode Ride Across Wisconsin, a century ride | ep. *Ride Across Wisconsin Recap* |
+| Both raced the Pure Water Days Half Marathon, Chippewa Falls WI | ep. *Pure Water Days 2026* |
+| Christian's mum Stephine guested; she spectates races and runs a business | ep. *Vaycay Mode!!!* |
+| Races covered span WI, MN, IA and NE | across all episodes |
+
+The events they cover cluster around western Wisconsin (Chippewa Falls, Eau Claire), which
+suggests that is where they are based — but that is inferred from race locations, never stated,
+so the page says "Upper Midwest" rather than claiming a home town.
