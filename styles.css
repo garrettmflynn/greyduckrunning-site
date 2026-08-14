@@ -19,10 +19,10 @@
   --paper:    #FFFFFF;
   --raised:   #FAFAF9;
   --ink:      #14161A;
-  --muted:    #5F6570;
-  --faint:    #8A9099;
+  --muted:    #454B54;
+  --faint:    #5C636B;
   --line:     #E4E6EA;
-  --accent:   #E85D04;          /* the logo orange, nudged for text contrast */
+  --accent:   #B04600;          /* logo orange, darkened to clear 4.5:1 on white */
   --accent-soft: #FFF1E8;
   --spotify:  #1DB954;
 
@@ -35,21 +35,46 @@
           "Helvetica Neue", Arial, sans-serif;
 
   --wrap: 1080px;
+
+  /* Veil over the hero photo. Two stops so the image reads at the top and the
+     player sits on near-solid colour at the bottom. */
+  --veil-top: rgba(255,255,255,.62);
+  --veil-bot: rgba(255,255,255,.94);
 }
 
+/* Dark tokens, applied two ways so a manual choice can override the system.
+   The media query is skipped when the user has explicitly picked light; the
+   attribute rule wins in the other direction. Defining them only inside the
+   media query would make the toggle a no-op on a light-mode machine. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --paper:  #0F1112;
     --raised: #16191B;
     --ink:    #F3F4F5;
-    --muted:  #A2A9B2;
+    --muted:  #C2C8D0;
     --faint:  #767D86;
     --line:   #262A2E;
     --accent: #FF8A3D;
     --accent-soft: #2A1B10;
     --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
     --shadow-lg: 0 2px 4px rgba(0,0,0,.4), 0 18px 44px rgba(0,0,0,.44);
+    --veil-top: rgba(15,17,18,.68);
+    --veil-bot: rgba(15,17,18,.96);
   }
+}
+:root[data-theme="dark"] {
+    --paper:  #0F1112;
+    --raised: #16191B;
+    --ink:    #F3F4F5;
+    --muted:  #C2C8D0;
+    --faint:  #767D86;
+    --line:   #262A2E;
+    --accent: #FF8A3D;
+    --accent-soft: #2A1B10;
+    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
+    --shadow-lg: 0 2px 4px rgba(0,0,0,.4), 0 18px 44px rgba(0,0,0,.44);
+    --veil-top: rgba(15,17,18,.68);
+    --veil-bot: rgba(15,17,18,.96);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -92,92 +117,85 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
 /* ------------------------------------------------------------
-   The duck  —  DORMANT
+   The duck
 
-   Nothing on the page references these right now; the logo is
-   withdrawn until a full-resolution original turns up. The rules
-   and assets are kept so restoring it is a one-line change.
+   assets/duck.svg is generated from a lossless PNG of the original
+   spreadsheet, which recovers the drawing grid exactly: 28x29
+   cells at 100.00% purity. Everything that made earlier versions
+   look broken — the dotted outline, the pale rim, the missing
+   crown and feet edges — came from the 150px JPEG that used to be
+   the only source, and is gone.
 
-   assets/duck.png is the podcast's own artwork, untouched except
-   that the white background is flood-filled to transparent from
-   the border. The eye is enclosed white, never reached by the
-   fill, so it stays opaque.
+   Cells are not square. The source pitch is 24.75px across and
+   14.83px down, the shape of a default Excel cell, so a cell is
+   drawn 5 wide by 3 tall. Square pixels, correct proportions.
 
-   An earlier attempt snapped every pixel to four flat colours to
-   "clean up" the JPEG. That made it worse: the soft grey pixels
-   along the outline were what visually held the line together,
-   and hardening them turned a continuous edge into a dotted one.
-   Leave the antialiasing alone.
-
-   It is NOT scaled up. The only source available is a 150px JPEG
-   whose downscale severed the hairline outline: traced at native
-   resolution the black outline comes apart into 43 disconnected
-   pieces, and the feet into three. Those breaks are in the file,
-   not introduced here, and no tracing can put back information
-   that is gone. Enlarging it magnifies every gap, which is what
-   made earlier versions look broken. So it is shown at or below
-   its natural size, where it reads exactly as it does on Spotify.
-
-   Smooth resampling, not pixelated: on a degraded source, letting
-   the browser resample reads far cleaner than hard pixel edges.
-
-   A larger export — the original spreadsheet, or a full-size
-   screenshot — would make a crisp, freely scalable vector trivial.
+   It is real vector now, so it scales freely. Sizes below are
+   still whole multiples of the 140x87 viewBox, which keeps every
+   cell edge on a device pixel.
    ------------------------------------------------------------ */
+/* No tile. The tile made this read as an app icon dropped into a nav bar —
+   the giveaway of a template header. Bare, larger, and tucked close to the
+   wordmark, the two read as a single lockup instead of "logo chip + heading". */
 .brand-mark {
   display: block;
-  width: auto; height: 34px;
+  width: 40px; height: 40px;   /* ~55% of the 73px bar; 52px crowded it */
   flex: none;
+  margin-right: -2px;
 }
 
 .hero-art img {
-  width: 284px; height: 178px;   /* exactly 2x the 142x89 grid */
+  width: 280px; height: 174px;   /* exactly 2x the 140x87 viewBox */
   max-width: 100%;
-  image-rendering: pixelated;
   margin-inline: auto;
 }
-@media (max-width: 900px) { .hero-art img { width: 284px; height: 178px; } }
-@media (max-width: 380px) { .hero-art img { width: 142px; height: 89px; } }
+@media (max-width: 380px) { .hero-art img { width: 140px; height: 87px; } }
 
 /* ---------- header ---------- */
+/* Transparent while the hero photo is behind it, then it materialises as you
+   scroll. The border and blur only appear with the background, otherwise a
+   hairline floats over the image with nothing under it. */
 .site-header {
   position: sticky; top: 0; z-index: 50;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color .25s ease, border-color .25s ease,
+              backdrop-filter .25s ease;
+}
+.site-header.is-scrolled {
   background: color-mix(in srgb, var(--paper) 88%, transparent);
   backdrop-filter: saturate(180%) blur(12px);
   -webkit-backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid var(--line);
+  border-bottom-color: var(--line);
+}
+/* No blur support, or colour-mix unsupported: fall back to a solid bar rather
+   than leaving text over a busy photo. */
+@supports not (backdrop-filter: blur(2px)) {
+  .site-header.is-scrolled { background: var(--paper); }
 }
 .header-inner {
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px; min-height: 72px;
 }
-.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.brand-text { display: flex; flex-direction: column; }
-.brand-name { font-size: 16px; font-weight: 650; letter-spacing: -.015em; line-height: 1.25; }
-.brand-sub  {
-  font-size: 12.5px; color: var(--faint); line-height: 1.3;
-  white-space: nowrap;        /* never wrap to a second line under the wordmark */
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+/* The hero owns the name at the top of the page, so the header shows only the
+   duck there — otherwise the title reads twice within a couple of hundred
+   pixels. The wordmark fades in as the bar materialises, which is the moment
+   the hero heading scrolls out of sight and the name is genuinely useful.
+   It stays in the DOM throughout, so screen readers and search engines see it
+   regardless of scroll position. */
+.brand-name {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .28s ease, transform .28s ease;
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  white-space: nowrap;
 }
-@media (max-width: 400px) { .brand-sub { font-size: 11.5px; } }
-
-/* ---------- buttons ---------- */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-  font-size: 15px; font-weight: 600; letter-spacing: -.01em;
-  text-decoration: none; white-space: nowrap;
-  padding: 12px 20px; border-radius: 999px;
-  border: 1px solid transparent;
-  transition: background-color .18s ease, border-color .18s ease,
-              transform .18s ease, box-shadow .18s ease, opacity .18s ease;
-}
-.btn-sm { padding: 9px 16px; font-size: 14.5px; }
-.btn:active { transform: translateY(1px); }
-
-.btn-spotify { background: var(--spotify); color: #fff; }
-.btn-spotify:hover { background: #1ed15f; box-shadow: 0 6px 18px rgba(29,185,84,.28); }
-
-.btn-outline { background: transparent; color: var(--ink); border-color: var(--line); }
-.btn-outline:hover { border-color: var(--faint); background: var(--raised); }
+@media (max-width: 480px) { .brand-name { font-size: 11px; letter-spacing: .1em; } }
 
 /* Belt and braces: the sprite also carries width/height attributes and an inline
    style. Relying on this rule alone means that between first paint and styles.css
@@ -185,20 +203,38 @@ a { color: inherit; }
    header down — a visible jump on a cold load. */
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .ico { width: 19px; height: 19px; fill: currentColor; flex: none; }
-.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
 
 @media (max-width: 560px) {
-  .btn-sm .btn-label { display: none; }
-  .btn-sm { padding: 10px; }
-}
+    }
 
 /* ---------- hero ---------- */
-.hero { padding: 84px 0 0; }
+/* Photo: Miguel A. Amutio via Unsplash (Unsplash License — free commercial use).
+   Sits behind a two-stop veil so the headline keeps its contrast in both themes;
+   without it the type fails against the runners' kit. */
+/* Pulled up under the sticky header so the photo runs to the very top of the
+   page. Without this the header is transparent over the page background rather
+   than over the image, which just reads as a white bar. */
+.hero {
+  margin-top: -73px;              /* header height + its 1px border */
+  padding: 181px 0 0;             /* 108 of real spacing, plus the 73 clawed back */
+  position: relative;
+  isolation: isolate;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)),
+                    url('assets/hero-800.jpg');
+  background-size: cover;
+  background-position: center 62%;
+}
+@media (min-width: 801px)  { .hero::before { background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)), url('assets/hero-1280.jpg'); } }
+@media (min-width: 1281px) { .hero::before { background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)), url('assets/hero-1920.jpg'); } }
 /* Constrain the COPY, never the wrapper. `.hero-inner` shares an element with
    `.wrap`, so a max-width here shrinks the container and re-centres it, pushing
    the hero text inboard of the player and every section below. Same mistake was
    made once already on `.about`. */
-.hero-copy { max-width: 720px; }
+.hero-copy { max-width: 620px; }
 
 /* Two-column hero, for when the logo comes back.
 .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
@@ -215,11 +251,17 @@ h1 {
   margin: 0 0 22px;
   font-size: clamp(19px, 2.2vw, 24px);
   font-weight: 500; line-height: 1.4; letter-spacing: -.018em;
-  color: var(--muted);
+  color: var(--ink);
 }
-.hero-sub em { font-style: normal; color: var(--accent); }
+/* Weight, not colour. A mid-tone accent cannot reach 4.5:1 over a photograph
+   with this much range — measured 1.32 in light mode. Orange still carries the
+   brand on solid backgrounds, where it is verified. */
+.hero-sub em { font-style: normal; font-weight: 700; color: var(--ink); }
 
-.lede { margin: 0; font-size: 17.5px; color: var(--muted); max-width: 54ch; }
+/* Over the hero photo the copy takes full ink, not the muted body colour.
+   Muted grey failed WCAG AA against the darkest pixels behind it, and read
+   washed out besides. */
+.lede { margin: 0; font-size: 17.5px; color: var(--ink); max-width: 54ch; font-weight: 450; }
 
 /* ---------- player ---------- */
 .player {
@@ -265,17 +307,24 @@ h2 {
 .covers p { margin: 0; color: var(--muted); font-size: 15.5px; }
 
 /* ---------- follow ---------- */
-.follow { border-top: 1px solid var(--line); background: var(--raised); }
+.follow { border-top: 1px solid var(--line); background: var(--raised); padding: 40px 0; }
 .follow-inner {
   display: flex; align-items: center; justify-content: space-between;
   gap: 32px; flex-wrap: wrap;
 }
-.follow h2 { margin-bottom: 8px; }
+.follow h2 { margin-bottom: 6px; font-size: clamp(22px, 2.4vw, 26px); }
 
 /* ---------- footer ---------- */
-.site-footer { border-top: 1px solid var(--line); padding: 32px 0; }
-.footer-inner { display: flex; align-items: center; gap: 14px; }
-.footer-inner p { margin: 0; font-size: 14.5px; color: var(--faint); }
+.site-footer { border-top: 1px solid var(--line); padding: 18px 0; }
+/* Socials live here, not in the header. The header keeps navigation and one
+   control; the footer is where secondary links conventionally sit — and it had
+   nothing in it before. */
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap;
+}
+.footer-social { display: flex; align-items: center; gap: 2px; margin-right: -10px; }
+.footer-inner p { margin: 0; font-size: 13px; color: var(--faint); letter-spacing: -.005em; }
 
 /* ---------- scroll reveal ----------
    Elements are only hidden once JS confirms it can reveal them, so
@@ -293,21 +342,115 @@ h2 {
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
-  .hero { padding-top: 56px; }
+  /* Must clear the 73px the hero is pulled up by, or the title lands under the
+     header. The old value here was 56px — a net -17px, which is why this looked
+     crowded on phones. */
+  .hero { padding-top: 150px; }
   .covers { grid-template-columns: 1fr; gap: 0; }
   .section { padding: 72px 0; }
   .player { margin-top: 40px; }
 }
 
 @media (max-width: 560px) {
+  .hero { padding-top: 138px; }
   body { font-size: 16px; }
   .follow-inner { align-items: flex-start; }
-  .btn { width: 100%; }
-  .btn-sm { width: auto; }
-}
+  }
 
 /* ---------- print ---------- */
 @media print {
   .site-header, .player, .follow { display: none; }
   body { background: #fff; color: #000; font-size: 12pt; }
+}
+
+/* ---------- theme toggle ---------- */
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; padding: 0;
+  background: transparent; color: var(--muted);
+  /* Border only once there is a solid bar behind it. Over the hero photo a
+     --line border measured 1.00:1 — an outline nobody can see, and the social
+     buttons beside it carry none either. The glyph identifies the control. */
+  border: 1px solid transparent; border-radius: 999px;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--line); background: var(--raised); }
+.site-header.is-scrolled .theme-toggle { border-color: var(--line); }
+.site-header.is-scrolled .brand-name { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-name { transition: none; }
+}
+.theme-toggle .ico { width: 17px; height: 17px; }
+
+/* Show the icon for the theme you would switch TO, not the one you are in. */
+.theme-toggle .i-sun  { display: none; }
+.theme-toggle .i-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-sun  { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .i-sun  { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+}
+
+.header-actions { display: flex; align-items: center; gap: 6px; }
+.header-actions .theme-toggle { margin-left: 2px; }
+
+/* One primary action in the header — the conventional shape, and the thing that
+   stops the ecosystem being unreachable without scrolling to the footer. The
+   full set of links stays in the footer; this is just the main door. */
+.cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 18px;
+  border-radius: 999px;
+  background: var(--spotify); color: #0B0F0C;      /* 7.46:1 */
+  font-size: 15px; font-weight: 600; letter-spacing: -.01em;
+  text-decoration: none; white-space: nowrap;
+  transition: background-color .18s ease, box-shadow .18s ease;
+}
+.cta:hover { background: #23dc68; box-shadow: 0 6px 18px rgba(29,185,84,.3); }
+.cta .ico { width: 18px; height: 18px; }
+@media (max-width: 420px) {
+  .cta span { position: absolute; left: -9999px; }   /* glyph only when tight */
+  .cta { padding: 0; width: 44px; justify-content: center; }
+}
+
+/* Header carries the marks alone. Glyphs use the text colour rather than each
+   brand's own — Spotify green on white is 2.28:1, under the 3:1 that
+   meaningful non-text UI needs. Brand colour comes back on hover, where it is
+   decoration rather than the only signal. */
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px;
+  color: var(--muted); border-radius: 999px;
+  border: 1px solid transparent;
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease;
+}
+.icon-btn:hover { color: var(--ink); background: var(--raised); border-color: var(--line); }
+.icon-btn[aria-label*="Spotify"]:hover { color: #1DB954; }
+.icon-btn[aria-label*="Strava"]:hover  { color: #FC4C02; }
+.icon-btn .ico { width: 19px; height: 19px; }
+
+/* ---------- follow: named links, inline ---------- */
+.links {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px;
+}
+.links a {
+  display: inline-flex; align-items: center; gap: 9px;
+  text-decoration: none; color: var(--ink);
+  font-size: 15.5px; font-weight: 500;
+  transition: color .18s ease;
+}
+.links a:hover { color: var(--accent); }
+.links .ico { width: 18px; height: 18px; color: var(--faint); flex: none; }
+.links a:hover .ico { color: currentColor; }
+
+
+/* Short viewports (landscape phones): give the header room without pushing the
+   player off screen. */
+@media (max-height: 560px) and (orientation: landscape) {
+  .hero { padding-top: 120px; }
+  h1 { font-size: clamp(32px, 7vw, 44px); }
 }

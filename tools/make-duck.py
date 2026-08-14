@@ -1,224 +1,135 @@
 #!/usr/bin/env python3
-"""Rebuild assets/duck.png (and its derivatives) from the podcast's logo.
+"""Rebuild the logo assets from assets/logo-source.png.
 
-    python3 tools/make-duck.py assets/logo-source.jpg
+    python3 tools/make-duck.py
 
-This does two things and deliberately nothing more: it removes the white
-background, and it removes the white that antialiasing baked into the edge
-pixels. The artwork itself is left exactly as drawn.
+The source is a lossless PNG screenshot of the original spreadsheet, and that
+changes everything. Every earlier version of this script was salvage work
+against a 150px JPEG whose compression had destroyed the drawing grid: three
+independent detection methods returned flat, signal-free curves, the black
+outline had come apart into 43 disconnected pieces, and cell purity never
+exceeded ~88% at any grid. None of that applies now.
 
-Why so little? Earlier versions of this script tried to reconstruct the logo as
-clean vector pixel art by recovering the Excel grid it was drawn on. That does
-not work, and the reason is worth recording so nobody burns another afternoon
-on it:
+From the lossless source the grid recovers exactly:
 
-  * The grid cannot be recovered. Three independent methods — fitting a lattice
-    to colour-change positions, scoring cell-colour uniformity, and testing run
-    lengths as whole multiples of a cell — all returned flat, signal-free
-    curves. The source was downscaled by a non-integer factor with
-    interpolation, so the cell boundaries no longer exist.
+    28 x 29 cells, purity 100.00%
 
-  * The outline is already broken. Traced at *native* resolution, with no grid
-    assumption at all, the black outline comes apart into 43 disconnected
-    pieces and the feet into 3. Those breaks are in the file. No tracing can
-    restore information the downscale destroyed.
+Every cell is a single flat colour. The outline is 3 fragments rather than 43,
+the silhouette is one piece, and the crown and feet outlines that the JPEG had
+eaten are present.
 
-  * Flattening makes it worse. Snapping every pixel to the four brand colours
-    to "clean up" the JPEG turns a soft continuous edge into a dotted one — the
-    intermediate greys were what held the outline together visually.
+CELLS ARE NOT SQUARE. Measured pitch is 24.75px across and 14.83px down, a
+ratio of 1.67:1 — the shape of a default Excel cell, which is what the logo was
+drawn on. Rendering the grid with square pixels would make the duck stand
+noticeably taller and narrower than the artwork does. So a cell is emitted as
+5 wide by 3 tall, giving square output pixels, an overall 140x87 viewBox, and
+an aspect of 1.61 which matches the source's 1.612.
 
-So the honest move is to keep the pixels and stop reinterpreting them. The
-consequence is that the logo does not enlarge well; the site shows it at or
-near its natural size for that reason.
-
-A larger export — the original spreadsheet, or a full-size screenshot before
-downscaling — would make a crisp, freely scalable, recolourable vector trivial.
-That is the fix. This script is the workaround.
-
-Requires Pillow. assets/duck.png is committed, so normal site work never runs
-this.
+Requires Pillow. The generated assets are committed, so normal site work never
+runs this.
 """
-import sys
 import pathlib
+import sys
+from collections import Counter
+
 from PIL import Image
 
-# The colours the artwork uses, white excluded — white is background here.
-INK = {'grey': (176, 176, 176), 'black': (0, 0, 0),
-       'belly': (200, 200, 200), 'orange': (248, 104, 0)}   # cut_out only
+# Exact colours read off the lossless source. These supersede the values used
+# before, which were sampled from the compressed Spotify cover and were all
+# slightly wrong (#B0B0B0, #C8C8C8, #F86800).
+GREY = (183, 183, 183)      # #B7B7B7
+BLACK = (0, 0, 0)
+BELLY = (204, 204, 204)     # #CCCCCC
+ORANGE = (255, 109, 1)      # #FF6D01
+WHITE = (255, 255, 255)
 
-WHITE_CUTOFF = 240      # counts as background when flood filling
-EDGE_CUTOFF = 215       # measured; see cut_out() — lower values worsen the rim
+PALETTE = {'G': GREY, 'K': BLACK, 'L': BELLY, 'O': ORANGE, 'W': WHITE}
+HEX = {'G': '#B7B7B7', 'K': '#000000', 'L': '#CCCCCC', 'O': '#FF6D01', 'E': '#FFFFFF'}
+
+COLS, ROWS = 28, 29
+CELL_W, CELL_H = 5, 3       # keeps the 1.67:1 cell shape with square pixels
+
+# Merge the belly highlight into the main grey. Requested deliberately: at the
+# sizes this is shown, a second grey a few shades off the first is detail nobody
+# reads. Set to False to keep the artwork's four inks.
+FLATTEN_BELLY = True
 
 
-def luminance(c):
-    return (c[0] + c[1] + c[2]) / 3
+def snap(px):
+    return min(PALETTE, key=lambda k: sum((a - b) ** 2 for a, b in zip(px, PALETTE[k])))
 
 
-def background(im):
-    """Flood fill the outside from the border.
+def find_duck(im):
+    """Locate the artwork inside the screenshot.
 
-    Deliberately a fill and not a whiteness test: the duck's eye is white too,
-    but it is enclosed, so the fill never reaches it and it stays opaque.
+    Matches on actual duck ink rather than "not white", so the phone status bar,
+    the card border and its drop shadow are all ignored.
     """
     W, H = im.size
     px = im.load()
-    white = lambda p: p[0] >= WHITE_CUTOFF and p[1] >= WHITE_CUTOFF and p[2] >= WHITE_CUTOFF
 
+    def ink(p):
+        r, g, b = p
+        if r < 80 and g < 80 and b < 80:
+            return True
+        if abs(r - g) < 12 and abs(g - b) < 12 and 150 < r < 215:
+            return True
+        return r > 180 and 60 < g < 160 and b < 90
+
+    ys = [y for y in range(450, H) if any(ink(px[x, y]) for x in range(W))]
+    xs = [x for x in range(W) if any(ink(px[x, y]) for y in ys)]
+    return min(xs), min(ys), max(xs) + 1, max(ys) + 1
+
+
+def read_grid(im):
+    """Majority-vote each cell over its middle half."""
+    W, H = im.size
+    cw, ch = W / COLS, H / ROWS
+    px = im.load()
+    grid = []
+    for r in range(ROWS):
+        row = []
+        for c in range(COLS):
+            x0, x1 = int(c * cw + cw * 0.3), int(c * cw + cw * 0.7)
+            y0, y1 = int(r * ch + ch * 0.3), int(r * ch + ch * 0.7)
+            vals = [snap(px[x, y])
+                    for y in range(y0, max(y0 + 1, y1))
+                    for x in range(x0, max(x0 + 1, x1))]
+            row.append(Counter(vals).most_common(1)[0][0])
+        grid.append(row)
+    return grid
+
+
+def mark_eye(grid):
+    """Distinguish the enclosed white of the eye from the background.
+
+    Flood fill the outside; any white the fill cannot reach is a feature. The
+    eye would otherwise be emitted as a transparent hole.
+    """
+    H, W = len(grid), len(grid[0])
     seen, stack = set(), []
     for x in range(W):
         for y in (0, H - 1):
-            if white(px[x, y]):
+            if grid[y][x] == 'W':
                 stack.append((x, y))
     for y in range(H):
         for x in (0, W - 1):
-            if white(px[x, y]):
+            if grid[y][x] == 'W':
                 stack.append((x, y))
     seen.update(stack)
     while stack:
         x, y = stack.pop()
         for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             a, b = x + dx, y + dy
-            if 0 <= a < W and 0 <= b < H and (a, b) not in seen and white(px[a, b]):
+            if 0 <= a < W and 0 <= b < H and grid[b][a] == 'W' and (a, b) not in seen:
                 seen.add((a, b))
                 stack.append((a, b))
-    return seen
+    return [['E' if (grid[y][x] == 'W' and (x, y) not in seen) else grid[y][x]
+             for x in range(W)] for y in range(H)]
 
 
-def cut_out(im):
-    """Transparent background, classified by REGION ROLE rather than brightness.
-
-    Four cases, and the distinction matters:
-
-    background  white reachable from the border -> transparent.
-
-    enclosed white  white the fill never reaches -> a real feature, kept opaque
-        white. This is the eye. An earlier version tested brightness instead and
-        the eye, being pure white, was treated as a fully-faded edge pixel and
-        given alpha 0 — the flood fill preserved it and the next step deleted it.
-
-    boundary  a kept pixel touching the background, and light enough to be a
-        blend rather than ink. Only these are un-blended: the stored RGB is part
-        white, which glows as a pale halo on a dark background, so recover the
-        ink it is fading from and express the mix as alpha.
-
-    interior  everything else -> kept exactly as drawn.
-
-    EDGE_CUTOFF is 215 by measurement, not taste. Lowering it to 200 or 190 pulls
-    more pixels into the un-blend and makes the pale rim worse (73 -> 98), not
-    better.
-    """
-    W, H = im.size
-    px = im.load()
-    outside = background(im)
-
-    def touches_background(x, y):
-        return any((x + dx, y + dy) in outside
-                   for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1),
-                                  (1, 1), (1, -1), (-1, 1), (-1, -1)))
-
-    is_white = lambda p: (p[0] >= WHITE_CUTOFF and p[1] >= WHITE_CUTOFF
-                          and p[2] >= WHITE_CUTOFF)
-
-    out = Image.new('RGBA', (W, H))
-    o = out.load()
-    for y in range(H):
-        for x in range(W):
-            c = px[x, y]
-            if (x, y) in outside:
-                o[x, y] = (0, 0, 0, 0)
-            elif is_white(c):
-                o[x, y] = (255, 255, 255, 255)
-            elif touches_background(x, y) and luminance(c) >= EDGE_CUTOFF:
-                ink = min(INK.values(),
-                          key=lambda f: sum((u - v) ** 2 for u, v in zip(c, f)))
-                span = max(1.0, 255.0 - luminance(ink))
-                alpha = max(0.0, min(1.0, (255.0 - luminance(c)) / span))
-                o[x, y] = ink + (int(round(alpha * 255)),)
-            else:
-                o[x, y] = c + (255,)
-    return out.crop(out.getbbox())
-
-
-# White is deliberately NOT a snap target below. An earlier version included it,
-# and light edge and belly pixels rounded up to opaque white — trading the soft
-# halo for a hard white rim, which is worse. Only enclosed white (the eye) may
-# be white.
-# Three inks. The belly highlight (#C8C8C8) is gone — at the sizes this is
-# shown, a second grey two shades off the first is detail nobody reads, and it
-# only made the shape noisier. Belly pixels fall into the main grey.
-SNAP = {'grey': (176, 176, 176), 'black': (0, 0, 0), 'orange': (248, 104, 0)}
-HEX = {'grey': '#B0B0B0', 'black': '#000000', 'orange': '#F86800',
-       'eye': '#FFFFFF'}
-
-
-def binarise(rgba):
-    """Hard alpha and flat colours.
-
-    Partial alpha is what produced the pale rim, so there is none: a pixel is
-    either fully in or fully out. That also makes the result a true indexed
-    image, which is what allows the SVG below — and therefore any size at all.
-    """
-    W, H = rgba.size
-    px = rgba.load()
-    grid = [['.'] * W for _ in range(H)]
-    for y in range(H):
-        for x in range(W):
-            r, g, b, a = px[x, y]
-            if a < 128:
-                continue
-            if a >= 250 and min(r, g, b) >= 245:
-                grid[y][x] = 'eye'
-            else:
-                grid[y][x] = min(SNAP, key=lambda k:
-                                 sum((u - v) ** 2 for u, v in zip((r, g, b), SNAP[k])))
-    return grid
-
-
-def bridge_outline(grid):
-    """Fill single-pixel holes in the outline.
-
-    A non-black pixel with black directly opposite on any axis is a break in a
-    line, not a feature. Bridging these takes the outline from 43 disconnected
-    fragments down to 3. It cannot restore what the downscale destroyed, but it
-    closes the gaps that were making the edge look dashed.
-    """
-    H, W = len(grid), len(grid[0])
-    src = [r[:] for r in grid]
-    out = [r[:] for r in grid]
-    pairs = (((-1, 0), (1, 0)), ((0, -1), (0, 1)),
-             ((-1, -1), (1, 1)), ((-1, 1), (1, -1)))
-    for y in range(1, H - 1):
-        for x in range(1, W - 1):
-            if src[y][x] in ('black', '.'):
-                continue
-            for (ax, ay), (bx, by) in pairs:
-                if src[y + ay][x + ax] == 'black' and src[y + by][x + bx] == 'black':
-                    out[y][x] = 'black'
-                    break
-    return out
-
-
-def crop_grid(grid):
-    H, W = len(grid), len(grid[0])
-    ys = [y for y in range(H) if any(c != '.' for c in grid[y])]
-    xs = [x for x in range(W) if any(grid[y][x] != '.' for y in ys)]
-    return [grid[y][min(xs):max(xs) + 1] for y in range(min(ys), max(ys) + 1)]
-
-
-def grid_to_png(grid):
-    H, W = len(grid), len(grid[0])
-    rgb = dict(SNAP, eye=(255, 255, 255))
-    im = Image.new('RGBA', (W, H), (0, 0, 0, 0))
-    px = im.load()
-    for y in range(H):
-        for x in range(W):
-            if grid[y][x] != '.':
-                px[x, y] = rgb[grid[y][x]] + (255,)
-    return im
-
-
-def grid_to_svg(grid):
-    """Run-length rects. Scales to any size and recolours by editing five fills."""
+def to_svg(grid):
+    """Horizontal runs as rects. Scales to any size; recolours via five fills."""
     H, W = len(grid), len(grid[0])
     parts = {}
     for y, row in enumerate(grid):
@@ -227,36 +138,104 @@ def grid_to_svg(grid):
             c, n = row[x], 1
             while x + n < W and row[x + n] == c:
                 n += 1
-            if c != '.':
+            if c != 'W':
                 parts.setdefault(HEX[c], []).append(
-                    f"<rect x='{x}' y='{y}' width='{n}' height='1'/>")
+                    f"<rect x='{x * CELL_W}' y='{y * CELL_H}' "
+                    f"width='{n * CELL_W}' height='{CELL_H}'/>")
             x += n
-    order = [HEX[k] for k in ('grey', 'eye', 'orange', 'black') if HEX[k] in parts]
+    order = [HEX[k] for k in ('G', 'L', 'E', 'O', 'K') if HEX[k] in parts]
     body = ''.join(f"<g fill='{c}'>" + ''.join(parts[c]) + "</g>" for c in order)
-    return (f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {W} {H}' "
-            f"shape-rendering='crispEdges' role='img' "
-            f"aria-label='Grey Duck Running'>{body}</svg>\n")
+    return (f"<svg xmlns='http://www.w3.org/2000/svg' "
+            f"viewBox='0 0 {W * CELL_W} {H * CELL_H}' shape-rendering='crispEdges' "
+            f"role='img' aria-label='Grey Duck Running'>{body}</svg>\n")
+
+
+SQUARE_SIDE = 180          # 140 wide duck + 20 padding each side
+SQUARE_X = 20              # multiple of CELL_W, so cell edges stay aligned
+SQUARE_Y = 46              # (180 - 87) / 2, rounded to an integer
+
+
+def to_svg_square(grid):
+    """The same duck centred on a 1:1 canvas.
+
+    The wide mark (1.61:1) is weak at header size — short, and with nothing to
+    sit against it floats beside the wordmark. A square frame gives it presence
+    at 40px without touching the artwork's proportions. Whether it carries a
+    background tile is left to CSS, so the framed and bare versions are one
+    declaration apart rather than two assets.
+    """
+    H, W = len(grid), len(grid[0])
+    parts = {}
+    for y, row in enumerate(grid):
+        x = 0
+        while x < W:
+            ch, n = row[x], 1
+            while x + n < W and row[x + n] == ch:
+                n += 1
+            if ch != 'W':
+                parts.setdefault(HEX[ch], []).append(
+                    f"<rect x='{SQUARE_X + x * CELL_W}' y='{SQUARE_Y + y * CELL_H}' "
+                    f"width='{n * CELL_W}' height='{CELL_H}'/>")
+            x += n
+    order = [HEX[k] for k in ('G', 'L', 'E', 'O', 'K') if HEX[k] in parts]
+    body = ''.join(f"<g fill='{c}'>" + ''.join(parts[c]) + "</g>" for c in order)
+    # No crispEdges here, deliberately. This mark is shown small — 40px in the
+    # header — where a 5x3 cell cannot land on whole device pixels at any usable
+    # scale, and snapping edges would make some cells 1px and their neighbours
+    # 2px. That unevenness is exactly what read as "aliasing" before. Letting the
+    # browser antialias a downscale of flat art looks clean instead. The wide
+    # duck.svg keeps crispEdges, since the hero uses it at an exact 2x.
+    return (f"<svg xmlns='http://www.w3.org/2000/svg' "
+            f"viewBox='0 0 {SQUARE_SIDE} {SQUARE_SIDE}' "
+            f"role='img' aria-label='Grey Duck Running'>{body}</svg>\n")
+
+
+def to_png(grid, scale=1):
+    H, W = len(grid), len(grid[0])
+    rgb = dict(PALETTE, E=WHITE)
+    im = Image.new('RGBA', (W * CELL_W * scale, H * CELL_H * scale), (0, 0, 0, 0))
+    px = im.load()
+    for y, row in enumerate(grid):
+        for x, ch in enumerate(row):
+            if ch == 'W':
+                continue
+            col = rgb[ch] + (255,)
+            for dy in range(CELL_H * scale):
+                for dx in range(CELL_W * scale):
+                    px[x * CELL_W * scale + dx, y * CELL_H * scale + dy] = col
+    return im
 
 
 def main():
-    src = sys.argv[1] if len(sys.argv) > 1 else 'assets/logo-source.jpg'
-    assets = pathlib.Path(__file__).resolve().parent.parent / 'assets'
+    root = pathlib.Path(__file__).resolve().parent.parent
+    src = sys.argv[1] if len(sys.argv) > 1 else root / 'assets' / 'logo-source.png'
+    assets = root / 'assets'
 
-    grid = crop_grid(bridge_outline(binarise(cut_out(Image.open(src).convert('RGB')))))
-    duck = grid_to_png(grid)
+    im = Image.open(src).convert('RGB')
+    duck = im.crop(find_duck(im))
+    grid = mark_eye(read_grid(duck))
 
-    (assets / 'duck.svg').write_text(grid_to_svg(grid))
-    duck.save(assets / 'duck.png')
-    duck.save(assets / 'favicon.png')
-    print(f'duck {duck.width}x{duck.height} (svg + png from one grid)')
+    if FLATTEN_BELLY:
+        grid = [['G' if c == 'L' else c for c in row] for row in grid]
 
-    icon = Image.new('RGBA', (512, 512), (0, 0, 0, 0))
-    d = duck.resize((duck.width * 3, duck.height * 3), Image.NEAREST)
+    (assets / 'duck.svg').write_text(to_svg(grid))
+    (assets / 'duck-square.svg').write_text(to_svg_square(grid))
+    base = to_png(grid)
+    base.save(assets / 'duck.png')
+    print(f'duck {base.width}x{base.height} from a {COLS}x{ROWS} grid')
+
+    # square, on the same white tile the header uses
+    icon = Image.new('RGBA', (512, 512), (255, 255, 255, 255))
+    d = to_png(grid, 3)
     icon.paste(d, ((512 - d.width) // 2, (512 - d.height) // 2), d)
     icon.save(assets / 'icon-512.png')
+    fav = Image.new('RGBA', (180, 180), (255, 255, 255, 255))
+    f = to_png(grid, 1)
+    fav.paste(f, ((180 - f.width) // 2, (180 - f.height) // 2), f)
+    fav.save(assets / 'favicon.png')
 
-    card = Image.new('RGB', (1200, 630), (248, 248, 248))
-    d2 = duck.resize((duck.width * 6, duck.height * 6), Image.NEAREST)
+    card = Image.new('RGB', (1200, 630), (255, 255, 255))
+    d2 = to_png(grid, 4)
     card.paste(d2, ((1200 - d2.width) // 2, (630 - d2.height) // 2), d2)
     card.save(assets / 'og-image.png')
 

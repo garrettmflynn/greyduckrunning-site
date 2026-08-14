@@ -26,11 +26,15 @@ Then open <http://localhost:8000>. Editing a file and refreshing is the whole de
 index.html              all page content
 styles.css              all styling
 script.js               footer year + scroll reveals; page works with JS off
-assets/duck.png         the logo, background removed — header mark and hero
+assets/duck.svg         the logo — header mark and hero
+assets/duck.png         raster copy of duck.svg
 assets/favicon.png      copy of duck.png
 assets/og-image.png     1200x630 social preview
 assets/icon-512.png     512px app icon
-assets/logo-source.jpg  the logo JPEG the SVG is traced from
+assets/duck-square.svg  the logo on a 1:1 canvas — used in the header
+assets/logo-source.png  lossless source the logo is generated from
+assets/hero-*.jpg       hero background at three widths
+assets/brand-icons/     official Simple Icons marks (CC0) for the social links
 assets/cover.jpg        the Spotify cover art, kept for reference
 tools/make-duck.py      regenerates the logo assets (see below)
 CNAME                   attaches greyduckrunning.com (see below)
@@ -40,15 +44,19 @@ CNAME                   attaches greyduckrunning.com (see below)
 
 ## Branding
 
-The palette is **sampled from the show's actual Spotify cover art**, not invented:
+The palette is read from the logo's lossless source, so these are the artwork's exact
+colours:
 
-| Swatch | Hex | Share of artwork | Used for |
-|---|---|---|---|
-| Paper white | `#F8F8F8` | 54.8% | page background |
-| Duck grey | `#B0B0B0` | 23.4% | duck body, avatars |
-| Outline black | `#000000` | 11.0% | borders, text |
-| Belly grey | `#C8C8C8` | 5.1% | *(retired — merged into duck grey)* |
-| Beak orange | `#F86800` | 1.2% | accents, primary buttons |
+| Swatch | Hex | Used for |
+|---|---|---|
+| Duck grey | `#B7B7B7` | the duck |
+| Outline black | `#000000` | outline, text |
+| Beak orange | `#FF6D01` | beak, feet, accents |
+| Eye white | `#FFFFFF` | the eye |
+| Belly grey | `#CCCCCC` | *(present in the artwork, merged into the duck grey — see below)* |
+
+An earlier set (`#B0B0B0`, `#C8C8C8`, `#F86800`) was sampled from the compressed Spotify
+cover and was slightly wrong on every value.
 
 **The logo is pixel art. The site deliberately is not.** An earlier version pushed the pixel
 language across everything — arcade typeface, hard offset shadows, chunky black borders, a
@@ -57,7 +65,7 @@ continuity now comes from two things only: the palette above, and the duck itsel
 whole-number scale so it stays crisp. Everything else is ordinary modern layout — Inter,
 soft shadows, rounded cards, generous whitespace.
 
-`--accent` is the logo's `#F86800` nudged to `#E85D04` so it passes contrast as text; the
+`--accent` is the logo's `#FF6D01` nudged to `#E85D04` so it passes contrast as text; the
 Spotify green `#1DB954` is used only on the Spotify buttons, where it is the recognised
 convention rather than decoration.
 
@@ -65,37 +73,35 @@ Dark mode is supported via `prefers-color-scheme`.
 
 ### The logo
 
-`assets/duck.svg` is the logo, flattened to **three inks — black, grey, orange** — plus white
-for the eye. The belly highlight was a second grey two shades off the first; at the sizes this
-is shown that is detail nobody reads, and it only made the shape noisier. The eye keeps its
-white because dropping it costs the eye entirely: at header size a grey eye with a black pupil
-reads as a smudge.
+`assets/duck.svg` is generated from `assets/logo-source.png`, a **lossless** screenshot of
+the original spreadsheet. That source solved a problem that had been unsolvable, and the
+contrast is worth recording.
 
-The background is removed by flood fill, and alpha is binary — a pixel is fully in or fully
-out — so there is no partial-alpha edge to glow as a halo on dark backgrounds.
+| | Old 150px JPEG | Lossless PNG |
+|---|---|---|
+| Grid detection | Three methods, all flat and signal-free | Recovered exactly |
+| Cell purity | Never above ~88% at any grid | **100.00%** |
+| Outline fragments | 43 | 3 |
+| Crown / feet outlines | Destroyed by the downscale | Present |
+| SVG size | 1005 rects, ~3.9KB gzipped | **141 rects, ~779 bytes** |
 
-**It is not enlarged, and that is a hard constraint of the source.** The only file available
-is a 150px JPEG whose downscale severed the hairline outline. Traced at native resolution,
-with no grid assumption at all, the black outline comes apart into **43 disconnected pieces**
-and the feet into 3. Those breaks are in the file; enlarging magnifies every one of them.
-The site therefore shows the duck at or near natural size, where it reads exactly as it does
-on Spotify and Instagram.
+The grid is **28 x 29 cells**. Every cell is a single flat colour, which is why the runs
+merge and the file is a fifth the size.
 
-Three attempts to reconstruct it as clean vector pixel art were abandoned, and it is worth
-knowing why before trying again:
+**Cells are not square.** Measured pitch is 24.75px across and 14.83px down — a ratio of
+1.67:1, the shape of a default Excel cell, which is what the logo was drawn on. That single
+fact explains the "squished" look chased for hours against the old source: the duck really is
+wider than a square grid would make it. A cell is therefore emitted 5 wide by 3 tall, giving
+square output pixels, a 140x87 viewBox, and an aspect of 1.61 against the source's 1.612.
 
-| Attempt | Result |
-|---|---|
-| Recover the Excel grid, three ways — lattice fit, cell-colour uniformity, run-length multiples | All three returned flat, signal-free curves. The source was downscaled by a non-integer factor, so cell boundaries no longer exist. |
-| Trace at a pinned grid and rebuild the outline | Outline weight came out roughly twice the original, because Excel draws the border as a hairline on the gridline, not as a filled cell. |
-| Snap every pixel to the four brand colours | Worse. The intermediate greys were holding the outline together visually; hardening them turned a continuous edge into a dotted one. |
+The belly highlight (`#CCCCCC`) is merged into the main grey by `FLATTEN_BELLY` in
+`tools/make-duck.py`. That was a deliberate call — a second grey a few shades off the first is
+detail nobody reads at these sizes. It is now clean in the source, so flipping that flag to
+`False` restores the artwork's four inks.
 
-> [!IMPORTANT]
-> **A larger export fixes all of this.** The original spreadsheet, or a full-size screenshot
-> taken before downscaling, would make a crisp, freely scalable, recolourable vector trivial —
-> and would let the logo be used at any size. `tools/make-duck.py` is the workaround, not the
-> answer.
-
+Being vector on an integer grid, it scales freely and recolours by editing four fill values.
+Displayed sizes are still whole multiples of the viewBox (0.5x in the header, 2x in the hero)
+so every cell edge lands on a device pixel.
 ---
 
 ## Editing common things
@@ -136,10 +142,9 @@ files.
 `CNAME` contains `greyduckrunning.com`. GitHub created it when the custom domain was set in
 Settings; do not delete it, or the domain setting is dropped on the next deploy.
 
-**DNS still points at Squarespace, which is why GitHub reports `NotServedByPagesError`.** The
-nameservers are `nsb1–4.squarespacedns.com`, and the apex still answers with Squarespace's
-IPs (`198.185.159.x`, `198.49.23.x`). Until that changes, the domain cannot serve this site —
-nothing in this repo can fix it, because the records live in the Squarespace account.
+**DNS is pointed at GitHub and the site is served.** The apex answers with GitHub's four IPs
+and `www` is a `CNAME` to `garrettmflynn.github.io`, confirmed from eight independent public
+resolvers. If it ever needs re-doing, the records are below.
 
 In Squarespace, under **Domains → greyduckrunning.com → DNS Settings**, replace the apex `A`
 records with GitHub's four:
@@ -217,3 +222,17 @@ Facts drawn from the hosts' own episode notes, in case they are useful for copy 
 The events they cover cluster around western Wisconsin (Chippewa Falls, Eau Claire), which
 suggests that is where they are based — but that is inferred from race locations, never stated,
 so the page says "Upper Midwest" rather than claiming a home town.
+
+---
+
+## Credits
+
+Hero photograph by **Miguel A. Amutio** via [Unsplash](https://unsplash.com/photos/QDv-uBc-poY),
+used under the Unsplash License (free for commercial use). Stored at three widths in `assets/`
+and served by media query; the original 18MP file is not in the repo.
+
+Brand marks for Spotify, Instagram and Strava are from
+[Simple Icons](https://simpleicons.org) (CC0). Extra marks are kept unused in
+`assets/brand-icons/` ready for Apple Podcasts, Pocket Casts, YouTube Music, Facebook and RSS.
+
+The duck is the hosts' own artwork, drawn in Excel.
