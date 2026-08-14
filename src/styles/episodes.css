@@ -1,106 +1,212 @@
-/* ---------- episode player ----------
-   Replaces the Spotify iframe, which was cross-origin (nothing here could style
-   inside it) and showed only the newest episode to logged-out visitors.
+/* ---------- episodes ----------
+   Replaces the Spotify iframe, which was cross-origin — nothing here could
+   style inside it — and rendered only the newest episode to logged-out
+   visitors.
 
-   Styled as a card to match the rest of the site rather than as a bare bordered
-   list — the first version of this was exactly the flat row list that had
-   already been removed from the follow section for reading generic. Episode
-   artwork does most of the work: it is the visual anchor the list was missing,
-   and every episode in the feed has its own. */
+   Rows are compact triggers. Everything about playback lives in the sticky bar
+   at the bottom of this file: six rows each carrying a progress bar and a clock
+   meant six copies of a control only one of which could ever be active, and
+   every row had to reserve height for something usually hidden. */
+
+/* Horizontal padding lives on the children, not the card. With it on .player
+   the scroll container stopped 16px short of the edge and the scrollbar floated
+   in the gap instead of sitting against the border. */
 .player {
-  margin-top: 46px;
   background: var(--raised);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 8px 20px 18px;
+  padding: 6px 0 12px;
+  overflow: hidden;                 /* keeps the scrollbar inside the radius */
 }
-.episodes { list-style: none; margin: 0; padding: 0; }
+
+.player-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px 8px;
+}
+.player-count {
+  display: inline-block; margin-left: 6px;
+  font-size: 11.5px; font-weight: 650; letter-spacing: 0;
+  color: var(--muted);
+}
+.player-title {
+  margin: 0;
+  font-size: 13px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--faint);
+}
+.player-rss {
+  font-size: 12.5px; font-weight: 600; letter-spacing: .05em;
+  color: var(--muted); text-decoration: none;
+}
+.player-rss:hover { color: var(--accent); }
+
+/* The list scrolls instead of growing without bound. A fixed viewport keeps
+   the card — and the two-column hero it sits in — the same shape whether the
+   show has six episodes or sixty. The mask fades the last row so there is a
+   visible cue that more exists below. */
+.episodes-scroll {
+  max-height: min(52vh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--ink) 22%, transparent) transparent;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+}
+.episodes-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+
+.episodes-scroll::-webkit-scrollbar { width: 10px; }
+.episodes-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 4px;
+}
+.episodes-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  /* Inset via a transparent border so the thumb reads as a slim pill against
+     the card edge rather than a full-width OS bar. */
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+.episodes-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--ink) 34%, transparent);
+  background-clip: content-box;
+}
+
+/* Once everything fits there is nothing below to hint at, so drop the fade. */
+.episodes-scroll[data-complete] {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.episodes { list-style: none; margin: 0; padding: 0 0 20px; }
 
 .episode {
-  display: flex; align-items: center; gap: 16px;
-  padding: 14px 0;
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 16px;
   border-top: 1px solid var(--line);
 }
 .episode:first-child { border-top: 0; }
 
-.ep-art {
-  flex: none;
-  width: 64px; height: 64px;
-  border-radius: 10px;
-  object-fit: cover;
-  background: var(--line);
-}
-
-.ep-body { min-width: 0; flex: 1; }
-/* Clamped, not free-wrapping. These titles run long — "Free Throw Contest +
-   Valentine Marathon and Badger Trail Races" — and in a narrow row beside 52px
-   of artwork and a 44px button that wraps to four or five lines and the rows
-   stop looking like a list. Two lines, then ellipsis. */
-.ep-title {
-  margin: 0; font-size: 16px; font-weight: 560; letter-spacing: -.012em;
-  line-height: 1.35; color: var(--ink);
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-.episode--featured .ep-title { -webkit-line-clamp: 3; }
-.ep-meta { margin: 3px 0 0; font-size: 13.5px; color: var(--muted); }
-
-/* ---- the latest episode gets room to introduce itself ---- */
-.episode--featured { align-items: flex-start; padding: 18px 0 22px; gap: 20px; }
-.episode--featured .ep-art { width: 160px; height: 160px; border-radius: 12px; }
-.episode--featured .ep-title {
-  font-size: clamp(19px, 2.1vw, 23px); font-weight: 620; letter-spacing: -.022em;
-  margin-top: 2px;
-}
-.ep-tag {
-  margin: 0; font-size: 12px; font-weight: 620; letter-spacing: .07em;
-  text-transform: uppercase; color: var(--accent);
-}
-.ep-blurb {
-  margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: var(--muted);
-  max-width: 52ch;
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-@media (max-width: 560px) { .ep-blurb { -webkit-line-clamp: 4; } }
-.episode--featured .ep-play { margin-top: 16px; }
-
-/* ---- play control ---- */
 .ep-play {
   flex: none;
-  width: 44px; height: 44px;          /* full tap target */
+  width: 40px; height: 40px;
   display: inline-flex; align-items: center; justify-content: center;
-  border: 1px solid var(--muted);
+  border: 1px solid var(--muted);      /* 3.31:1 over the hero photo */
   border-radius: 999px;
   background: transparent; color: var(--ink);
   cursor: pointer;
   transition: background-color .18s ease, border-color .18s ease, color .18s ease;
 }
 .ep-play:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); border-color: currentColor; }
-.ep-play .ico { width: 16px; height: 16px; }
+.ep-play .ico { width: 15px; height: 15px; }
 .ep-icon-pause { display: none; }
 .is-playing .ep-icon-play { display: none; }
 .is-playing .ep-icon-pause { display: block; }
 .is-current .ep-play { border-color: var(--accent); color: var(--accent); }
 
-/* ---- progress ---- */
-.ep-progress { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-.ep-bar {
-  flex: 1; height: 4px; border-radius: 999px;
+.ep-art {
+  flex: none;
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--line);
+}
+
+.ep-body { min-width: 0; flex: 1; }
+
+/* Clamped, not free-wrapping. These titles run long — "Free Throw Contest +
+   Valentine Marathon and Badger Trail Races" — and in a narrow column that
+   wraps to four lines and the rows stop reading as a list. */
+.ep-title {
+  margin: 0;
+  font-size: 15px; font-weight: 550; letter-spacing: -.012em; line-height: 1.35;
+  color: var(--ink);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.ep-flag {
+  display: inline-block; vertical-align: 1px; margin-left: 7px;
+  font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent);
+}
+.ep-meta { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+.is-current .ep-title { color: var(--accent); }
+
+/* ---------- sticky playback bar ----------
+   Hidden until something plays, so it costs nothing on arrival. */
+.playerbar {
+  position: fixed; inset: auto 0 0 0; z-index: 60;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-top: 1px solid var(--line);
+}
+@supports not (backdrop-filter: blur(2px)) {
+  .playerbar { background: var(--paper); }
+}
+.playerbar[hidden] { display: none; }
+
+/* Keeps the bar from covering the end of the page. */
+body.has-playerbar { padding-bottom: 84px; }
+
+.playerbar-inner {
+  display: flex; align-items: center; gap: 14px;
+  padding-block: 10px;
+}
+
+.pb-art { flex: none; width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: var(--line); }
+.pb-art[hidden] { display: none; }
+
+.pb-play {
+  flex: none;
+  width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--accent); border-radius: 999px;
+  background: transparent; color: var(--accent);
+  cursor: pointer;
+  transition: background-color .18s ease;
+}
+.pb-play:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.pb-play .ico { width: 16px; height: 16px; }
+.pb-icon-pause { display: none; }
+.playerbar.is-playing .pb-icon-play { display: none; }
+.playerbar.is-playing .pb-icon-pause { display: block; }
+
+.pb-body { flex: 1; min-width: 0; }
+.pb-title {
+  margin: 0 0 5px;
+  font-size: 13.5px; font-weight: 560; color: var(--ink);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pb-progress { display: flex; align-items: center; gap: 12px; }
+.pb-bar {
+  flex: 1; height: 5px; border-radius: 999px;
   background: color-mix(in srgb, var(--ink) 16%, transparent);
   cursor: pointer;
 }
-.ep-bar span { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--accent); }
-.ep-time { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4ch; }
+.pb-bar span { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--accent); }
+.pb-time {
+  font-size: 12px; color: var(--muted);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
 
-.player-note { margin: 16px 0 0; font-size: 13.5px; color: var(--muted); }
-.player-note a { color: var(--ink); text-underline-offset: 3px; }
+.pb-close {
+  flex: none;
+  width: 36px; height: 36px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid transparent; border-radius: 999px;
+  background: transparent; color: var(--muted);
+  cursor: pointer;
+}
+.pb-close:hover { color: var(--ink); border-color: var(--line); }
+.pb-close .ico { width: 16px; height: 16px; }
 
 @media (max-width: 560px) {
-  .player { padding: 6px 14px 14px; }
-  .episode--featured { flex-direction: column; gap: 14px; }
-  .episode--featured .ep-art { width: 100%; height: auto; aspect-ratio: 1; max-width: 220px; }
-  .ep-art { width: 52px; height: 52px; }
-  .ep-title { font-size: 15px; }
+  .player { padding: 4px 12px 10px; }
+  .episodes-scroll { max-height: min(58vh, 380px); }
+  .pb-art { display: none; }          /* the title matters more than the art here */
+  .pb-time { font-size: 11.5px; }
+  body.has-playerbar { padding-bottom: 76px; }
 }

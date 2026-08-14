@@ -6,10 +6,17 @@
     "dev": "astro dev",
     "build": "npm run episodes && astro build",
     "preview": "astro preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "episodes": "python3 tools/build-episodes.py",
     "logo": "python3 tools/make-duck.py"
   },
   "dependencies": {
     "astro": "^5.18.2"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^10.5.8",
+    "@storybook/html-vite": "^10.5.8",
+    "storybook": "^10.5.8"
   }
 }

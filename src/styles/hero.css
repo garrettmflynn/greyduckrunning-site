@@ -7,7 +7,9 @@
    than over the image, which just reads as a white bar. */
 .hero {
   margin-top: -73px;              /* header height + its 1px border */
-  padding: 181px 0 0;             /* 108 of real spacing, plus the 73 clawed back */
+  padding: 181px 0 96px;          /* 108 of real spacing, plus the 73 clawed back.
+                                     The bottom 96 stops the episode card sitting
+                                     flush against the next section. */
   position: relative;
   isolation: isolate;
 }
@@ -26,10 +28,21 @@
    the hero text inboard of the player and every section below. Same mistake was
    made once already on `.about`. */
 .hero-copy { max-width: 620px; }
+@media (min-width: 960px) { .hero-copy { max-width: none; } }
 
-/* Two-column hero, for when the logo comes back.
-.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
-*/
+/* Copy left, episodes right, once there is room for both. Below 960px they
+   stack with the copy first — a two-column layout at phone width would leave
+   each column too narrow to read. */
+.hero-grid { display: grid; gap: 40px; align-items: start; }
+
+@media (min-width: 960px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    gap: 56px;
+    align-items: center;
+  }
+  .hero { padding-bottom: 104px; }
+}
 
 h1 {
   margin: 0 0 14px;

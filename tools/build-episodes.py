@@ -51,16 +51,23 @@ def fetch(url):
         return r.read()
 
 
-def tidy_duration(raw):
+def duration_seconds(raw):
+    """iTunes duration is HH:MM:SS, sometimes MM:SS, sometimes bare seconds."""
     if not raw:
-        return ''
+        return 0
     raw = raw.strip()
     if raw.isdigit():
-        total = int(raw)
-    else:
-        total = 0
-        for part in raw.split(':'):
-            total = total * 60 + int(part)
+        return int(raw)
+    total = 0
+    for part in raw.split(':'):
+        total = total * 60 + int(part)
+    return total
+
+
+def tidy_duration(raw):
+    total = duration_seconds(raw)
+    if not total:
+        return ''
     hours, rem = divmod(total, 3600)
     mins = rem // 60
     if hours:
@@ -122,6 +129,7 @@ def parse(xml_bytes, public_dir):
             'title': (item.findtext('title') or 'Untitled').strip(),
             'audio': enclosure.get('url'),
             'duration': tidy_duration(item.findtext('itunes:duration', namespaces=NS)),
+            'seconds': duration_seconds(item.findtext('itunes:duration', namespaces=NS)),
             'iso': when.strftime('%Y-%m-%d') if when else '',
             'label': when.strftime('%-d %b %Y') if when else '',
             'blurb': blurb(item.findtext('description')),

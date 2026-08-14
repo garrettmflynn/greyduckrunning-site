@@ -2,71 +2,58 @@
 import Icon from './Icon.astro';
 
 /**
- * One episode row, rendered at build time from the RSS feed.
+ * One episode row — compact by design.
  *
- * Server-rendered on purpose: the episode list is the site's primary content,
- * so it needs to be in the HTML for search engines and to work with JavaScript
- * off. The player script enhances this markup rather than producing it.
+ * Playback state lives in the sticky PlayerBar, not here. Per-row progress bars
+ * meant six copies of a control only one of which could ever be active, and the
+ * rows had to grow to make room for something usually hidden.
  *
- * The featured variant is the newest episode, given artwork at 160px and its
- * own blurb; the rest are compact rows.
+ * Server-rendered: the episode list is the site's primary content, so it ships
+ * in the HTML for search engines and works with JavaScript off. The player
+ * script enhances this markup rather than producing it.
  */
 interface Props {
   episode: {
     title: string;
     audio: string;
     duration: string;
+    seconds: number;
     iso: string;
     label: string;
     blurb: string;
     art: string;
   };
-  featured?: boolean;
+  latest?: boolean;
 }
-const { episode, featured = false } = Astro.props;
+const { episode, latest = false } = Astro.props;
 ---
 
-<li class:list={['episode', featured && 'episode--featured']}>
+<li class="episode">
+  <button
+    class="ep-play"
+    type="button"
+    data-audio={episode.audio}
+    data-title={episode.title}
+    data-art={episode.art}
+    data-seconds={episode.seconds}
+    aria-label={`Play ${episode.title}`}
+  >
+    <Icon name="play" class="ep-icon-play" />
+    <Icon name="pause" class="ep-icon-pause" />
+  </button>
+
   {episode.art && (
-    <img
-      class="ep-art"
-      src={episode.art}
-      width={featured ? 160 : 64}
-      height={featured ? 160 : 64}
-      alt=""
-      loading={featured ? 'eager' : 'lazy'}
-    />
+    <img class="ep-art" src={episode.art} width="44" height="44" alt="" loading="lazy" />
   )}
 
   <div class="ep-body">
-    {featured && <p class="ep-tag">Latest episode</p>}
-
-    <h3 class="ep-title">{episode.title}</h3>
-
+    <h3 class="ep-title">
+      {episode.title}
+      {latest && <span class="ep-flag">Latest</span>}
+    </h3>
     <p class="ep-meta">
       <time datetime={episode.iso}>{episode.label}</time>
       {episode.duration && <> · {episode.duration}</>}
     </p>
-
-    {featured && episode.blurb && <p class="ep-blurb">{episode.blurb}</p>}
-
-    {featured && (
-      <button class="ep-play" type="button" data-audio={episode.audio} aria-label={`Play ${episode.title}`}>
-        <Icon name="play" class="ep-icon-play" />
-        <Icon name="pause" class="ep-icon-pause" />
-      </button>
-    )}
-
-    <div class="ep-progress" hidden>
-      <div class="ep-bar"><span></span></div>
-      <span class="ep-time">0:00</span>
-    </div>
   </div>
-
-  {!featured && (
-    <button class="ep-play" type="button" data-audio={episode.audio} aria-label={`Play ${episode.title}`}>
-      <Icon name="play" class="ep-icon-play" />
-      <Icon name="pause" class="ep-icon-pause" />
-    </button>
-  )}
 </li>

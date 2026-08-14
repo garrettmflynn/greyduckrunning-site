@@ -4,28 +4,29 @@ import episodes from '../data/episodes.json';
 import { links } from '../data/site.js';
 
 /**
- * The player card.
+ * The episode card. Compact rows only — playback state lives in the sticky
+ * PlayerBar, which also owns the single <audio> element.
  *
- * One <audio> element shared by every row rather than one per episode: only
- * one thing should ever be playing, and sharing the element makes that
- * structural instead of something to police.
- *
- * This replaced a Spotify iframe, which could not be styled at all (cross
- * origin) and rendered only the newest episode for logged-out visitors.
+ * This replaced a Spotify iframe that could not be styled (cross-origin) and
+ * rendered only the newest episode to logged-out visitors.
  */
 ---
 
 <div class="player reveal" data-delay="2">
-  <audio preload="none"></audio>
+  <div class="player-head">
+    <h2 class="player-title">Episodes <span class="player-count">{episodes.length}</span></h2>
+    <a class="player-rss" href={links.rss} aria-label="Subscribe by RSS">RSS</a>
+  </div>
 
-  <ol class="episodes">
-    {episodes.map((episode, i) => (
-      <EpisodeItem episode={episode} featured={i === 0} />
-    ))}
-  </ol>
-
-  <p class="player-note">
-    Also on <a href={links.spotify} target="_blank" rel="noopener">Spotify</a>,
-    or subscribe by <a href={links.rss}>RSS</a>.
-  </p>
+  {/* Scrolls rather than growing. At roughly weekly cadence this list is 50+
+      within a year, and an unbounded card would push the page — and the
+      two-column hero — out of shape. tabindex makes the region reachable by
+      keyboard, which a scrollable container needs to satisfy WCAG 2.1.1. */}
+  <div class="episodes-scroll" tabindex="0" role="group" aria-label="Episode list, scrollable">
+    <ol class="episodes">
+      {episodes.map((episode, i) => (
+        <EpisodeItem episode={episode} latest={i === 0} />
+      ))}
+    </ol>
+  </div>
 </div>

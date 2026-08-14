@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Sticky playback bar.
+ *
+ * One place to manage playback instead of a control per row. Six rows each
+ * carrying their own progress bar and time meant six copies of a thing only one
+ * of which could ever be active, and every row had to reserve height for
+ * something that was hidden most of the time.
+ *
+ * Hidden until something plays, so it costs nothing on arrival. It carries the
+ * only <audio> element on the page — sharing one element is what makes "only
+ * one episode plays at a time" structural rather than a rule to enforce.
+ */
+---
+
+<div class="playerbar" hidden data-playerbar>
+  <audio preload="none"></audio>
+
+  <div class="wrap playerbar-inner">
+    <img class="pb-art" src="" width="44" height="44" alt="" />
+
+    <button class="pb-play" type="button" aria-label="Pause">
+      <Icon name="play" class="pb-icon-play" />
+      <Icon name="pause" class="pb-icon-pause" />
+    </button>
+
+    <div class="pb-body">
+      <p class="pb-title"></p>
+      <div class="pb-progress">
+        <div class="pb-bar" role="slider" tabindex="0"
+             aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span></span>
+        </div>
+        <span class="pb-time"><span class="pb-now">0:00</span> / <span class="pb-dur">—</span></span>
+      </div>
+    </div>
+
+    <button class="pb-close" type="button" aria-label="Stop playback">
+      <svg class="ico" aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12 19 6.4 17.6 5 12 10.6z"/>
+      </svg>
+    </button>
+  </div>
+</div>
