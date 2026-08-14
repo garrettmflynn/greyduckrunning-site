@@ -1,5 +1,7 @@
 import { defineConfig } from 'astro/config';
 
+import sitemap from '@astrojs/sitemap';
+
 export default defineConfig({
   site: 'https://greyduckrunning.com',
 
@@ -15,4 +17,17 @@ export default defineConfig({
       cssCodeSplit: false,
     },
   },
+
+  // One page, so the sitemap is close to a formality — but lastmod is the field
+  // crawlers actually act on, and the default output omits it. Build time is the
+  // honest value here: the only things that trigger a build are a code change or
+  // the twice-daily refresh finding new episodes, and both change this page.
+  //
+  // changefreq and priority are deliberately left off; Google has said for years
+  // that it ignores them.
+  integrations: [
+    sitemap({
+      serialize: (item) => ({ ...item, lastmod: new Date().toISOString() }),
+    }),
+  ],
 });

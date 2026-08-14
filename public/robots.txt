@@ -1,0 +1,7 @@
+# Grey Duck Running — everything here is meant to be found.
+User-agent: *
+Allow: /
+
+# The episode feed is the point of the site; it is mirrored here so the show is
+# reachable without going through a podcast app first.
+Sitemap: https://greyduckrunning.com/sitemap-index.xml
