@@ -1,0 +1,18 @@
+/* Single entry point, imported once by the base layout.
+
+   Order matters: tokens define the design language, base sets the ground
+   rules, components build on both, and responsive overrides come last.
+
+   Split out of one 540-line file because editing that file with regular
+   expressions broke its brace balance three separate times, each of which
+   silently swallowed every rule after the break. Smaller files are the fix. */
+@import './tokens.css';
+@import './base.css';
+@import './brand.css';
+@import './header.css';
+@import './controls.css';
+@import './hero.css';
+@import './episodes.css';
+@import './content.css';
+@import './motion.css';
+@import './responsive.css';

@@ -1,0 +1,31 @@
+---
+import EpisodeItem from './EpisodeItem.astro';
+import episodes from '../data/episodes.json';
+import { links } from '../data/site.js';
+
+/**
+ * The player card.
+ *
+ * One <audio> element shared by every row rather than one per episode: only
+ * one thing should ever be playing, and sharing the element makes that
+ * structural instead of something to police.
+ *
+ * This replaced a Spotify iframe, which could not be styled at all (cross
+ * origin) and rendered only the newest episode for logged-out visitors.
+ */
+---
+
+<div class="player reveal" data-delay="2">
+  <audio preload="none"></audio>
+
+  <ol class="episodes">
+    {episodes.map((episode, i) => (
+      <EpisodeItem episode={episode} featured={i === 0} />
+    ))}
+  </ol>
+
+  <p class="player-note">
+    Also on <a href={links.spotify} target="_blank" rel="noopener">Spotify</a>,
+    or subscribe by <a href={links.rss}>RSS</a>.
+  </p>
+</div>

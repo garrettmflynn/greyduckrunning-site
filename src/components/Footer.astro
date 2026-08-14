@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { site, social } from '../data/site.js';
+
+/**
+ * Social links live here, not in the header.
+ *
+ * That is the conventional split — header carries navigation and at most one
+ * primary action, footer carries the secondary set — and before this the footer
+ * held nothing but a copyright line while the header had a four-icon toolbar.
+ */
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>&copy; {year} {site.name}</p>
+
+    <nav class="footer-social" aria-label={`${site.name} elsewhere`}>
+      {social.map((item) => (
+        <a
+          class="icon-btn"
+          href={item.href}
+          target="_blank"
+          rel="noopener"
+          aria-label={item.label}
+          title={item.label}
+        >
+          <Icon name={item.icon} />
+        </a>
+      ))}
+    </nav>
+  </div>
+</footer>

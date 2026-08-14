@@ -1,0 +1,78 @@
+/* ============================================================
+   Grey Duck Running
+
+   The logo is 8-bit pixel art. The site deliberately is not.
+   An earlier version pushed the pixel language everywhere —
+   arcade typeface, hard offset shadows, chunky black borders —
+   and it read as a novelty rather than a podcast people would
+   trust. The continuity now comes from the palette, which is
+   sampled from the artwork, and from the duck itself being
+   shown at whole-number scale so it stays crisp. Everything
+   else is ordinary, quiet, modern layout.
+
+   Palette sampled from the cover art:
+     #B0B0B0 duck grey · #F86800 beak orange · #C8C8C8 belly
+   Orange carries through as the single accent.
+   ============================================================ */
+
+:root {
+  --paper:    #FFFFFF;
+  --raised:   #FAFAF9;
+  --ink:      #14161A;
+  --muted:    #454B54;
+  --faint:    #5C636B;
+  --line:     #E4E6EA;
+  --accent:   #B04600;          /* logo orange, darkened to clear 4.5:1 on white */
+  --accent-soft: #FFF1E8;
+  --spotify:  #1DB954;
+
+  --radius:   14px;
+  --radius-sm: 10px;
+  --shadow:   0 1px 2px rgba(16,18,22,.04), 0 8px 24px rgba(16,18,22,.06);
+  --shadow-lg: 0 2px 4px rgba(16,18,22,.05), 0 18px 44px rgba(16,18,22,.10);
+
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+
+  --wrap: 1080px;
+
+  /* Veil over the hero photo. Two stops so the image reads at the top and the
+     player sits on near-solid colour at the bottom. */
+  --veil-top: rgba(255,255,255,.62);
+  --veil-bot: rgba(255,255,255,.94);
+}
+
+/* Dark tokens, applied two ways so a manual choice can override the system.
+   The media query is skipped when the user has explicitly picked light; the
+   attribute rule wins in the other direction. Defining them only inside the
+   media query would make the toggle a no-op on a light-mode machine. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:  #0F1112;
+    --raised: #16191B;
+    --ink:    #F3F4F5;
+    --muted:  #C2C8D0;
+    --faint:  #767D86;
+    --line:   #262A2E;
+    --accent: #FF8A3D;
+    --accent-soft: #2A1B10;
+    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
+    --shadow-lg: 0 2px 4px rgba(0,0,0,.4), 0 18px 44px rgba(0,0,0,.44);
+    --veil-top: rgba(15,17,18,.68);
+    --veil-bot: rgba(15,17,18,.96);
+  }
+}
+:root[data-theme="dark"] {
+    --paper:  #0F1112;
+    --raised: #16191B;
+    --ink:    #F3F4F5;
+    --muted:  #C2C8D0;
+    --faint:  #767D86;
+    --line:   #262A2E;
+    --accent: #FF8A3D;
+    --accent-soft: #2A1B10;
+    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
+    --shadow-lg: 0 2px 4px rgba(0,0,0,.4), 0 18px 44px rgba(0,0,0,.44);
+    --veil-top: rgba(15,17,18,.68);
+    --veil-bot: rgba(15,17,18,.96);
+}

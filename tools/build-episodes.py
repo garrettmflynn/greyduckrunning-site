@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
-"""Write the episode list into index.html from the podcast's RSS feed.
+"""Turn the podcast's RSS feed into data the site builds from.
 
     python3 tools/build-episodes.py
+
+Writes src/data/episodes.json, mirrors the feed to public/feed.xml, and pulls
+episode artwork into public/assets/episodes/.
+
+It emits DATA, not markup. An earlier version spliced HTML between comment
+markers in index.html, which meant the generator owned presentation and every
+layout change had to be made inside Python string literals. Astro components own
+the markup now; this only knows about the feed.
 
 Generated at build time rather than fetched in the browser. The feed does serve
 access-control-allow-origin:* so a runtime fetch would work, but baking the list
@@ -18,6 +26,7 @@ and a dead CDN would leave holes in the page.
 Everything written here is the hosts' own feed content.
 """
 import html
+import json
 import pathlib
 import re
 import sys
@@ -30,7 +39,6 @@ from PIL import Image
 
 FEED = 'https://anchor.fm/s/114a97fbc/podcast/rss'
 NS = {'itunes': 'http://www.itunes.com/dtds/podcast-1.0.dtd'}
-START, END = '<!-- EPISODES:START -->', '<!-- EPISODES:END -->'
 
 ART_FEATURED = 320      # rendered at 160 CSS px, so 2x for retina
 ART_ROW = 128           # rendered at 64
@@ -81,12 +89,12 @@ def save_art(url, dest, size):
     im.save(dest, 'JPEG', quality=78, optimize=True, progressive=True)
 
 
-def parse(xml_bytes, assets):
+def parse(xml_bytes, public_dir):
     channel = ET.fromstring(xml_bytes).find('channel')
     show_art = channel.find('itunes:image', NS)
     show_art = show_art.get('href') if show_art is not None else None
 
-    art_dir = assets / 'episodes'
+    art_dir = public_dir / 'assets' / 'episodes'
     art_dir.mkdir(parents=True, exist_ok=True)
 
     episodes = []
@@ -106,7 +114,7 @@ def parse(xml_bytes, assets):
             dest = art_dir / f'{slug}.jpg'
             try:
                 save_art(art_url, dest, size)
-                art_rel = f'assets/episodes/{dest.name}'
+                art_rel = f'/assets/episodes/{dest.name}'
             except Exception as exc:                  # a missing image is not fatal
                 print(f'  ! artwork for {slug} failed: {exc}')
 
@@ -122,63 +130,9 @@ def parse(xml_bytes, assets):
     return episodes
 
 
-def play_button(ep, title):
-    return f'''<button class="ep-play" type="button"
-                  data-audio="{html.escape(ep['audio'], quote=True)}"
-                  aria-label="Play {title}">
-            <svg class="ico ep-icon-play" aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M8 5.5v13l11-6.5z"/></svg>
-            <svg class="ico ep-icon-pause" aria-hidden="true" viewBox="0 0 24 24">
-              <path d="M7 5h3.2v14H7zM13.8 5H17v14h-3.2z"/></svg>
-          </button>'''
-
-
-def progress():
-    return '''<div class="ep-progress" hidden>
-              <div class="ep-bar"><span></span></div>
-              <span class="ep-time">0:00</span>
-            </div>'''
-
-
-def render(episodes):
-    out = []
-    for i, ep in enumerate(episodes):
-        title = html.escape(ep['title'])
-        art = (f'<img class="ep-art" src="{ep["art"]}" width="160" height="160" alt="" loading="lazy">'
-               if ep['art'] else '')
-        meta = f'<time datetime="{ep["iso"]}">{html.escape(ep["label"])}</time>'
-        if ep['duration']:
-            meta += f' · {html.escape(ep["duration"])}'
-
-        if i == 0:
-            out.append(f'''          <li class="episode episode--featured">
-            {art}
-            <div class="ep-body">
-              <p class="ep-tag">Latest episode</p>
-              <h3 class="ep-title">{title}</h3>
-              <p class="ep-meta">{meta}</p>
-              <p class="ep-blurb">{html.escape(ep['blurb'])}</p>
-              {play_button(ep, title)}
-              {progress()}
-            </div>
-          </li>''')
-        else:
-            out.append(f'''          <li class="episode">
-            {art}
-            <div class="ep-body">
-              <h3 class="ep-title">{title}</h3>
-              <p class="ep-meta">{meta}</p>
-              {progress()}
-            </div>
-            {play_button(ep, title)}
-          </li>''')
-    return '\n'.join(out)
-
-
 def main():
     feed = sys.argv[1] if len(sys.argv) > 1 else FEED
     root = pathlib.Path(__file__).resolve().parent.parent
-    page = root / 'index.html'
 
     raw = fetch(feed)
 
@@ -186,19 +140,17 @@ def main():
     # point at anchor.fm, which is normal — this is a copy, not a new home.
     # Anchor stays canonical for directory submissions; submitting both to
     # Apple would create a duplicate listing of the same show.
-    (root / 'feed.xml').write_bytes(raw)
+    (root / 'public' / 'feed.xml').write_bytes(raw)
 
-    episodes = parse(raw, root / 'assets')
+    episodes = parse(raw, root / 'public')
     if not episodes:
-        raise SystemExit('feed returned no playable episodes; leaving the page alone')
+        raise SystemExit('feed returned no playable episodes; refusing to write an empty list')
 
-    block = f'{START}\n{render(episodes)}\n          {END}'
-    text = page.read_text()
-    if START not in text:
-        raise SystemExit(f'markers missing from index.html: {START} / {END}')
-    page.write_text(re.sub(re.escape(START) + '.*?' + re.escape(END), block, text, flags=re.S))
+    out = root / 'src' / 'data' / 'episodes.json'
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(episodes, indent=2, ensure_ascii=False) + '\n')
 
-    print(f'{len(episodes)} episodes written, feed mirrored to feed.xml')
+    print(f'{len(episodes)} episodes -> src/data/episodes.json, feed -> public/feed.xml')
     for ep in episodes:
         print(f'  {ep["label"]:>12}  {ep["duration"]:>10}  {ep["title"][:44]}')
 

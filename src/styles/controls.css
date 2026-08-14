@@ -1,0 +1,84 @@
+/* ---------- theme toggle ---------- */
+.theme-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; padding: 0;
+  background: transparent; color: var(--muted);
+  /* Border only once there is a solid bar behind it. Over the hero photo a
+     --line border measured 1.00:1 — an outline nobody can see, and the social
+     buttons beside it carry none either. The glyph identifies the control. */
+  border: 1px solid transparent; border-radius: 999px;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--line); background: var(--raised); }
+.site-header.is-scrolled .theme-toggle { border-color: var(--line); }
+.site-header.is-scrolled .brand-name { opacity: 1; max-width: 16rem; transform: none; }
+/* Below this the duck plus three controls already fill the bar. */
+@media (max-width: 430px) { .site-header.is-scrolled .brand-name { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-name { transition: none; }
+}
+.theme-toggle .ico { width: 17px; height: 17px; }
+
+/* Show the icon for the theme you would switch TO, not the one you are in. */
+.theme-toggle .i-sun  { display: none; }
+.theme-toggle .i-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-sun  { display: block; }
+:root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .i-sun  { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+}
+
+.header-actions { display: flex; align-items: center; gap: 6px; }
+.header-actions .theme-toggle { margin-left: 2px; }
+
+/* Outlined, not filled. Two solid brand-coloured slabs in a 73px bar shout over
+   the hero photo and fight each other; an outline keeps them as actions rather
+   than billboards. The border uses --muted, which measures 3.31:1 over the
+   photo and so clears the 3:1 that non-text UI needs — --line was 1.00:1 there,
+   invisible. Brand colour arrives on hover, where it is a bonus rather than the
+   only cue. */
+.cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 40px; padding: 0 14px;
+  border: 1px solid var(--muted); border-radius: 999px;
+  background: transparent; color: var(--ink);
+  font-size: 14.5px; font-weight: 550; letter-spacing: -.01em;
+  text-decoration: none; white-space: nowrap;
+  transition: border-color .18s ease, color .18s ease, background-color .18s ease;
+}
+.cta:hover { border-color: currentColor; background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.cta[data-brand="spotify"]:hover { color: #1DB954; }
+.cta[data-brand="strava"]:hover  { color: #FC4C02; }
+.cta .ico { width: 17px; height: 17px; }
+/* Two labelled actions plus the toggle will not fit a phone bar, so the labels
+   go and the glyphs stay. aria-label on each link keeps them announced. */
+@media (max-width: 620px) {
+  .cta span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .cta { padding: 0; width: 40px; justify-content: center; }
+}
+
+/* Header carries the marks alone. Glyphs use the text colour rather than each
+   brand's own — Spotify green on white is 2.28:1, under the 3:1 that
+   meaningful non-text UI needs. Brand colour comes back on hover, where it is
+   decoration rather than the only signal. */
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px;
+  color: var(--muted); border-radius: 999px;
+  border: 1px solid transparent;
+  transition: color .18s ease, background-color .18s ease, border-color .18s ease;
+}
+.icon-btn:hover { color: var(--ink); background: var(--raised); border-color: var(--line); }
+.icon-btn[aria-label*="Spotify"]:hover { color: #1DB954; }
+.icon-btn[aria-label*="Strava"]:hover  { color: #FC4C02; }
+.icon-btn .ico { width: 19px; height: 19px; }
+
+/* Short viewports (landscape phones): give the header room without pushing the
+   player off screen. */
+@media (max-height: 560px) and (orientation: landscape) {
+  .hero { padding-top: 120px; }
+  h1 { font-size: clamp(32px, 7vw, 44px); }
+}

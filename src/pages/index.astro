@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base>
+  <Header />
+
+  <main id="main">
+    <Hero />
+    <About />
+  </main>
+
+  <Footer />
+</Base>
+
+<script>
+  import '../scripts/theme.js';
+  import '../scripts/player.js';
+  import '../scripts/reveal.js';
+  import '../scripts/header.js';
+</script>

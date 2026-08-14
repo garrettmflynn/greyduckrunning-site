@@ -1,0 +1,55 @@
+/* ---------- hero ---------- */
+/* Photo: Miguel A. Amutio via Unsplash (Unsplash License — free commercial use).
+   Sits behind a two-stop veil so the headline keeps its contrast in both themes;
+   without it the type fails against the runners' kit. */
+/* Pulled up under the sticky header so the photo runs to the very top of the
+   page. Without this the header is transparent over the page background rather
+   than over the image, which just reads as a white bar. */
+.hero {
+  margin-top: -73px;              /* header height + its 1px border */
+  padding: 181px 0 0;             /* 108 of real spacing, plus the 73 clawed back */
+  position: relative;
+  isolation: isolate;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)),
+                    url('/assets/hero-800.jpg');
+  background-size: cover;
+  background-position: center 62%;
+}
+@media (min-width: 801px)  { .hero::before { background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)), url('/assets/hero-1280.jpg'); } }
+@media (min-width: 1281px) { .hero::before { background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)), url('/assets/hero-1920.jpg'); } }
+/* Constrain the COPY, never the wrapper. `.hero-inner` shares an element with
+   `.wrap`, so a max-width here shrinks the container and re-centres it, pushing
+   the hero text inboard of the player and every section below. Same mistake was
+   made once already on `.about`. */
+.hero-copy { max-width: 620px; }
+
+/* Two-column hero, for when the logo comes back.
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
+*/
+
+h1 {
+  margin: 0 0 14px;
+  font-size: clamp(40px, 6.2vw, 68px);
+  font-weight: 700; line-height: 1.03; letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.hero-sub {
+  margin: 0 0 22px;
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-weight: 500; line-height: 1.4; letter-spacing: -.018em;
+  color: var(--ink);
+}
+/* Weight, not colour. A mid-tone accent cannot reach 4.5:1 over a photograph
+   with this much range — measured 1.32 in light mode. Orange still carries the
+   brand on solid backgrounds, where it is verified. */
+.hero-sub em { font-style: normal; font-weight: 700; color: var(--ink); }
+
+/* Over the hero photo the copy takes full ink, not the muted body colour.
+   Muted grey failed WCAG AA against the darkest pixels behind it, and read
+   washed out besides. */
+.lede { margin: 0; font-size: 17.5px; color: var(--ink); max-width: 54ch; font-weight: 450; }

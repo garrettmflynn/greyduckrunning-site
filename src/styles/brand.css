@@ -1,0 +1,34 @@
+/* ------------------------------------------------------------
+   The duck
+
+   assets/duck.svg is generated from a lossless PNG of the original
+   spreadsheet, which recovers the drawing grid exactly: 28x29
+   cells at 100.00% purity. Everything that made earlier versions
+   look broken — the dotted outline, the pale rim, the missing
+   crown and feet edges — came from the 150px JPEG that used to be
+   the only source, and is gone.
+
+   Cells are not square. The source pitch is 24.75px across and
+   14.83px down, the shape of a default Excel cell, so a cell is
+   drawn 5 wide by 3 tall. Square pixels, correct proportions.
+
+   It is real vector now, so it scales freely. Sizes below are
+   still whole multiples of the 140x87 viewBox, which keeps every
+   cell edge on a device pixel.
+   ------------------------------------------------------------ */
+/* No tile. The tile made this read as an app icon dropped into a nav bar —
+   the giveaway of a template header. Bare, larger, and tucked close to the
+   wordmark, the two read as a single lockup instead of "logo chip + heading". */
+.brand-mark {
+  display: block;
+  width: 40px; height: 40px;   /* ~55% of the 73px bar; 52px crowded it */
+  flex: none;
+  margin-right: -2px;
+}
+
+.hero-art img {
+  width: 280px; height: 174px;   /* exactly 2x the 140x87 viewBox */
+  max-width: 100%;
+  margin-inline: auto;
+}
+@media (max-width: 380px) { .hero-art img { width: 140px; height: 87px; } }

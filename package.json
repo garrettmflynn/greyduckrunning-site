@@ -1,0 +1,15 @@
+{
+  "name": "greyduckrunning-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run episodes && astro build",
+    "preview": "astro preview",
+    "episodes": "python3 tools/build-episodes.py",
+    "logo": "python3 tools/make-duck.py"
+  },
+  "dependencies": {
+    "astro": "^5.18.2"
+  }
+}

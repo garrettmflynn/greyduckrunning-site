@@ -1,0 +1,47 @@
+/* ---------- player ---------- */
+
+/* ---------- sections ---------- */
+.section { padding: 96px 0; scroll-margin-top: 88px; }
+.hero { scroll-margin-top: 88px; }
+
+h2 {
+  margin: 0 0 20px;
+  font-size: clamp(27px, 3.4vw, 36px);
+  font-weight: 680; line-height: 1.15; letter-spacing: -.028em;
+}
+.body-lg { color: var(--muted); font-size: 17.5px; margin: 0 0 18px; }
+.sub { color: var(--muted); margin: 0; font-size: 17px; }
+
+/* ---------- about ---------- */
+/* Prose runs the full section width by request. Note this puts it at ~118
+   characters per line, above the 45-75 that reads comfortably — if it ever
+   feels hard to track back to the next line, that is why. */
+
+.covers {
+  list-style: none; margin: 44px 0 0; padding: 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px;
+}
+.covers li {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+.covers li:last-child { border-bottom: 1px solid var(--line); }
+.covers h3 {
+  margin: 0 0 4px;
+  font-size: 16px; font-weight: 620; letter-spacing: -.012em;
+}
+.covers p { margin: 0; color: var(--muted); font-size: 15.5px; }
+
+/* ---------- follow ---------- */
+
+/* ---------- footer ---------- */
+.site-footer { border-top: 1px solid var(--line); padding: 18px 0; }
+/* Socials live here, not in the header. The header keeps navigation and one
+   control; the footer is where secondary links conventionally sit — and it had
+   nothing in it before. */
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap;
+}
+.footer-social { display: flex; align-items: center; gap: 2px; margin-right: -10px; }
+.footer-inner p { margin: 0; font-size: 13px; color: var(--faint); letter-spacing: -.005em; }

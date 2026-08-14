@@ -1,0 +1,13 @@
+---
+/**
+ * A reference into the sprite. Keeps `<use href="#i-...">` in one place so
+ * renaming a symbol is one edit rather than a search across components.
+ */
+interface Props {
+  name: string;
+  class?: string;
+}
+const { name, class: className = '' } = Astro.props;
+---
+
+<svg class={`ico ${className}`.trim()} aria-hidden="true"><use href={`#i-${name}`} /></svg>

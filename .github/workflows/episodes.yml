@@ -4,9 +4,9 @@ name: Refresh episodes from RSS
 # something has to go and look. This runs on a schedule, rebuilds the episode
 # list and the mirrored feed, and commits only when the output actually changed.
 #
-# It does NOT deploy. Pages publishes from the main branch root, so the commit
-# this makes is what triggers a rebuild. An earlier workflow here tried to
-# deploy directly and ended up racing the built-in builder.
+# It does NOT deploy. It commits the refreshed data, and that push triggers
+# deploy.yml, which builds and publishes. Keeping the two separate means a feed
+# outage cannot break a deploy, and a deploy does not depend on the feed.
 
 on:
   schedule:
@@ -34,7 +34,7 @@ jobs:
 
       - run: pip install --quiet Pillow
 
-      - name: Rebuild from the feed
+      - name: Refresh episode data from the feed
         run: python3 tools/build-episodes.py
 
       - name: Commit only if something changed
@@ -45,6 +45,6 @@ jobs:
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html feed.xml assets/episodes
+          git add src/data/episodes.json public/feed.xml public/assets/episodes
           git commit -m "Refresh episodes from RSS"
           git push

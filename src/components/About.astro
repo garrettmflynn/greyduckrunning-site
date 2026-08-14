@@ -1,0 +1,34 @@
+---
+import { site, coverage } from '../data/site.js';
+
+/**
+ * Prose runs the full section width by request. Note that puts it near 118
+ * characters per line, above the 45-75 that reads comfortably — a deliberate
+ * call, not an oversight.
+ *
+ * Host bios belong here once Christian and Lauren supply them. An earlier draft
+ * had invented ones; those were deleted rather than reworded.
+ */
+---
+
+<section class="section" id="about">
+  <div class="wrap about">
+    <div class="reveal">
+      <h2>About the Show</h2>
+      <p class="body-lg">
+        {site.name} is a podcast about endurance events in the Upper Midwest.
+        {site.hosts.join(' and ')} recap races and rides they've done, and preview ones coming up.
+      </p>
+      {/* Host bios go here once Christian and Lauren supply them. */}
+    </div>
+
+    <ul class="covers reveal" data-delay="1">
+      {coverage.map((item) => (
+        <li>
+          <h3>{item.title}</h3>
+          <p>{item.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

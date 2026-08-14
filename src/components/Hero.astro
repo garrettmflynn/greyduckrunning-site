@@ -1,0 +1,32 @@
+---
+import EpisodeList from './EpisodeList.astro';
+import { site } from '../data/site.js';
+
+/**
+ * Title, tagline, one line of context, then the player.
+ *
+ * The section is pulled up under the sticky header so the background photo runs
+ * to the very top of the page; without that the header is transparent over the
+ * page background rather than over the image, which just reads as a white bar.
+ *
+ * Emphasis in the tagline is carried by weight, not colour. A mid-tone accent
+ * cannot reach 4.5:1 against a photograph containing both white shoes and black
+ * shorts — measured at 1.32:1 in light mode.
+ */
+---
+
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1 class="reveal">{site.name}</h1>
+      <p class="hero-sub reveal">A podcast for the <em>mediocre runner</em>.</p>
+      <p class="lede reveal" data-delay="1">
+        {site.hosts.join(' and ')} cover endurance events around the Upper Midwest.
+      </p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <EpisodeList />
+  </div>
+</section>

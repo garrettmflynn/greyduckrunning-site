@@ -1,0 +1,61 @@
+/* ---------- header ---------- */
+/* Transparent while the hero photo is behind it, then it materialises as you
+   scroll. The border and blur only appear with the background, otherwise a
+   hairline floats over the image with nothing under it. */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color .25s ease, border-color .25s ease,
+              backdrop-filter .25s ease;
+}
+.site-header.is-scrolled {
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom-color: var(--line);
+}
+/* No blur support, or colour-mix unsupported: fall back to a solid bar rather
+   than leaving text over a busy photo. */
+@supports not (backdrop-filter: blur(2px)) {
+  .site-header.is-scrolled { background: var(--paper); }
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; min-height: 72px;
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+/* The hero owns the name at the top of the page, so the header shows only the
+   duck there — otherwise the title reads twice within a couple of hundred
+   pixels. The wordmark fades in as the bar materialises, which is the moment
+   the hero heading scrolls out of sight and the name is genuinely useful.
+   It stays in the DOM throughout, so screen readers and search engines see it
+   regardless of scroll position. */
+.brand-name {
+  /* max-width, not just opacity. An invisible element still takes up space, and
+     at 320px the reserved width pushed the controls past the viewport edge and
+     scrolled the whole page sideways. Collapsing the box means it costs nothing
+     until it is actually shown. */
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transform: translateX(-6px);
+  transition: opacity .28s ease, transform .28s ease, max-width .28s ease;
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+@media (max-width: 480px) { .brand-name { font-size: 11px; letter-spacing: .1em; } }
+
+/* Belt and braces: the sprite also carries width/height attributes and an inline
+   style. Relying on this rule alone means that between first paint and styles.css
+   loading, an SVG with no dimensions renders at its default 300x150 and pushes the
+   header down — a visible jump on a cold load. */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ico { width: 19px; height: 19px; fill: currentColor; flex: none; }
+
+@media (max-width: 560px) {
+    }

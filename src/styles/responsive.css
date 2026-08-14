@@ -1,0 +1,15 @@
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  /* Must clear the 73px the hero is pulled up by, or the title lands under the
+     header. The old value here was 56px — a net -17px, which is why this looked
+     crowded on phones. */
+  .hero { padding-top: 150px; }
+  .covers { grid-template-columns: 1fr; gap: 0; }
+  .section { padding: 72px 0; }
+  .player { margin-top: 40px; }
+}
+
+@media (max-width: 560px) {
+  .hero { padding-top: 138px; }
+  body { font-size: 16px; }
+}

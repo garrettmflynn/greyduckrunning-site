@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import { site, actions } from '../data/site.js';
+
+/**
+ * Duck, wordmark, two actions, theme toggle.
+ *
+ * The wordmark is present in the DOM but collapsed until the page scrolls: the
+ * hero owns the name at the top, so showing it here too reads the title twice
+ * within a couple of hundred pixels. It collapses with max-width rather than
+ * opacity alone — an invisible element still occupies space, and the reserved
+ * width used to push the controls past the viewport edge at 320px.
+ */
+---
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label={`${site.name} — home`}>
+      <img class="brand-mark" src="/assets/duck-square.svg" width="180" height="180" alt="" />
+      <span class="brand-name">{site.name}</span>
+    </a>
+
+    <div class="header-actions">
+      {actions.map((action) => (
+        <a
+          class="cta"
+          href={action.href}
+          target="_blank"
+          rel="noopener"
+          data-brand={action.brand}
+          aria-label={action.label}
+        >
+          <Icon name={action.icon} />
+          <span>{action.text}</span>
+        </a>
+      ))}
+
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Switch to dark theme"
+        title="Switch theme"
+      >
+        <Icon name="moon" class="i-moon" />
+        <Icon name="sun" class="i-sun" />
+      </button>
+    </div>
+  </div>
+</header>
