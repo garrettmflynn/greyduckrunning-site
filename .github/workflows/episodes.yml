@@ -1,0 +1,50 @@
+name: Refresh episodes from RSS
+
+# The feed changes whenever Christian and Lauren publish; the site is static, so
+# something has to go and look. This runs on a schedule, rebuilds the episode
+# list and the mirrored feed, and commits only when the output actually changed.
+#
+# It does NOT deploy. Pages publishes from the main branch root, so the commit
+# this makes is what triggers a rebuild. An earlier workflow here tried to
+# deploy directly and ended up racing the built-in builder.
+
+on:
+  schedule:
+    - cron: '17 5,17 * * *'      # twice a day, offset off the hour
+  workflow_dispatch:              # and on demand, for when they publish and want it now
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-episodes
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --quiet Pillow
+
+      - name: Rebuild from the feed
+        run: python3 tools/build-episodes.py
+
+      - name: Commit only if something changed
+        run: |
+          if git diff --quiet; then
+            echo "feed unchanged — nothing to commit"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html feed.xml assets/episodes
+          git commit -m "Refresh episodes from RSS"
+          git push

@@ -52,6 +52,93 @@
     });
   }
 
+  // ---- episode player -----------------------------------------------
+  // One audio element shared by every row, rather than one per episode: only
+  // one thing should ever be playing, and this makes that structural instead
+  // of something to police.
+  var audio = document.querySelector('.player audio');
+  var episodes = [].slice.call(document.querySelectorAll('.episode'));
+
+  if (audio && episodes.length) {
+    var current = null;
+
+    var fmt = function (secs) {
+      if (!isFinite(secs)) return '0:00';
+      var m = Math.floor(secs / 60), s = Math.floor(secs % 60);
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    };
+
+    var paint = function () {
+      episodes.forEach(function (li) {
+        var on = li === current;
+        var btn = li.querySelector('.ep-play');
+        var prog = li.querySelector('.ep-progress');
+        li.classList.toggle('is-current', on);
+        li.classList.toggle('is-playing', on && !audio.paused);
+        prog.hidden = !on;
+        var title = li.querySelector('.ep-title').textContent.trim();
+        btn.setAttribute('aria-label', (on && !audio.paused ? 'Pause ' : 'Play ') + title);
+        btn.setAttribute('aria-pressed', String(on && !audio.paused));
+      });
+    };
+
+    // play() returns a promise that rejects for reasons outside our control —
+    // autoplay policy, a dead URL, a codec the browser will not take. Without
+    // handling it the row stays stuck looking like it is playing.
+    var start = function (li) {
+      var note = li.querySelector('.ep-time');
+      note.textContent = '…';
+      var p = audio.play();
+      if (p && p.catch) {
+        p.then(function () { paint(); })
+         .catch(function (err) {
+           current = null;
+           paint();
+           note.textContent = err && err.name === 'NotAllowedError'
+             ? 'tap to play' : 'unavailable';
+         });
+      } else {
+        paint();
+      }
+    };
+
+    episodes.forEach(function (li) {
+      li.querySelector('.ep-play').addEventListener('click', function () {
+        var src = this.getAttribute('data-audio');
+        if (current === li) {
+          if (audio.paused) { start(li); } else { audio.pause(); paint(); }
+        } else {
+          current = li;
+          audio.src = src;
+          start(li);
+        }
+      });
+    });
+
+    audio.addEventListener('timeupdate', function () {
+      if (!current) return;
+      var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      current.querySelector('.ep-bar span').style.width = pct + '%';
+      current.querySelector('.ep-time').textContent = fmt(audio.currentTime);
+    });
+    audio.addEventListener('play', paint);
+    audio.addEventListener('pause', paint);
+    audio.addEventListener('ended', function () { current = null; paint(); });
+    audio.addEventListener('error', function () {
+      if (!current) return;
+      current.querySelector('.ep-time').textContent = 'unavailable';
+    });
+
+    // Click anywhere on the bar to seek.
+    episodes.forEach(function (li) {
+      li.querySelector('.ep-bar').addEventListener('click', function (e) {
+        if (li !== current || !audio.duration) return;
+        var r = this.getBoundingClientRect();
+        audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+      });
+    });
+  }
+
   // ---- header materialises on scroll --------------------------------
   var header = document.querySelector('.site-header');
   if (header) {

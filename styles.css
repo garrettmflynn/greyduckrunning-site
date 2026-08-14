@@ -185,9 +185,15 @@ a { color: inherit; }
    It stays in the DOM throughout, so screen readers and search engines see it
    regardless of scroll position. */
 .brand-name {
+  /* max-width, not just opacity. An invisible element still takes up space, and
+     at 320px the reserved width pushed the controls past the viewport edge and
+     scrolled the whole page sideways. Collapsing the box means it costs nothing
+     until it is actually shown. */
   opacity: 0;
+  max-width: 0;
+  overflow: hidden;
   transform: translateX(-6px);
-  transition: opacity .28s ease, transform .28s ease;
+  transition: opacity .28s ease, transform .28s ease, max-width .28s ease;
   font-size: 12.5px;
   font-weight: 650;
   letter-spacing: .14em;
@@ -264,15 +270,6 @@ h1 {
 .lede { margin: 0; font-size: 17.5px; color: var(--ink); max-width: 54ch; font-weight: 450; }
 
 /* ---------- player ---------- */
-.player {
-  margin-top: 52px;
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  line-height: 0;
-  background: var(--raised);
-}
-.player iframe { display: block; }
 
 /* ---------- sections ---------- */
 .section { padding: 96px 0; scroll-margin-top: 88px; }
@@ -364,7 +361,9 @@ h2 {
 }
 .theme-toggle:hover { color: var(--ink); border-color: var(--line); background: var(--raised); }
 .site-header.is-scrolled .theme-toggle { border-color: var(--line); }
-.site-header.is-scrolled .brand-name { opacity: 1; transform: none; }
+.site-header.is-scrolled .brand-name { opacity: 1; max-width: 16rem; transform: none; }
+/* Below this the duck plus three controls already fill the bar. */
+@media (max-width: 430px) { .site-header.is-scrolled .brand-name { display: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   .brand-name { transition: none; }
@@ -431,4 +430,111 @@ h2 {
 @media (max-height: 560px) and (orientation: landscape) {
   .hero { padding-top: 120px; }
   h1 { font-size: clamp(32px, 7vw, 44px); }
+}
+
+/* ---------- episode player ----------
+   Replaces the Spotify iframe, which was cross-origin (nothing here could style
+   inside it) and showed only the newest episode to logged-out visitors.
+
+   Styled as a card to match the rest of the site rather than as a bare bordered
+   list — the first version of this was exactly the flat row list that had
+   already been removed from the follow section for reading generic. Episode
+   artwork does most of the work: it is the visual anchor the list was missing,
+   and every episode in the feed has its own. */
+.player {
+  margin-top: 46px;
+  background: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 8px 20px 18px;
+}
+.episodes { list-style: none; margin: 0; padding: 0; }
+
+.episode {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.episode:first-child { border-top: 0; }
+
+.ep-art {
+  flex: none;
+  width: 64px; height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--line);
+}
+
+.ep-body { min-width: 0; flex: 1; }
+/* Clamped, not free-wrapping. These titles run long — "Free Throw Contest +
+   Valentine Marathon and Badger Trail Races" — and in a narrow row beside 52px
+   of artwork and a 44px button that wraps to four or five lines and the rows
+   stop looking like a list. Two lines, then ellipsis. */
+.ep-title {
+  margin: 0; font-size: 16px; font-weight: 560; letter-spacing: -.012em;
+  line-height: 1.35; color: var(--ink);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.episode--featured .ep-title { -webkit-line-clamp: 3; }
+.ep-meta { margin: 3px 0 0; font-size: 13.5px; color: var(--muted); }
+
+/* ---- the latest episode gets room to introduce itself ---- */
+.episode--featured { align-items: flex-start; padding: 18px 0 22px; gap: 20px; }
+.episode--featured .ep-art { width: 160px; height: 160px; border-radius: 12px; }
+.episode--featured .ep-title {
+  font-size: clamp(19px, 2.1vw, 23px); font-weight: 620; letter-spacing: -.022em;
+  margin-top: 2px;
+}
+.ep-tag {
+  margin: 0; font-size: 12px; font-weight: 620; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--accent);
+}
+.ep-blurb {
+  margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: var(--muted);
+  max-width: 52ch;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+@media (max-width: 560px) { .ep-blurb { -webkit-line-clamp: 4; } }
+.episode--featured .ep-play { margin-top: 16px; }
+
+/* ---- play control ---- */
+.ep-play {
+  flex: none;
+  width: 44px; height: 44px;          /* full tap target */
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  background: transparent; color: var(--ink);
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease;
+}
+.ep-play:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); border-color: currentColor; }
+.ep-play .ico { width: 16px; height: 16px; }
+.ep-icon-pause { display: none; }
+.is-playing .ep-icon-play { display: none; }
+.is-playing .ep-icon-pause { display: block; }
+.is-current .ep-play { border-color: var(--accent); color: var(--accent); }
+
+/* ---- progress ---- */
+.ep-progress { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.ep-bar {
+  flex: 1; height: 4px; border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 16%, transparent);
+  cursor: pointer;
+}
+.ep-bar span { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--accent); }
+.ep-time { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4ch; }
+
+.player-note { margin: 16px 0 0; font-size: 13.5px; color: var(--muted); }
+.player-note a { color: var(--ink); text-underline-offset: 3px; }
+
+@media (max-width: 560px) {
+  .player { padding: 6px 14px 14px; }
+  .episode--featured { flex-direction: column; gap: 14px; }
+  .episode--featured .ep-art { width: 100%; height: auto; aspect-ratio: 1; max-width: 220px; }
+  .ep-art { width: 52px; height: 52px; }
+  .ep-title { font-size: 15px; }
 }
