@@ -1,0 +1,90 @@
+/* ---------- loading curtain ---------- */
+/* Hidden by default and revealed only by `html.is-loading`, which an inline
+   script sets and a failsafe timer clears. That ordering matters: if the rule
+   were inverted — visible by default, hidden by JS — a failed script would
+   leave a blank page instead of a working one. */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s ease, visibility 0s .5s;
+}
+
+html.is-loading .loader {
+  opacity: 1;
+  visibility: visible;
+  transition: none;              /* appear instantly, leave gently */
+}
+
+.loader-inner {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  transform: translateY(-4%);    /* optically centred rather than measured */
+}
+
+/* The duck sits still, centred in a circle; the ring around it does the moving.
+   Nothing is applied to the mark itself — it is pixel art, and putting it
+   through a transform sends every edge to the anti-aliaser, which turns a
+   deliberately crisp logo to mush at exactly the moment it is the only thing on
+   screen. A ring can be rotated freely because it has no pixel grid to lose. */
+.loader-duck {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: var(--raised);
+  border: 1px solid var(--line);
+}
+.loader-duck img {
+  display: block;
+  width: 86px;
+  height: 86px;
+  /* The mark's own canvas is not optically centred in its circle — the tail
+     carries more weight than the beak — so nudge rather than trust the grid. */
+  transform: translateX(1px);
+}
+
+/* The ring: a faint full circle with one accent quarter travelling around it. */
+.loader-duck::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  animation: loader-spin 1.05s linear infinite;
+}
+
+@keyframes loader-spin {
+  to { transform: rotate(1turn); }
+}
+
+.loader-word {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* Motion is decoration here; the wait is the same either way. The ring holds
+   still — kept visible rather than hidden so there is still a sign the page is
+   working — and the curtain lifts on the same schedule. */
+@media (prefers-reduced-motion: reduce) {
+  .loader-duck::before {
+    animation: none;
+    border-color: var(--line);
+    border-top-color: var(--accent);
+  }
+}

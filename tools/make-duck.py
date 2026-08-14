@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild the logo assets from assets/logo-source.png.
+"""Rebuild the logo assets from assets-src/logo-source.png.
 
     python3 tools/make-duck.py
 
@@ -208,7 +208,7 @@ def to_png(grid, scale=1):
 
 def main():
     root = pathlib.Path(__file__).resolve().parent.parent
-    src = sys.argv[1] if len(sys.argv) > 1 else root / 'assets' / 'logo-source.png'
+    src = sys.argv[1] if len(sys.argv) > 1 else root / 'assets-src' / 'logo-source.png'
     assets = root / 'assets'
 
     im = Image.open(src).convert('RGB')

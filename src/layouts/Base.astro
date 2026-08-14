@@ -1,5 +1,6 @@
 ---
 import IconSprite from '../components/IconSprite.astro';
+import Loader from '../components/Loader.astro';
 import { site, links } from '../data/site.js';
 import '../styles/main.css';
 
@@ -62,13 +63,26 @@ const schema = {
     />
 
     {/* Runs before the body paints so a chosen theme never flashes the other
-        one. Inline and tiny on purpose — an external file would load too late. */}
+        one, and raises the loading curtain. Inline and tiny on purpose — an
+        external file would load too late for either job. */}
     <script is:inline>
       (function () {
+        var d = document.documentElement;
+
         try {
           var t = localStorage.getItem('theme');
-          if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+          if (t === 'dark' || t === 'light') d.setAttribute('data-theme', t);
         } catch (e) {}
+
+        // The curtain goes up here and comes down in loader.js. This script is
+        // the only place that can promise both: it is inline, so it cannot fail
+        // to load, and it arms its own failsafe before showing anything. If the
+        // module bundle never arrives, the site still appears — a few seconds
+        // late rather than never.
+        d.classList.add('is-loading');
+        setTimeout(function () {
+          d.classList.remove('is-loading');
+        }, 4000);
       })();
     </script>
 
@@ -78,6 +92,7 @@ const schema = {
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <IconSprite />
+    <Loader />
     <slot />
   </body>
 </html>

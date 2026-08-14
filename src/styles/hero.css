@@ -13,16 +13,24 @@
   position: relative;
   isolation: isolate;
 }
-.hero::before {
-  content: '';
+/* The photo is a real <img> inside .hero-bg (see Hero.astro) so the preload
+   scanner can start it immediately. This positions it; the veil goes on top as
+   a pseudo-element of the same box. */
+.hero-bg {
   position: absolute; inset: 0; z-index: -1;
-  background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)),
-                    url('/assets/hero-800.jpg');
-  background-size: cover;
-  background-position: center 62%;
+  overflow: hidden;
 }
-@media (min-width: 801px)  { .hero::before { background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)), url('/assets/hero-1280.jpg'); } }
-@media (min-width: 1281px) { .hero::before { background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot)), url('/assets/hero-1920.jpg'); } }
+.hero-bg img {
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 62%;   /* was background-position; same framing */
+}
+.hero-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: linear-gradient(to bottom, var(--veil-top), var(--veil-bot));
+}
 /* Constrain the COPY, never the wrapper. `.hero-inner` shares an element with
    `.wrap`, so a max-width here shrinks the container and re-centres it, pushing
    the hero text inboard of the player and every section below. Same mistake was

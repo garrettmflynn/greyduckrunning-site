@@ -16,6 +16,39 @@ import { site } from '../data/site.js';
 ---
 
 <section class="hero" id="top">
+  {/*
+    A real <img>, not a CSS background. The preload scanner finds this in the
+    raw HTML before the stylesheet has been fetched, let alone parsed — a
+    background-image on a pseudo-element cannot be discovered until CSS has
+    arrived AND the rule has matched, which delays the largest paint on the
+    page. It also means format negotiation is the browser's job rather than
+    something faked with media queries.
+  */}
+  <div class="hero-bg" aria-hidden="true">
+    <picture>
+      <source
+        type="image/avif"
+        sizes="100vw"
+        srcset="/assets/hero-800.avif 800w, /assets/hero-1280.avif 1280w, /assets/hero-1920.avif 1920w"
+      />
+      <source
+        type="image/webp"
+        sizes="100vw"
+        srcset="/assets/hero-800.webp 800w, /assets/hero-1280.webp 1280w, /assets/hero-1920.webp 1920w"
+      />
+      <img
+        src="/assets/hero-1280.jpg"
+        sizes="100vw"
+        srcset="/assets/hero-800.jpg 800w, /assets/hero-1280.jpg 1280w, /assets/hero-1920.jpg 1920w"
+        width="1920"
+        height="864"
+        alt=""
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+  </div>
+
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <h1 class="reveal">{site.name}</h1>

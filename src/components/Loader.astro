@@ -1,0 +1,29 @@
+---
+/**
+ * The opening card: the duck, then the site.
+ *
+ * Two rules govern this thing, because a loading overlay is the single easiest
+ * way to make a working site look broken:
+ *
+ *   1. It is never shown unless something can also take it down. The class that
+ *      reveals it is set by an inline script that also arms a failsafe timer, so
+ *      the overlay cannot outlive its own removal. With JavaScript off the class
+ *      is never set and this markup stays invisible.
+ *
+ *   2. It waits for what is actually visible — the hero photograph decoded and
+ *      the webfont resolved — rather than the `load` event, which fires long
+ *      after both and waits on things nobody is looking at.
+ *
+ * aria-hidden throughout: this is a curtain, not content. Screen readers get the
+ * real page immediately, which is already in the DOM behind it.
+ */
+---
+
+<div class="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <div class="loader-duck">
+      <img src="/assets/duck-square.svg" width="180" height="180" alt="" />
+    </div>
+    <p class="loader-word">Grey Duck Running</p>
+  </div>
+</div>

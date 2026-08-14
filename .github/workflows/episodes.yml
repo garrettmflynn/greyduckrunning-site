@@ -4,9 +4,14 @@ name: Refresh episodes from RSS
 # something has to go and look. This runs on a schedule, rebuilds the episode
 # list and the mirrored feed, and commits only when the output actually changed.
 #
-# It does NOT deploy. It commits the refreshed data, and that push triggers
-# deploy.yml, which builds and publishes. Keeping the two separate means a feed
-# outage cannot break a deploy, and a deploy does not depend on the feed.
+# It does NOT deploy. It commits the refreshed data to main, and that push
+# triggers deploy.yml, which builds and publishes. Keeping the two separate means
+# a feed outage cannot break a deploy, and a deploy does not depend on the feed.
+#
+# Branch model: work happens on dev, publishing happens on main. That makes this
+# workflow the one thing that writes to main directly, so it also carries the
+# refreshed data back to dev. Without that, every refresh would leave dev another
+# commit behind and the next merge would conflict on generated files.
 
 on:
   schedule:
@@ -27,6 +32,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0          # dev's history has to be here to merge into it
 
       - uses: actions/setup-python@v5
         with:
@@ -37,14 +43,54 @@ jobs:
       - name: Refresh episode data from the feed
         run: python3 tools/build-episodes.py
 
-      - name: Commit only if something changed
+      - name: Commit to main only if something changed
+        id: commit
         run: |
-          if git diff --quiet; then
-            echo "feed unchanged — nothing to commit"
-            exit 0
-          fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Stage before testing: `git diff` alone ignores untracked files, and a
+          # new episode arrives partly as new artwork under public/assets/episodes.
+          # Testing the unstaged diff would have missed an art-only change.
+          #
+          # Paths are written out rather than held in a variable: an unquoted
+          # "$PATHS" depends on the shell word-splitting it, which bash does and
+          # zsh does not. A workflow that writes to main should not turn on that.
           git add src/data/episodes.json public/feed.xml public/assets/episodes
+
+          if git diff --cached --quiet; then
+            echo "feed unchanged — nothing to commit"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
           git commit -m "Refresh episodes from RSS"
-          git push
+          git pull --rebase origin main    # in case main moved while we were building
+          git push origin main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Carry the refreshed data back to dev
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          git checkout -B dev origin/dev
+
+          if ! git merge main --no-edit; then
+            unresolved="$(git diff --name-only --diff-filter=U)"
+            unexpected="$(printf '%s\n' "$unresolved" \
+              | grep -Ev '^(src/data/episodes\.json|public/feed\.xml|public/assets/episodes/)' || true)"
+
+            # A conflict outside the generated paths means dev and main have
+            # genuinely diverged. Auto-resolving that would silently discard
+            # someone's work, so stop and let a human look.
+            if [ -n "$unexpected" ]; then
+              echo "::error::dev and main have diverged outside the generated files."
+              printf '%s\n' "$unexpected"
+              exit 1
+            fi
+
+            git checkout main -- src/data/episodes.json public/feed.xml public/assets/episodes
+            git add src/data/episodes.json public/feed.xml public/assets/episodes
+            git -c core.editor=true merge --continue
+          fi
+
+          git push origin dev
