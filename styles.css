@@ -307,12 +307,6 @@ h2 {
 .covers p { margin: 0; color: var(--muted); font-size: 15.5px; }
 
 /* ---------- follow ---------- */
-.follow { border-top: 1px solid var(--line); background: var(--raised); padding: 40px 0; }
-.follow-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 32px; flex-wrap: wrap;
-}
-.follow h2 { margin-bottom: 6px; font-size: clamp(22px, 2.4vw, 26px); }
 
 /* ---------- footer ---------- */
 .site-footer { border-top: 1px solid var(--line); padding: 18px 0; }
@@ -354,13 +348,6 @@ h2 {
 @media (max-width: 560px) {
   .hero { padding-top: 138px; }
   body { font-size: 16px; }
-  .follow-inner { align-items: flex-start; }
-  }
-
-/* ---------- print ---------- */
-@media print {
-  .site-header, .player, .follow { display: none; }
-  body { background: #fff; color: #000; font-size: 12pt; }
 }
 
 /* ---------- theme toggle ---------- */
@@ -397,23 +384,30 @@ h2 {
 .header-actions { display: flex; align-items: center; gap: 6px; }
 .header-actions .theme-toggle { margin-left: 2px; }
 
-/* One primary action in the header — the conventional shape, and the thing that
-   stops the ecosystem being unreachable without scrolling to the footer. The
-   full set of links stays in the footer; this is just the main door. */
+/* Outlined, not filled. Two solid brand-coloured slabs in a 73px bar shout over
+   the hero photo and fight each other; an outline keeps them as actions rather
+   than billboards. The border uses --muted, which measures 3.31:1 over the
+   photo and so clears the 3:1 that non-text UI needs — --line was 1.00:1 there,
+   invisible. Brand colour arrives on hover, where it is a bonus rather than the
+   only cue. */
 .cta {
   display: inline-flex; align-items: center; gap: 8px;
-  min-height: 44px; padding: 0 18px;
-  border-radius: 999px;
-  background: var(--spotify); color: #0B0F0C;      /* 7.46:1 */
-  font-size: 15px; font-weight: 600; letter-spacing: -.01em;
+  min-height: 40px; padding: 0 14px;
+  border: 1px solid var(--muted); border-radius: 999px;
+  background: transparent; color: var(--ink);
+  font-size: 14.5px; font-weight: 550; letter-spacing: -.01em;
   text-decoration: none; white-space: nowrap;
-  transition: background-color .18s ease, box-shadow .18s ease;
+  transition: border-color .18s ease, color .18s ease, background-color .18s ease;
 }
-.cta:hover { background: #23dc68; box-shadow: 0 6px 18px rgba(29,185,84,.3); }
-.cta .ico { width: 18px; height: 18px; }
-@media (max-width: 420px) {
-  .cta span { position: absolute; left: -9999px; }   /* glyph only when tight */
-  .cta { padding: 0; width: 44px; justify-content: center; }
+.cta:hover { border-color: currentColor; background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.cta[data-brand="spotify"]:hover { color: #1DB954; }
+.cta[data-brand="strava"]:hover  { color: #FC4C02; }
+.cta .ico { width: 17px; height: 17px; }
+/* Two labelled actions plus the toggle will not fit a phone bar, so the labels
+   go and the glyphs stay. aria-label on each link keeps them announced. */
+@media (max-width: 620px) {
+  .cta span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .cta { padding: 0; width: 40px; justify-content: center; }
 }
 
 /* Header carries the marks alone. Glyphs use the text colour rather than each
@@ -431,22 +425,6 @@ h2 {
 .icon-btn[aria-label*="Spotify"]:hover { color: #1DB954; }
 .icon-btn[aria-label*="Strava"]:hover  { color: #FC4C02; }
 .icon-btn .ico { width: 19px; height: 19px; }
-
-/* ---------- follow: named links, inline ---------- */
-.links {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px;
-}
-.links a {
-  display: inline-flex; align-items: center; gap: 9px;
-  text-decoration: none; color: var(--ink);
-  font-size: 15.5px; font-weight: 500;
-  transition: color .18s ease;
-}
-.links a:hover { color: var(--accent); }
-.links .ico { width: 18px; height: 18px; color: var(--faint); flex: none; }
-.links a:hover .ico { color: currentColor; }
-
 
 /* Short viewports (landscape phones): give the header room without pushing the
    player off screen. */
