@@ -15,6 +15,14 @@ export const symbols = `<symbol id="i-spotify" viewBox="0 0 24 24"><path d="M12 
 
     <!-- Stroked, not filled: both are simple geometry, and drawing them as
          outlines avoids hand-authoring a filled crescent path. -->
+    <!-- Calendar: stroked geometry like the sun and moon, so the subscribe
+         action sits beside the brand marks without looking heavier than them. -->
+    <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.2" y="4.8" width="17.6" height="16" rx="2.4"></rect>
+      <path d="M3.2 9.6h17.6M8 2.8v4M16 2.8v4"></path>
+    </symbol>
+
     <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round">
       <circle cx="12" cy="12" r="4.2"></circle>

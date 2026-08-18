@@ -7,39 +7,49 @@
  */
 document.documentElement.classList.add('js');
 
-const reveals = document.querySelectorAll('.reveal');
 const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+const supported = 'IntersectionObserver' in window;
 
-if (reduced || !('IntersectionObserver' in window)) {
-  reveals.forEach((el) => el.classList.add('is-in'));
-} else {
-  const io = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.add('is-in');
-      io.unobserve(entry.target);
-    }
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+const io = reduced || !supported
+  ? null
+  : new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+    );
+
+/** Every page brings its own .reveal elements, so this runs per navigation. */
+const setup = () => {
+  const reveals = Array.from(document.querySelectorAll('.reveal:not(.is-in)'));
+  if (!reveals.length) return;
+
+  if (!io) {
+    reveals.forEach((el) => el.classList.add('is-in'));
+    return;
+  }
 
   reveals.forEach((el) => io.observe(el));
 
-  // Anything already on screen should not wait for a scroll event.
   const revealOnScreen = () => {
-    reveals.forEach((el) => {
+    for (const el of reveals) {
       if (el.getBoundingClientRect().top < window.innerHeight) {
         el.classList.add('is-in');
         io.unobserve(el);
       }
-    });
+    }
   };
 
   // Hold until the curtain lifts, otherwise the entrance animation plays behind
   // it and the page is simply there when the loader fades. Falls through
-  // immediately when there is no curtain.
+  // immediately when there is no curtain — which is every navigation after the
+  // first, since the loader only runs on initial load.
   if (document.documentElement.classList.contains('is-loading')) {
-    window.addEventListener('site:ready', () => requestAnimationFrame(revealOnScreen), {
-      once: true,
-    });
+    window.addEventListener('site:ready', () => requestAnimationFrame(revealOnScreen), { once: true });
   } else {
     requestAnimationFrame(revealOnScreen);
   }
@@ -52,10 +62,8 @@ if (reduced || !('IntersectionObserver' in window)) {
   // resolves itself once looked at, but only if something re-checks then.
   document.addEventListener(
     'visibilitychange',
-    () => {
-      if (!document.hidden) revealOnScreen();
-    },
-    { passive: true }
+    () => { if (!document.hidden) revealOnScreen(); },
+    { passive: true, once: true }
   );
 
   // And if neither the observer nor the frame callback ever runs, bound the
@@ -63,4 +71,10 @@ if (reduced || !('IntersectionObserver' in window)) {
   // only reveals what is already on screen, so scroll reveal still works below
   // the fold.
   setTimeout(revealOnScreen, 2500);
-}
+};
+
+// astro:page-load fires on first load too, but a deferred module can register
+// its listener after that has already gone out — so run once directly as well.
+// Every setup here is idempotent, guarded on the elements it binds to.
+setup();
+document.addEventListener('astro:page-load', setup);

@@ -1,8 +1,18 @@
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+/* No global smooth scrolling. It applies to programmatic scrolls too, and the
+   ClientRouter scrolls to the top of every page it navigates to — so with
+   smooth on, arriving at a page made the window visibly glide on its own,
+   which reads as the site scrolling itself rather than as a page load.
+   In-page anchors opt back in below. */
+html { -webkit-text-size-adjust: 100%; }
+
+/* The one place a slide is wanted: same-page jumps, of which the skip link is
+   the main one. :target only matches when a hash actually points at something. */
+html:has(:target) { scroll-behavior: smooth; }
+
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html, html:has(:target) { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: .001ms !important;
     animation-iteration-count: 1 !important;

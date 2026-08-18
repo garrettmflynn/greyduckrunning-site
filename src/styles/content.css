@@ -45,3 +45,163 @@ h2 {
 }
 .footer-social { display: flex; align-items: center; gap: 2px; margin-right: -10px; }
 .footer-inner p { margin: 0; font-size: 13px; color: var(--faint); letter-spacing: -.005em; }
+
+/* ---------- interior pages ---------- */
+/* No top padding here. The header is sticky and therefore still in flow — the
+   hero pulls itself up under it with a negative margin — so reserving its
+   height again on interior pages counted it twice and left ~215px of empty
+   page above the first heading. The section's own padding is the whole gap. */
+.page > .section:first-child { padding-top: 56px; }
+@media (max-width: 700px) { .page > .section:first-child { padding-top: 36px; } }
+
+.text-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-weight: 550;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.text-link:hover { color: var(--ink); }
+
+.about-preview .about { max-width: 62ch; }
+
+.covers-heading { margin: 48px 0 20px; }
+
+/* ---------- bios ---------- */
+.bios {
+  display: grid;
+  gap: 34px;
+  margin-top: 40px;
+}
+/* Three across, so the three bios read as variations on one form rather than
+   a list. They tell the same story in the same order — greeting, how they got
+   here, life outside running — and side by side the headings and the paragraph
+   breaks line up, which is what makes that visible. An earlier two-column
+   version spanned Lauren's across two rows and destroyed exactly that. */
+@media (min-width: 1040px) {
+  .bios { grid-template-columns: repeat(3, 1fr); gap: 0 44px; }
+}
+
+/* One rhythm for all three: the same space between beats in every column. */
+.bio p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  max-width: 64ch;
+}
+.bio p:last-child { margin-bottom: 0; }
+
+/* A rule under each name, so the three heads read as one row across. */
+.bio-head {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bio-head { margin-bottom: 16px; }
+.bio-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 660;
+  letter-spacing: -.02em;
+}
+.bio-role {
+  margin: 2px 0 0;
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ---------- episode archive ---------- */
+.archive-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.archive-head h2 { margin: 0 0 8px; }
+.archive-head .body-lg { margin: 0; max-width: 48ch; }
+.archive-subscribe { display: grid; justify-items: start; gap: 8px; }
+
+.archive { list-style: none; margin: 0; padding: 0; }
+
+.archive-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px 0;
+  border-top: 1px solid var(--line);
+}
+.archive-art {
+  flex-shrink: 0;
+  width: 88px; height: 88px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+.archive-body { flex: 1; min-width: 0; }
+.archive-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 620;
+  letter-spacing: -.015em;
+}
+.archive-meta {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--faint);
+}
+.archive-blurb {
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 68ch;
+  /* Descriptions run to several hundred words in the feed; three lines is
+     enough to tell whether you want to press play. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.archive-play { flex-shrink: 0; margin-top: 2px; }
+
+@media (max-width: 620px) {
+  .archive-item { gap: 14px; padding: 18px 0; }
+  .archive-art { width: 64px; height: 64px; }
+  .archive-title { font-size: 16.5px; }
+  .archive-blurb { -webkit-line-clamp: 2; font-size: 14px; }
+}
+
+/* Signatures. Placeholder type today, a scan tomorrow — sized so the two are
+   interchangeable without the column reflowing around them. */
+.bio-sign,
+.bio-sign-img {
+  display: block;
+  margin-top: 20px;
+  height: 38px;
+}
+.bio-sign {
+  font-family: 'Caveat', 'Segoe Script', 'Bradley Hand', cursive;
+  font-size: 31px;
+  font-weight: 600;
+  line-height: 38px;
+  color: var(--ink);
+  /* Signatures sit low and lean; a touch of slant sells it without a real face. */
+  transform: rotate(-1.2deg);
+  transform-origin: left center;
+}
+.bio-sign-img {
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  object-position: left center;
+}
+/* A scanned signature is almost always black on transparent, which vanishes on
+   the dark theme. Inverting is cheaper than asking for two files. */
+:root[data-theme='dark'] .bio-sign-img { filter: invert(1); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .bio-sign-img { filter: invert(1); }
+}

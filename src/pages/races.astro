@@ -1,0 +1,12 @@
+---
+import Page from '../layouts/Page.astro';
+import Events from '../components/Events.astro';
+import { site } from '../data/site.js';
+---
+
+<Page
+  title={`Race Calendar | ${site.name}`}
+  description="Endurance events around the Upper Midwest — running, gravel and trail races the show covers. Subscribe to the calendar."
+>
+  <Events />
+</Page>

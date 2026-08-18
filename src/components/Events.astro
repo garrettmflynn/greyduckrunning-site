@@ -1,0 +1,81 @@
+---
+import events from '../data/events.json';
+
+/**
+ * The race calendar.
+ *
+ * Google Calendar is where Christian and Lauren edit; this is where it is
+ * published. Rendering it ourselves rather than embedding Google's widget buys
+ * three things the embed cannot: it matches the site, it works with JavaScript
+ * off, and — most usefully — every event carries its own registration link in
+ * the calendar description, which we surface as the row itself.
+ *
+ * Grouped by month because a flat list of thirty dates gives no sense of "what
+ * is on soon" versus "what is in October".
+ */
+
+// Months in feed order; events.json is already sorted by date.
+const months = [];
+for (const event of events) {
+  const last = months[months.length - 1];
+  if (last && last.label === event.monthLabel) last.events.push(event);
+  else months.push({ label: event.monthLabel, events: [event] });
+}
+
+// Subscribing points at our own mirror, not Google's URL. If the calendar is
+// ever rebuilt or moved, subscriptions survive — that is the whole point of
+// republishing rather than linking.
+const feed = `${Astro.site?.origin ?? 'https://greyduckrunning.com'}/events.ics`;
+const webcal = feed.replace(/^https?:/, 'webcal:');
+const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(feed)}`;
+---
+
+<section class="section" id="races">
+  <div class="wrap">
+    <div class="events-head reveal">
+      <div>
+        <h2>Race Calendar</h2>
+        <p class="body-lg">
+          Endurance events around the Upper Midwest — the ones we cover, and the
+          ones we're signed up for.
+        </p>
+      </div>
+
+      <div class="events-subscribe">
+        {/* Not just "Subscribe": the header already has a Subscribe button for
+            the podcast, and two of them on screen at once is a coin toss. */}
+        <a class="cta" href={webcal} data-brand="calendar" aria-label="Subscribe to the race calendar">
+          <svg class="ico" aria-hidden="true"><use href="#i-calendar"></use></svg>
+          <span>Subscribe to Races</span>
+        </a>
+        <a class="events-alt" href={google} target="_blank" rel="noopener">Add to Google Calendar</a>
+      </div>
+    </div>
+
+    {months.map((month, mi) => (
+      <div class="events-month reveal" data-delay={mi === 0 ? '1' : '2'}>
+        <h3 class="events-month-label">{month.label}</h3>
+        <ul class="events-list">
+          {month.events.map((event) => (
+            <li class="event">
+              <time class="event-date" datetime={event.iso}>
+                <span class="event-day">{event.day}</span>
+                <span class="event-weekday">{event.weekday}</span>
+              </time>
+              <div class="event-body">
+                {/* The whole row is the link where there is one — a race name
+                    that goes to the race is more useful than a "details" affordance. */}
+                {event.url ? (
+                  <a class="event-title" href={event.url} target="_blank" rel="noopener">{event.title}</a>
+                ) : (
+                  <span class="event-title">{event.title}</span>
+                )}
+                {event.location && <p class="event-where">{event.location}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+import events from '../data/events.json';
+
+/**
+ * The next few races, on the home page. Full calendar lives at /races.
+ *
+ * Four, because that reliably spans more than one weekend without turning the
+ * home page into the calendar page.
+ */
+const next = events.slice(0, 4);
+---
+
+{next.length > 0 && (
+  <section class="section" id="races">
+    <div class="wrap">
+      <div class="events-head reveal">
+        <div>
+          <h2>Coming Up</h2>
+          <p class="body-lg">Races around the Upper Midwest over the next few weekends.</p>
+        </div>
+        <a class="cta" href="/races/" data-brand="calendar">
+          <svg class="ico" aria-hidden="true"><use href="#i-calendar"></use></svg>
+          <span>Full Calendar</span>
+        </a>
+      </div>
+
+      <ul class="events-list reveal" data-delay="1">
+        {next.map((event) => (
+          <li class="event">
+            <time class="event-date" datetime={event.iso}>
+              <span class="event-day">{event.day}</span>
+              <span class="event-weekday">{event.month}</span>
+            </time>
+            <div class="event-body">
+              {event.url ? (
+                <a class="event-title" href={event.url} target="_blank" rel="noopener">{event.title}</a>
+              ) : (
+                <span class="event-title">{event.title}</span>
+              )}
+              {event.location && <p class="event-where">{event.location}</p>}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}

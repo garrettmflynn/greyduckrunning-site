@@ -1,0 +1,69 @@
+---
+import Icon from './Icon.astro';
+import episodes from '../data/episodes.json';
+import { links } from '../data/site.js';
+
+/**
+ * Every episode, with room to breathe.
+ *
+ * The hero's card is deliberately cramped — it shares a row with the copy. Here
+ * there is a whole page, so each episode gets its artwork at a usable size and
+ * its description, which the compact rows have no room for.
+ *
+ * Rows keep the .episode / .ep-play contract and the data- attributes, because
+ * that is what player.js binds to; only the surrounding layout differs.
+ */
+---
+
+<section class="section">
+  <div class="wrap">
+    <div class="archive-head reveal">
+      <div>
+        <h2>Episodes</h2>
+        <p class="body-lg">Race recaps and previews from around the Upper Midwest.</p>
+      </div>
+      <div class="archive-subscribe">
+        <a class="cta" href={links.spotify} target="_blank" rel="noopener" data-brand="spotify">
+          <Icon name="spotify" />
+          <span>Subscribe</span>
+        </a>
+        <a class="events-alt" href={links.rss}>RSS feed</a>
+      </div>
+    </div>
+
+    <ol class="archive reveal" data-delay="1">
+      {episodes.map((episode, i) => (
+        <li class="episode archive-item">
+          {episode.art && (
+            <img class="archive-art" src={episode.art} width="88" height="88" alt="" loading={i < 3 ? 'eager' : 'lazy'} />
+          )}
+
+          <div class="archive-body">
+            <h3 class="archive-title">
+              {episode.title}
+              {i === 0 && <span class="ep-flag">Latest</span>}
+            </h3>
+            <p class="archive-meta">
+              <time datetime={episode.iso}>{episode.label}</time>
+              {episode.duration && <> · {episode.duration}</>}
+            </p>
+            {episode.blurb && <p class="archive-blurb">{episode.blurb}</p>}
+          </div>
+
+          <button
+            class="ep-play archive-play"
+            type="button"
+            data-audio={episode.audio}
+            data-title={episode.title}
+            data-art={episode.art}
+            data-seconds={episode.seconds}
+            aria-label={`Play ${episode.title}`}
+          >
+            <Icon name="play" class="ep-icon-play" />
+            <Icon name="pause" class="ep-icon-pause" />
+          </button>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

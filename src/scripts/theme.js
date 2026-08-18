@@ -12,8 +12,8 @@
  * paint, not after a bundle loads.
  */
 const root = document.documentElement;
-const toggle = document.querySelector('.theme-toggle');
 const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)');
+let toggle = null;
 
 const effective = () => {
   const set = root.getAttribute('data-theme');
@@ -32,7 +32,12 @@ const sync = () => {
   meta?.setAttribute('content', dark ? '#0F1112' : '#FFFFFF');
 };
 
-if (toggle) {
+// The header — and with it the toggle — is fresh DOM after every navigation,
+// so this re-runs rather than binding once at module load.
+const setup = () => {
+  toggle = document.querySelector('.theme-toggle');
+  if (!toggle || toggle.dataset.bound) return sync();
+  toggle.dataset.bound = '1';
   sync();
   toggle.addEventListener('click', () => {
     const next = effective() === 'dark' ? 'light' : 'dark';
@@ -40,7 +45,32 @@ if (toggle) {
     try { localStorage.setItem('theme', next); } catch {}
     sync();
   });
-}
+};
+
+// astro:page-load fires on first load too, but a deferred module can register
+// its listener after that has already gone out — so run once directly as well.
+// Every setup here is idempotent, guarded on the elements it binds to.
+setup();
+document.addEventListener('astro:page-load', setup);
+
+/**
+ * Re-apply the stored choice after a client-side navigation.
+ *
+ * The ClientRouter swaps the incoming document's <html> attributes onto the
+ * live one, and the server never renders data-theme — it is set at runtime by
+ * the inline head script. So every navigation silently dropped the attribute
+ * and the site fell back to following the system.
+ *
+ * astro:after-swap runs before the new page paints, which is what keeps this
+ * from being a visible flash of the wrong theme.
+ */
+document.addEventListener('astro:after-swap', () => {
+  try {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+  } catch {}
+  sync();
+});
 
 // Follow the system only while the visitor has never chosen explicitly.
 systemDark?.addEventListener?.('change', () => {

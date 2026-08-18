@@ -1,0 +1,272 @@
+[
+  {
+    "title": "Coon Fork 40",
+    "iso": "2026-08-22",
+    "day": "22",
+    "month": "Aug",
+    "weekday": "Sat",
+    "monthLabel": "August 2026",
+    "location": "Augusta, WI",
+    "url": "https://coonforkgravel.com/"
+  },
+  {
+    "title": "Shawnee Hills Trail Races",
+    "iso": "2026-08-22",
+    "day": "22",
+    "month": "Aug",
+    "weekday": "Sat",
+    "monthLabel": "August 2026",
+    "location": "Ozark, IL",
+    "url": "https://www.shawneehills100.com/#/"
+  },
+  {
+    "title": "Wausa Marathon",
+    "iso": "2026-08-22",
+    "day": "22",
+    "month": "Aug",
+    "weekday": "Sat",
+    "monthLabel": "August 2026",
+    "location": "Wausau, WI",
+    "url": "https://www.visitwausau.com/event/the-wausau-marathon/563/"
+  },
+  {
+    "title": "Midwest States 100",
+    "iso": "2026-08-29",
+    "day": "29",
+    "month": "Aug",
+    "weekday": "Sat",
+    "monthLabel": "August 2026",
+    "location": "Park Falls, WI",
+    "url": "https://trailhead.ultrasignup.com/races/midwest-trail-running-races/"
+  },
+  {
+    "title": "The Shady City Race",
+    "iso": "2026-08-29",
+    "day": "29",
+    "month": "Aug",
+    "weekday": "Sat",
+    "monthLabel": "August 2026",
+    "location": "Marysville, OH",
+    "url": "https://racepenguin.com/events/the-shady-city-race/"
+  },
+  {
+    "title": "BQ.2",
+    "iso": "2026-09-05",
+    "day": "5",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Geneva, IL",
+    "url": "https://www.bq2races.com/"
+  },
+  {
+    "title": "Buckshot Run",
+    "iso": "2026-09-05",
+    "day": "5",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Eau Claire, WI",
+    "url": "https://www.lecdc.org/event/45th-annual-buckshot-run-5/register"
+  },
+  {
+    "title": "Tuscazoar Endurance Race",
+    "iso": "2026-09-05",
+    "day": "5",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Dover, OH",
+    "url": "https://tuscazoar.org/past-events/tuscazoar-100-50-mile-ultra-endurance-race/"
+  },
+  {
+    "title": "Anvil Ultra Triathalon",
+    "iso": "2026-09-12",
+    "day": "12",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Dousman, WI",
+    "url": "https://anvil-ultratri.com/2026-wisconsin-anvil"
+  },
+  {
+    "title": "Hawk Hundred",
+    "iso": "2026-09-12",
+    "day": "12",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Lawrence, KS",
+    "url": "https://hawkhundred.com/"
+  },
+  {
+    "title": "Wabasha Valley Half Marathon",
+    "iso": "2026-09-12",
+    "day": "12",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Terre Haute, IN",
+    "url": "https://wvrr.org/wabash-valley-half-marathon-and-5k/"
+  },
+  {
+    "title": "Bismark Marathon",
+    "iso": "2026-09-19",
+    "day": "19",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Bismarck, ND",
+    "url": "https://thebismarckmarathon.com/"
+  },
+  {
+    "title": "Porkies Wilderness Race",
+    "iso": "2026-09-19",
+    "day": "19",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Ontonagon, MI",
+    "url": "https://www.porkiestrailrace.com/"
+  },
+  {
+    "title": "Terry Fox Run",
+    "iso": "2026-09-20",
+    "day": "20",
+    "month": "Sep",
+    "weekday": "Sun",
+    "monthLabel": "September 2026",
+    "location": "MN",
+    "url": "https://terryfox.org/"
+  },
+  {
+    "title": "Cowboy 200",
+    "iso": "2026-09-26",
+    "day": "26",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Norfolk, NE",
+    "url": "https://ultraversesupplements.com/our-races/the-cowboy-200-ultra?srsltid=AfmBOooVCesCgVyrrzL5ps4TBsvYLPTGnkn1EesiQgiXSCBhIkEJfZKX"
+  },
+  {
+    "title": "Quad Cities Marathon",
+    "iso": "2026-09-26",
+    "day": "26",
+    "month": "Sep",
+    "weekday": "Sat",
+    "monthLabel": "September 2026",
+    "location": "Davenport, IA",
+    "url": "https://www.qcmarathon.org/"
+  },
+  {
+    "title": "Frog Hill Half Marathon",
+    "iso": "2026-10-03",
+    "day": "3",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Waynesville, MO",
+    "url": "http://www.froghillhalf.com/"
+  },
+  {
+    "title": "Twin Cities Marathon",
+    "iso": "2026-10-03",
+    "day": "3",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Twin Cities, MN",
+    "url": "https://www.tcmevents.org/alleventsandraces/medtronictwincitiesmarathonweekend"
+  },
+  {
+    "title": "Chicago Marathon",
+    "iso": "2026-10-10",
+    "day": "10",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Chicago, IL",
+    "url": "https://www.chicagomarathon.com/"
+  },
+  {
+    "title": "Storm the Day",
+    "iso": "2026-10-10",
+    "day": "10",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Minnesota City, MN",
+    "url": "https://www.stormsportingevents.org/event-details/storm-the-day-(sunrise-to-sunset)"
+  },
+  {
+    "title": "Toppling Gravel Grinder",
+    "iso": "2026-10-10",
+    "day": "10",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Decorah, IA",
+    "url": "https://iowagravelseries.com/goliath/?srsltid=AfmBOoqabjGWEgWlxyVq1G1cvx8sTf2ar2YdO8Ivj_SjBzWzboj4cTEO"
+  },
+  {
+    "title": "Mankato Marathon",
+    "iso": "2026-10-17",
+    "day": "17",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Mankato, MN",
+    "url": "https://www.mankatomarathon.com/"
+  },
+  {
+    "title": "Mines of Spain 100",
+    "iso": "2026-10-17",
+    "day": "17",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Dubuque, IA",
+    "url": "https://minesofspain100.com/"
+  },
+  {
+    "title": "Bear Creek Run",
+    "iso": "2026-10-24",
+    "day": "24",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Columbia, MO",
+    "url": "https://www.como.gov/parks-and-recreation/special-events/bear-creek-run/"
+  },
+  {
+    "title": "End Trails (6,12,24hr)",
+    "iso": "2026-10-24",
+    "day": "24",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Arvilla, ND",
+    "url": "https://endracing.com/end-trails"
+  },
+  {
+    "title": "Among the Trees",
+    "iso": "2026-10-31",
+    "day": "31",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Dousman, WI",
+    "url": "https://www.pricklypineultrarunning.com/100k-50k"
+  },
+  {
+    "title": "Haunted Halfie",
+    "iso": "2026-10-31",
+    "day": "31",
+    "month": "Oct",
+    "weekday": "Sat",
+    "monthLabel": "October 2026",
+    "location": "Rochester, MN",
+    "url": "https://runsignup.com/Race/MN/Rochester/HauntedHalfie?aflt_token=vkmwDmweQ4iCYn8otSOOnKQ3vCO8buOw"
+  }
+]

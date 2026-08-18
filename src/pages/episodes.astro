@@ -1,0 +1,12 @@
+---
+import Page from '../layouts/Page.astro';
+import EpisodeArchive from '../components/EpisodeArchive.astro';
+import { site } from '../data/site.js';
+---
+
+<Page
+  title={`Episodes | ${site.name}`}
+  description="Every episode of Grey Duck Running — race recaps and previews from around the Upper Midwest."
+>
+  <EpisodeArchive />
+</Page>

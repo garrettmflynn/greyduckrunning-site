@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site.js';
+
+/**
+ * The short version. The full About page carries the bios and coverage grid.
+ *
+ * Note the nesting: `.wrap` and the constrained copy are separate elements. Put
+ * a max-width on the wrapper itself and it shrinks and re-centres, pushing the
+ * whole section inboard of every other one on the page. That has now been the
+ * same bug three times — `.about`, `.hero-inner`, and here.
+ */
+---
+
+<section class="section about-preview">
+  <div class="wrap">
+    <div class="about reveal">
+      <h2>About Us</h2>
+      <p class="body-lg">
+        {site.name} is a podcast about endurance events in the Upper Midwest.
+      </p>
+      <a class="text-link" href="/about/">More about us</a>
+    </div>
+  </div>
+</section>

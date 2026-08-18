@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import IconSprite from '../components/IconSprite.astro';
 import Loader from '../components/Loader.astro';
 import { site, links } from '../data/site.js';
@@ -59,7 +60,7 @@ const schema = {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Inter:wght@400;500;600;700&display=swap"
     />
 
     {/* Runs before the body paints so a chosen theme never flashes the other
@@ -86,6 +87,12 @@ const schema = {
       })();
     </script>
 
+    {/* Client-side routing exists for one reason: the player bar carries
+        transition:persist, so an episode keeps playing while you move between
+        pages. A plain multi-page navigation tears down the <audio> element and
+        the show stops mid-sentence. */}
+    <ClientRouter />
+
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
 
@@ -96,3 +103,16 @@ const schema = {
     <slot />
   </body>
 </html>
+
+{/* Every page needs these, so they live in the layout rather than being
+    re-imported by each one — which is how the multi-page split first shipped
+    with none of them loading at all outside the home page. Astro bundles this
+    once and each script re-initialises itself on astro:page-load. */}
+<script>
+  import '../scripts/loader.js';
+  import '../scripts/theme.js';
+  import '../scripts/player.js';
+  import '../scripts/reveal.js';
+  import '../scripts/header.js';
+</script>
+

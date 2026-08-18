@@ -12,10 +12,15 @@ import Icon from './Icon.astro';
  * Hidden until something plays, so it costs nothing on arrival. It carries the
  * only <audio> element on the page — sharing one element is what makes "only
  * one episode plays at a time" structural rather than a rule to enforce.
+ *
+ * transition:persist sits on the element, not on <PlayerBar /> at the call
+ * site: the directive does not forward through a component to its root, so
+ * putting it there rendered no attribute at all and the audio was torn down on
+ * every navigation. This is what keeps an episode playing while you browse.
  */
 ---
 
-<div class="playerbar" hidden data-playerbar>
+<div class="playerbar" hidden data-playerbar transition:persist="playerbar">
   <audio preload="none"></audio>
 
   <div class="wrap playerbar-inner">

@@ -1,28 +1,12 @@
 ---
-import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
+import Page from '../layouts/Page.astro';
 import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Footer from '../components/Footer.astro';
-import PlayerBar from '../components/PlayerBar.astro';
+import EventsPreview from '../components/EventsPreview.astro';
+import AboutPreview from '../components/AboutPreview.astro';
 ---
 
-<Base>
-  <Header />
-
-  <main id="main">
-    <Hero />
-    <About />
-  </main>
-
-  <Footer />
-  <PlayerBar />
-</Base>
-
-<script>
-  import '../scripts/loader.js';
-  import '../scripts/theme.js';
-  import '../scripts/player.js';
-  import '../scripts/reveal.js';
-  import '../scripts/header.js';
-</script>
+<Page bleed>
+  <Hero />
+  <EventsPreview />
+  <AboutPreview />
+</Page>

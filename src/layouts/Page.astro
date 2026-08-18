@@ -1,0 +1,31 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PlayerBar from '../components/PlayerBar.astro';
+
+/**
+ * The shell every page shares.
+ *
+ * Pulled out of index.astro when the site went multi-page: four pages each
+ * assembling their own header, footer and player is four places to forget one.
+ */
+interface Props {
+  title?: string;
+  description?: string;
+  /** Wide pages (the hero) opt out of the standard top padding. */
+  bleed?: boolean;
+}
+const { title, description, bleed = false } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <Header />
+  <main id="main" class={bleed ? '' : 'page'}>
+    <slot />
+  </main>
+  <Footer />
+  {/* The persist directive lives on the element inside PlayerBar, not here —
+      it does not forward through a component. */}
+  <PlayerBar />
+</Base>

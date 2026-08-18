@@ -1,24 +1,41 @@
 ---
 import Icon from './Icon.astro';
-import { site, actions } from '../data/site.js';
+import { site, actions, nav } from '../data/site.js';
 
 /**
  * Duck, wordmark, two actions, theme toggle.
  *
- * The wordmark is present in the DOM but collapsed until the page scrolls: the
- * hero owns the name at the top, so showing it here too reads the title twice
- * within a couple of hundred pixels. It collapses with max-width rather than
- * opacity alone — an invisible element still occupies space, and the reserved
- * width used to push the controls past the viewport edge at 320px.
+ * On the home page the wordmark is collapsed until scroll: the hero owns the
+ * name at the top, so showing it here too reads the title twice within a couple
+ * of hundred pixels. Everywhere else there is no hero, so it shows immediately.
+ * It collapses with max-width rather than opacity alone — an invisible element
+ * still occupies space, and the reserved width used to push the controls past
+ * the viewport edge at 320px.
  */
+const path = Astro.url.pathname;
+const isHome = path === '/';
+// Trailing slashes are normalised so /races and /races/ both mark as current.
+const current = (href) => path.replace(/\/+$/, '') === href.replace(/\/+$/, '');
 ---
 
-<header class="site-header">
+<header class:list={["site-header", { "has-hero": isHome }]}>
   <div class="wrap header-inner">
-    <a class="brand" href="#top" aria-label={`${site.name} — home`}>
+    <a class="brand" href="/" aria-label={`${site.name} — home`}>
       <img class="brand-mark" src="/assets/duck-square.svg" width="180" height="180" alt="" />
       <span class="brand-name">{site.name}</span>
     </a>
+
+    <nav class="header-nav" aria-label="Main">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class:list={["header-link", { "is-current": current(item.href) }]}
+          aria-current={current(item.href) ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
 
     <div class="header-actions">
       {actions.map((action) => (
