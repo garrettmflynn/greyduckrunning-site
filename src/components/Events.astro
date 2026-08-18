@@ -8,19 +8,20 @@ import events from '../data/events.json';
  * Google Calendar is where Christian and Lauren edit; this is where it is
  * published. Rendering it ourselves rather than embedding Google's widget buys
  * three things the embed cannot: it matches the site, it works with JavaScript
- * off, and — most usefully — every event carries its own registration link in
- * the calendar description, which becomes the row itself.
+ * off, and every event carries its own registration link in the calendar
+ * description, which becomes the row itself.
  *
- * Built to survive a full season rather than the current three months:
+ * Scoped to one month at a time, because a race calendar is open-ended. Three
+ * months of chips looked fine and would have been unreadable at three years —
+ * and "Aug" with no year stops meaning anything the moment there are two of
+ * them. So: a month at a time, a picker grouped by year, and a search that
+ * ignores the scoping and looks at everything.
  *
- *   - Months are the unit. A flat list of a hundred dates gives no sense of
- *     what is soon versus what is in October, and the jump links make a long
- *     page navigable without paginating it into separate requests.
- *   - Past races stay, in a closed <details> at the bottom. They are still
- *     worth linking to, and dropping them meant an un-updated calendar left
- *     the page with nothing on it at all.
- *   - There is a real empty state, because "no upcoming races" is a thing that
- *     will eventually be true for a week in February.
+ * Every month is still rendered into the HTML. The scoping is a view over
+ * server-rendered markup, not a fetch — with JavaScript off you get the whole
+ * calendar in date order, which is the correct fallback and also what search
+ * engines index. If this ever holds thousands of events rather than hundreds,
+ * that trade flips and the months should become real routes.
  */
 
 const groupByMonth = (list) => {
@@ -28,22 +29,34 @@ const groupByMonth = (list) => {
   for (const event of list) {
     const last = months[months.length - 1];
     if (last && last.key === event.monthKey) last.events.push(event);
-    else months.push({ key: event.monthKey, label: event.monthLabel, short: event.monthShort, events: [event] });
+    else
+      months.push({
+        key: event.monthKey,
+        label: event.monthLabel,
+        year: event.monthKey.slice(0, 4),
+        events: [event],
+      });
   }
   return months;
 };
 
-const upcoming = groupByMonth(events.filter((e) => !e.past));
-// Most recent first: looking back, you want last weekend before last winter.
-const past = groupByMonth(events.filter((e) => e.past)).reverse();
-const pastCount = events.filter((e) => e.past).length;
+const months = groupByMonth(events);
+
+// The month the page should open on: the first with anything still to come,
+// falling back to the most recent one when the whole calendar is in the past.
+const firstUpcoming = months.find((m) => m.events.some((e) => !e.past));
+const defaultMonth = (firstUpcoming ?? months[months.length - 1])?.key ?? '';
+
+// Years, for the picker's optgroups. A flat list of thirty-six months is not a
+// menu anyone can use.
+const years = [...new Set(months.map((m) => m.year))];
 
 const feed = `${Astro.site?.origin ?? 'https://greyduckrunning.com'}/events.ics`;
 const webcal = feed.replace(/^https?:/, 'webcal:');
 const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(feed)}`;
 ---
 
-<section class="section" id="races">
+<section class="section" id="races" data-calendar data-default-month={defaultMonth}>
   <div class="wrap">
     <div class="events-head reveal">
       <div>
@@ -64,46 +77,70 @@ const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(
       </div>
     </div>
 
-    {/* Jump links appear only once there is enough calendar to be worth
-        skipping through. */}
-    {upcoming.length > 2 && (
-      <nav class="month-nav reveal" aria-label="Jump to month">
-        {upcoming.map((month) => (
-          <a class="month-chip" href={`#m-${month.key}`}>
-            {month.short}
-            <span class="month-chip-count">{month.events.length}</span>
-          </a>
-        ))}
-      </nav>
+    {months.length > 0 && (
+      <div class="cal-controls reveal" data-cal-controls hidden>
+        <div class="cal-stepper">
+          <button class="cal-step" type="button" data-cal-prev aria-label="Previous month">
+            <svg class="ico" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M15 5 8 12l7 7"></path>
+            </svg>
+          </button>
+
+          <label class="cal-select-wrap">
+            <span class="vh">Month</span>
+            <select class="cal-select" data-cal-select>
+              {years.map((year) => (
+                <optgroup label={year}>
+                  {months.filter((m) => m.year === year).map((m) => (
+                    <option value={m.key}>{m.label} · {m.events.length}</option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+
+          <button class="cal-step" type="button" data-cal-next aria-label="Next month">
+            <svg class="ico" aria-hidden="true" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 5 7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="cal-search-wrap">
+          <label class="vh" for="cal-search">Search races</label>
+          <input
+            class="cal-search"
+            id="cal-search"
+            type="search"
+            placeholder="Search all races"
+            autocomplete="off"
+            data-cal-search
+          />
+        </div>
+      </div>
     )}
 
-    {upcoming.length === 0 && (
-      <p class="events-empty reveal">
-        Nothing on the calendar just yet. Subscribe and it will turn up as soon
-        as it does.
-      </p>
-    )}
+    <p class="cal-status" data-cal-status role="status" hidden></p>
 
-    {upcoming.map((month, i) => (
-      <div class="events-month reveal" id={`m-${month.key}`} data-delay={i === 0 ? '1' : '2'}>
+    {months.map((month, i) => (
+      <div
+        class="events-month reveal"
+        id={`m-${month.key}`}
+        data-month={month.key}
+        data-delay={i === 0 ? '1' : '2'}
+      >
         <h3 class="events-month-label">{month.label}</h3>
         <EventList events={month.events} />
       </div>
     ))}
 
-    {pastCount > 0 && (
-      <details class="events-past reveal" data-delay="2">
-        <summary>
-          Earlier races
-          <span class="events-past-count">{pastCount}</span>
-        </summary>
-        {past.map((month) => (
-          <div class="events-month">
-            <h3 class="events-month-label">{month.label}</h3>
-            <EventList events={month.events} />
-          </div>
-        ))}
-      </details>
+    {months.length === 0 && (
+      <p class="events-empty reveal">
+        Nothing on the calendar just yet. Subscribe and it will turn up as soon
+        as it does.
+      </p>
     )}
   </div>
 </section>
