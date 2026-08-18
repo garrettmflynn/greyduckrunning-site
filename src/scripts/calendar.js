@@ -41,7 +41,29 @@ const setup = () => {
 
   const count = (n, noun) => `${n} ${noun}${n === 1 ? '' : 's'}`;
 
-  let current = root.dataset.defaultMonth || keys[0];
+  /**
+   * Re-decide what counts as past, here, against the real date.
+   *
+   * The build stamps a `past` flag, but the build only runs when the calendar
+   * actually changes — so a quiet fortnight would leave last weekend's races
+   * still listed as upcoming, and the page opening on a month that has already
+   * been and gone. The dates are in the markup; the browser knows what day it
+   * is. Local date, not toISOString(), which is UTC and would roll a day early
+   * for a Central-time audience.
+   */
+  const now = new Date();
+  const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+  let firstUpcomingMonth = null;
+  for (const r of rows) {
+    const past = (r.el.dataset.iso || '') < todayIso;
+    r.el.classList.toggle('is-past', past);
+    if (!past && !firstUpcomingMonth) firstUpcomingMonth = r.month;
+  }
+
+  // Fall back to the build's answer, then to the last month on file when the
+  // whole calendar is behind us.
+  let current = firstUpcomingMonth || root.dataset.defaultMonth || keys[keys.length - 1];
   if (!keys.includes(current)) current = keys[0];
 
   const showMonth = (key) => {

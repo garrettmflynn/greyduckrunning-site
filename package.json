@@ -9,6 +9,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "episodes": "python3 tools/build-episodes.py",
+    "events": "python3 tools/build-events.py",
     "logo": "python3 tools/make-duck.py"
   },
   "dependencies": {

@@ -1,8 +1,9 @@
-name: Refresh episodes from RSS
+name: Refresh episodes and races
 
-# The feed changes whenever Christian and Lauren publish; the site is static, so
-# something has to go and look. This runs on a schedule, rebuilds the episode
-# list and the mirrored feed, and commits only when the output actually changed.
+# Two upstreams change without telling us — the podcast RSS whenever Christian
+# and Lauren publish, and the shared Google Calendar whenever they add a race.
+# The site is static, so something has to go and look. This runs on a schedule,
+# rebuilds both, and commits only when the output actually changed.
 #
 # It does NOT deploy. It commits the refreshed data to main, and that push
 # triggers deploy.yml, which builds and publishes. Keeping the two separate means
@@ -43,6 +44,11 @@ jobs:
       - name: Refresh episode data from the feed
         run: python3 tools/build-episodes.py
 
+      # The calendar is the other half. It uses the calendar's public iCal
+      # address, so there is no secret to pass in here.
+      - name: Refresh race data from the calendar
+        run: python3 tools/build-events.py
+
       - name: Commit to main only if something changed
         id: commit
         run: |
@@ -56,15 +62,16 @@ jobs:
           # Paths are written out rather than held in a variable: an unquoted
           # "$PATHS" depends on the shell word-splitting it, which bash does and
           # zsh does not. A workflow that writes to main should not turn on that.
-          git add src/data/episodes.json public/feed.xml public/assets/episodes
+          git add src/data/episodes.json public/feed.xml public/assets/episodes \
+                  src/data/events.json public/events.ics
 
           if git diff --cached --quiet; then
-            echo "feed unchanged — nothing to commit"
+            echo "nothing changed upstream — nothing to commit"
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          git commit -m "Refresh episodes from RSS"
+          git commit -m "Refresh episodes and races"
           git pull --rebase origin main    # in case main moved while we were building
           git push origin main
           echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -77,7 +84,7 @@ jobs:
           if ! git merge main --no-edit; then
             unresolved="$(git diff --name-only --diff-filter=U)"
             unexpected="$(printf '%s\n' "$unresolved" \
-              | grep -Ev '^(src/data/episodes\.json|public/feed\.xml|public/assets/episodes/)' || true)"
+              | grep -Ev '^(src/data/episodes\.json|public/feed\.xml|public/assets/episodes/|src/data/events\.json|public/events\.ics)' || true)"
 
             # A conflict outside the generated paths means dev and main have
             # genuinely diverged. Auto-resolving that would silently discard
@@ -88,8 +95,10 @@ jobs:
               exit 1
             fi
 
-            git checkout main -- src/data/episodes.json public/feed.xml public/assets/episodes
-            git add src/data/episodes.json public/feed.xml public/assets/episodes
+            git checkout main -- src/data/episodes.json public/feed.xml public/assets/episodes \
+                                 src/data/events.json public/events.ics
+            git add src/data/episodes.json public/feed.xml public/assets/episodes \
+                    src/data/events.json public/events.ics
             git -c core.editor=true merge --continue
           fi
 
