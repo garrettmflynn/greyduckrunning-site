@@ -1,4 +1,5 @@
 ---
+import EventList from './EventList.astro';
 import events from '../data/events.json';
 
 /**
@@ -8,23 +9,35 @@ import events from '../data/events.json';
  * published. Rendering it ourselves rather than embedding Google's widget buys
  * three things the embed cannot: it matches the site, it works with JavaScript
  * off, and — most usefully — every event carries its own registration link in
- * the calendar description, which we surface as the row itself.
+ * the calendar description, which becomes the row itself.
  *
- * Grouped by month because a flat list of thirty dates gives no sense of "what
- * is on soon" versus "what is in October".
+ * Built to survive a full season rather than the current three months:
+ *
+ *   - Months are the unit. A flat list of a hundred dates gives no sense of
+ *     what is soon versus what is in October, and the jump links make a long
+ *     page navigable without paginating it into separate requests.
+ *   - Past races stay, in a closed <details> at the bottom. They are still
+ *     worth linking to, and dropping them meant an un-updated calendar left
+ *     the page with nothing on it at all.
+ *   - There is a real empty state, because "no upcoming races" is a thing that
+ *     will eventually be true for a week in February.
  */
 
-// Months in feed order; events.json is already sorted by date.
-const months = [];
-for (const event of events) {
-  const last = months[months.length - 1];
-  if (last && last.label === event.monthLabel) last.events.push(event);
-  else months.push({ label: event.monthLabel, events: [event] });
-}
+const groupByMonth = (list) => {
+  const months = [];
+  for (const event of list) {
+    const last = months[months.length - 1];
+    if (last && last.key === event.monthKey) last.events.push(event);
+    else months.push({ key: event.monthKey, label: event.monthLabel, short: event.monthShort, events: [event] });
+  }
+  return months;
+};
 
-// Subscribing points at our own mirror, not Google's URL. If the calendar is
-// ever rebuilt or moved, subscriptions survive — that is the whole point of
-// republishing rather than linking.
+const upcoming = groupByMonth(events.filter((e) => !e.past));
+// Most recent first: looking back, you want last weekend before last winter.
+const past = groupByMonth(events.filter((e) => e.past)).reverse();
+const pastCount = events.filter((e) => e.past).length;
+
 const feed = `${Astro.site?.origin ?? 'https://greyduckrunning.com'}/events.ics`;
 const webcal = feed.replace(/^https?:/, 'webcal:');
 const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(feed)}`;
@@ -36,8 +49,7 @@ const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(
       <div>
         <h2>Race Calendar</h2>
         <p class="body-lg">
-          Endurance events around the Upper Midwest — the ones we cover, and the
-          ones we're signed up for.
+          The races we're covering, and the ones we've signed up for.
         </p>
       </div>
 
@@ -52,30 +64,46 @@ const google = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(
       </div>
     </div>
 
-    {months.map((month, mi) => (
-      <div class="events-month reveal" data-delay={mi === 0 ? '1' : '2'}>
+    {/* Jump links appear only once there is enough calendar to be worth
+        skipping through. */}
+    {upcoming.length > 2 && (
+      <nav class="month-nav reveal" aria-label="Jump to month">
+        {upcoming.map((month) => (
+          <a class="month-chip" href={`#m-${month.key}`}>
+            {month.short}
+            <span class="month-chip-count">{month.events.length}</span>
+          </a>
+        ))}
+      </nav>
+    )}
+
+    {upcoming.length === 0 && (
+      <p class="events-empty reveal">
+        Nothing on the calendar just yet. Subscribe and it will turn up as soon
+        as it does.
+      </p>
+    )}
+
+    {upcoming.map((month, i) => (
+      <div class="events-month reveal" id={`m-${month.key}`} data-delay={i === 0 ? '1' : '2'}>
         <h3 class="events-month-label">{month.label}</h3>
-        <ul class="events-list">
-          {month.events.map((event) => (
-            <li class="event">
-              <time class="event-date" datetime={event.iso}>
-                <span class="event-day">{event.day}</span>
-                <span class="event-weekday">{event.weekday}</span>
-              </time>
-              <div class="event-body">
-                {/* The whole row is the link where there is one — a race name
-                    that goes to the race is more useful than a "details" affordance. */}
-                {event.url ? (
-                  <a class="event-title" href={event.url} target="_blank" rel="noopener">{event.title}</a>
-                ) : (
-                  <span class="event-title">{event.title}</span>
-                )}
-                {event.location && <p class="event-where">{event.location}</p>}
-              </div>
-            </li>
-          ))}
-        </ul>
+        <EventList events={month.events} />
       </div>
     ))}
+
+    {pastCount > 0 && (
+      <details class="events-past reveal" data-delay="2">
+        <summary>
+          Earlier races
+          <span class="events-past-count">{pastCount}</span>
+        </summary>
+        {past.map((month) => (
+          <div class="events-month">
+            <h3 class="events-month-label">{month.label}</h3>
+            <EventList events={month.events} />
+          </div>
+        ))}
+      </details>
+    )}
   </div>
 </section>

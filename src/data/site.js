@@ -9,8 +9,8 @@ export const site = {
   tagline: 'A podcast for the mediocre runner',
   url: 'https://greyduckrunning.com',
   description:
-    'A podcast for the mediocre runner. Christian and Lauren cover Midwest ' +
-    'endurance events — running, biking, hiking and more.',
+    'A podcast for the mediocre runner. Christian and Lauren race, ride and ' +
+    'hike their way around the Upper Midwest, then talk about it.',
   hosts: ['Christian', 'Lauren'],
 };
 
@@ -74,7 +74,7 @@ export const people = [
     role: 'Co-founder',
     bio: [
       "Heyy! From a very young age I had an abundance of energy and a drive in me that I struggled to regulate. It wasn't until I found martial arts that I was able to channel my energy into something useful. From there I discovered movement as a way of keeping my mind from spiraling.",
-      "As a kid I loved bikes and being outside. I didn't find running until I joined my high school cross country team, where I found I was actually pretty decent at it. My love for running kept growing, with a preference for longer distances and a slow but sure build up to a marathon. Along the way I encountered a lot of setbacks — I was constantly plagued by stress fractures, which stunted my collegiate running career but let me grow my love of endurance cycling, now a major factor in keeping me healthy while training for long distance events. I ended up with a femoral stress fracture in the winter of 2023 and thought my days of running were over, but after two surgeries to put in, and later remove, a stabilizing plate and rod in my femur, I've been back to running. Physical activity is great for the mind and body no matter your pace or fitness level. Getting out there is the most important part.",
+      "As a kid I loved bikes and being outside. I didn't find running until high school cross country, where it turned out I was pretty decent at it. Longer distances suited me best, and I built slowly up to a marathon. There were setbacks the whole way. Stress fractures plagued me constantly and cut my collegiate running short, but they pushed me toward endurance cycling, which is now a big part of what keeps me healthy while I train. In the winter of 2023 a femoral stress fracture had me convinced my running days were over. Two surgeries later — one to put a plate and rod in, one to take them out — I'm back. Physical activity is great for the mind and body no matter your pace. Getting out there is the most important part.",
       "When I'm not running or biking, you will probably find me reading a variety of different genres — literary fiction, horror, historical fiction, classic lit. I'm willing to read just about anything, so if you have any recommendations be sure to send them my way!",
     ],
     signature: 'Lauren',
@@ -84,7 +84,7 @@ export const people = [
     role: 'Co-founder',
     bio: [
       "A mediocre runner at heart. I grew up in the Austin, Minnesota area, where my interest in running was first piqued by Track & Field and Cross Country throughout high school.",
-      "I continued my running career at the University of Wisconsin River Falls, where I met my lovely co-host Lauren Flynn. In addition to running at UWRF I obtained my Bachelor's degree in Finance, which has been put to good use in my everyday life of crunching numbers. Post college I have dabbled in the marathon running scene, with the goal of running one in all 50 states and eventually venturing into the ultra marathon scene.",
+      "I kept running at the University of Wisconsin River Falls, where I met my lovely co-host Lauren Flynn and picked up a Bachelor's degree in Finance, which I now put to use crunching numbers for a living. Since college I have been working through the marathon scene, with the goal of running one in all 50 states and eventually venturing into ultras.",
       "My interests outside of running are reading, hiking and grabbing a good cup of coffee!",
     ],
     signature: 'Christian',
@@ -101,9 +101,12 @@ export const people = [
   },
 ];
 
+/* Each of these has to earn its tile. An earlier version ended three of the
+   four with a variation on "around the Upper Midwest", which said the same
+   thing three times and told you nothing new. */
 export const coverage = [
-  { title: 'Running Races', body: '5Ks, half and full marathons, and trail races around the region.' },
+  { title: 'Running Races', body: '5Ks, halves, marathons, and trail races that go considerably further.' },
   { title: 'Bike Events', body: 'Gravel rides and long-distance events like Ride Across Wisconsin.' },
-  { title: 'Hiking', body: 'Trails across the Upper Midwest.' },
-  { title: 'Previews and Recaps', body: "What a course is like and whether it's worth signing up for." },
+  { title: 'Hiking', body: 'Trails worth the drive.' },
+  { title: 'Previews and Recaps', body: 'What to expect before you sign up, and what actually happened.' },
 ];

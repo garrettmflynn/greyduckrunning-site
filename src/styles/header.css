@@ -100,5 +100,17 @@
   /* The duck alone identifies the site at this width; the links are what
      someone actually needs to reach. */
   .site-header:not(.has-hero) .brand-name { display: none; }
-  .header-link { padding: 6px 6px; font-size: 13.5px; letter-spacing: -.01em; }
+  .header-link { padding: 6px 7px; font-size: 14px; letter-spacing: -.01em; }
+
+  /* The two brand actions come out of the bar entirely.
+     Measured: with them in, the header needs 429px of content and does not fit
+     a 390, 375 or 360px phone — the nav and the actions overlap. Something had
+     to go, and it is these rather than the navigation: Subscribe already sits
+     on /episodes, Subscribe to Races on /races, and both brands are in the
+     footer on every page, whereas hiding the nav behind a menu would put every
+     page on the site one extra tap away.
+
+     If the nav ever outgrows four items, that is the point to revisit this and
+     add a real menu — with three, visible links beat a button that hides them. */
+  .header-actions .cta { display: none; }
 }

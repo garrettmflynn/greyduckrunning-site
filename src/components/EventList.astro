@@ -1,0 +1,27 @@
+---
+/** One month's rows. Shared by the calendar page and the home preview. */
+interface Props {
+  events: any[];
+  showMonth?: boolean;
+}
+const { events, showMonth = false } = Astro.props;
+---
+
+<ul class="events-list">
+  {events.map((event) => (
+    <li class:list={['event', { 'is-past': event.past }]} data-iso={event.iso}>
+      <time class="event-date" datetime={event.iso}>
+        <span class="event-day">{event.day}</span>
+        <span class="event-weekday">{showMonth ? event.monthShort : event.weekday}</span>
+      </time>
+      <div class="event-body">
+        {event.url ? (
+          <a class="event-title" href={event.url} target="_blank" rel="noopener">{event.title}</a>
+        ) : (
+          <span class="event-title">{event.title}</span>
+        )}
+        {event.location && <p class="event-where">{event.location}</p>}
+      </div>
+    </li>
+  ))}
+</ul>

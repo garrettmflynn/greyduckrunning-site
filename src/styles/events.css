@@ -109,3 +109,75 @@ a.event-title:hover::after { color: var(--accent); }
   .event { gap: 12px; }
   .event-date { flex-basis: 2.9rem; }
 }
+
+/* ---------- month jump links ---------- */
+.month-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 26px;
+}
+.month-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 560;
+  color: var(--muted);
+  text-decoration: none;
+}
+.month-chip:hover { border-color: var(--muted); color: var(--ink); }
+.month-chip-count {
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+
+/* Jumping to a month should not tuck its heading under the sticky header. */
+.events-month { scroll-margin-top: 88px; }
+
+.events-empty {
+  margin: 0;
+  padding: 28px 0;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  max-width: 52ch;
+}
+
+/* ---------- past races ---------- */
+.events-past { margin-top: 44px; border-top: 1px solid var(--line); }
+.events-past > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 0;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  list-style: none;
+}
+.events-past > summary::-webkit-details-marker { display: none; }
+.events-past > summary::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform .18s ease;
+}
+.events-past[open] > summary::before { transform: rotate(45deg); }
+.events-past > summary:hover { color: var(--ink); }
+.events-past-count {
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+
+/* A race that has happened is still worth linking to, but should not compete
+   with one you can still enter. */
+.event.is-past { opacity: .62; }
+.event.is-past:hover { opacity: 1; }

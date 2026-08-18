@@ -40,10 +40,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_OUT = os.path.join(ROOT, "src", "data", "events.json")
 ICS_OUT = os.path.join(ROOT, "public", "events.ics")
 
-# How far ahead to render. The calendar runs further out than anyone plans a
-# season, and a wall of distant dates buries the next few weekends. The mirror
-# is unaffected — subscribers get everything.
-HORIZON_DAYS = 200
+# How much of the calendar to carry into the site's own data. Past events are
+# kept rather than dropped: a race that happened is still worth linking to, and
+# discarding them meant the page had no way to show anything at all if the
+# calendar ever stopped being updated. The mirror is unaffected either way —
+# subscribers always get the whole feed.
+FUTURE_DAYS = 400
+PAST_DAYS = 400
 
 STATES = {
     "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR",
@@ -182,7 +185,8 @@ def build():
 
     raw = unfold(body.decode("utf-8", "replace"))
     today = dt.date.today()
-    horizon = today + dt.timedelta(days=HORIZON_DAYS)
+    earliest = today - dt.timedelta(days=PAST_DAYS)
+    horizon = today + dt.timedelta(days=FUTURE_DAYS)
 
     events = []
     for block in re.findall(r"BEGIN:VEVENT(.*?)END:VEVENT", raw, re.S):
@@ -192,7 +196,7 @@ def build():
             continue
         if field(block, "STATUS").upper() == "CANCELLED":
             continue
-        if start < today or start > horizon:
+        if start < earliest or start > horizon:
             continue
 
         events.append(
@@ -202,7 +206,13 @@ def build():
                 "day": str(start.day),
                 "month": start.strftime("%b"),
                 "weekday": start.strftime("%a"),
+                "monthKey": start.strftime("%Y-%m"),
                 "monthLabel": start.strftime("%B %Y"),
+                "monthShort": start.strftime("%b"),
+                # Computed at build time, and re-checked in the browser against
+                # the real date — the site is static and rebuilt twice a day, so
+                # between builds this can be up to half a day stale.
+                "past": start < today,
                 "location": tidy_location(field(block, "LOCATION")),
                 "url": race_url(block),
             }
@@ -215,8 +225,9 @@ def build():
         json.dump(events, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
+    upcoming = sum(1 for e in events if not e["past"])
     linked = sum(1 for e in events if e["url"])
-    print(f"{len(events)} event(s) within {HORIZON_DAYS} days, {linked} with a race link")
+    print(f"{len(events)} event(s): {upcoming} upcoming, {len(events) - upcoming} past, {linked} with a race link")
     print(f"  -> {os.path.relpath(JSON_OUT, ROOT)}")
     print(f"  -> {os.path.relpath(ICS_OUT, ROOT)}  ({len(body)} bytes, verbatim)")
 
