@@ -27,7 +27,15 @@ import { links } from '../data/site.js';
           <Icon name="spotify" />
           <span>Subscribe</span>
         </a>
-        <a class="events-alt" href={links.rss}>RSS feed</a>
+        {/* One pill, then the rest as text. Spotify is where most people
+            already are; iHeart and the raw feed are for the people who are
+            somewhere else, and giving each of them its own button would make
+            the choice look harder than it is. Apple Podcasts belongs in this
+            row too — the show is not in Apple's directory yet. */}
+        <p class="archive-alts">
+          <a class="events-alt" href={links.iheart} target="_blank" rel="noopener">iHeartRadio</a>
+          <a class="events-alt" href={links.rss}>RSS feed</a>
+        </p>
       </div>
     </div>
 

@@ -19,6 +19,9 @@ export const links = {
   instagram: 'https://www.instagram.com/greyduckrunning',
   strava: 'https://www.strava.com/clubs/2297694',
   patreon: 'https://www.patreon.com/cw/Greyduckrunning',
+  // Share-sheet tracking params stripped from the URL they arrived with.
+  // `autoplay=true` in particular would have started playing on click.
+  iheart: 'https://www.iheart.com/podcast/269-grey-duck-running-341147137/',
   rss: '/feed.xml',
   eventsIcs: '/events.ics',
 };
