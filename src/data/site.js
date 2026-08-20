@@ -9,8 +9,8 @@ export const site = {
   tagline: 'A podcast for the mediocre runner',
   url: 'https://greyduckrunning.com',
   description:
-    'A podcast for the mediocre runner. Christian and Lauren race, ride and ' +
-    'hike their way around the Upper Midwest, then talk about it.',
+    'A weekly podcast for the mediocre Midwest runner. Every race has ' +
+    'something to offer, from a major marathon to a small-town festival 5K.',
   hosts: ['Christian', 'Lauren'],
 };
 
@@ -18,6 +18,7 @@ export const links = {
   spotify: 'https://open.spotify.com/show/033LBDWqdgBps2G7CM41d2',
   instagram: 'https://www.instagram.com/greyduckrunning',
   strava: 'https://www.strava.com/clubs/2297694',
+  patreon: 'https://www.patreon.com/cw/Greyduckrunning',
   rss: '/feed.xml',
   eventsIcs: '/events.ics',
 };
@@ -35,6 +36,7 @@ export const social = [
   { key: 'spotify', icon: 'spotify', label: 'Listen on Spotify', href: links.spotify },
   { key: 'instagram', icon: 'instagram', label: 'Instagram', href: links.instagram },
   { key: 'strava', icon: 'strava', label: 'Join the Strava club', href: links.strava },
+  { key: 'patreon', icon: 'patreon', label: 'Support on Patreon', href: links.patreon },
 ];
 
 /** The two header actions. Deliberately not "Listen" — the player is on the page. */
@@ -61,6 +63,11 @@ export const actions = [
  * or SVG of a real signature at signatureImage and the component uses that
  * instead, with no other change.
  *
+ * Portraits are optional on purpose. `portrait` names a file built by
+ * tools/build-portraits.py; a person without one gets a monogram tile of the
+ * same shape, so the three columns still line up and the photo can be dropped
+ * in later without the page reflowing around it. Lauren's is pending.
+ *
  * None of them introduces themselves by title. The name and the role sit
  * directly above in the markup, so an opening line spent on "co-founder of the
  * Grey Duck Running Podcast" was saying twice what the page already said, and
@@ -82,6 +89,8 @@ export const people = [
   {
     name: 'Christian Hjelmen',
     role: 'Co-founder',
+    portrait: 'christian',
+    portraitAlt: 'Christian running the final stretch of a road race',
     bio: [
       "A mediocre runner at heart. I grew up in the Austin, Minnesota area, where my interest in running was first piqued by Track & Field and Cross Country throughout high school.",
       "I kept running at the University of Wisconsin River Falls, where I met my lovely co-host Lauren Flynn and picked up a Bachelor's degree in Finance, which I now put to use crunching numbers for a living. Since college I have been working through the marathon scene, with the goal of running one in all 50 states and eventually venturing into ultras.",
@@ -92,6 +101,8 @@ export const people = [
   {
     name: 'Nova',
     role: "Lauren and Christian's dog",
+    portrait: 'nova',
+    portraitAlt: 'Nova, a cream goldendoodle, sitting on a paved trail',
     bio: [
       "Ruff. Some may say I am the true host of the Grey Duck Running Podcast.",
       "I like to make my voice heard throughout each episode.",
@@ -101,12 +112,46 @@ export const people = [
   },
 ];
 
-/* Each of these has to earn its tile. An earlier version ended three of the
-   four with a variation on "around the Upper Midwest", which said the same
-   thing three times and told you nothing new. */
+/* Lauren's words, edited only where a comma was doing a full stop's job.
+   Hiking used to be a fourth tile and is gone at her request — the show does
+   not primarily cover hikes, so the site should not say it does. That claim
+   also appeared in the hero and the structured data; both were changed with
+   this. */
 export const coverage = [
-  { title: 'Running Races', body: '5Ks, halves, marathons, and trail races that go considerably further.' },
-  { title: 'Bike Events', body: 'Gravel rides and long-distance events like Ride Across Wisconsin.' },
-  { title: 'Hiking', body: 'Trails worth the drive.' },
-  { title: 'Previews and Recaps', body: 'What to expect before you sign up, and what actually happened.' },
+  {
+    title: 'Running Events',
+    body:
+      "Around here we don't discriminate — we get excited about covering all " +
+      'distances! From one mile road races to one hundred mile trail events, ' +
+      "we're happy to cover it.",
+  },
+  {
+    title: 'Bike Events',
+    body:
+      'The Midwest is home to some beautiful roads and trails, and one of the ' +
+      'best ways to experience them is by bike. We cover some of the best ' +
+      'untimed road tours along with high-energy timed gravel, road and ' +
+      'mountain bike races.',
+  },
+  {
+    title: 'Race Recaps',
+    body:
+      'Every week we choose two or three events to cover, talk about the top ' +
+      'results, and give a bit of a preview of what the course is like. We ' +
+      'also highlight things like breweries, coffee shops and other local ' +
+      'attractions in the host city that make it worth going out of your way for.',
+  },
 ];
+
+/* The Patreon pitch. Their own page says it plainly — a weekly show for the
+   mediocre Midwest runner — so this does not try to sell it harder than they
+   do, and it does not invent detail about how the show gets made. */
+export const support = {
+  title: 'Support the Show',
+  body:
+    'A weekly episode takes a week of work. If Grey Duck has pointed you ' +
+    'toward a race you would not have found otherwise, Patreon is how you ' +
+    'can chip in.',
+  cta: 'Become a member',
+  href: links.patreon,
+};

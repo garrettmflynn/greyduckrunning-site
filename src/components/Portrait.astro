@@ -1,0 +1,48 @@
+---
+/**
+ * A 3:4 portrait for a bio column, or a placeholder tile of exactly the same
+ * shape when there is no photograph yet.
+ *
+ * The placeholder is not a courtesy — it is what keeps the three columns
+ * aligned. Omitting the image for one person shifts that whole column up by the
+ * height of a portrait, and the parallel headings and paragraph breaks that the
+ * bios were arranged around stop lining up.
+ *
+ * The renditions come from tools/build-portraits.py. Dimensions are hard-coded
+ * rather than measured because they are fixed by that script: 320 and 640 wide
+ * at 4/3. Stating width/height on the <img> reserves the box before the file
+ * arrives, so a lazy-loaded portrait does not shove the bio down as it lands.
+ */
+interface Props {
+  slug?: string;
+  alt?: string;
+}
+const { slug, alt = '' } = Astro.props;
+
+const W = 320;
+const H = 427; // round(320 * 4 / 3)
+// The tile is capped at 208px in every layout, so one length covers them all.
+// 320 is the 1x file and 640 the 2x; there is nothing in between to choose.
+const SIZES = '208px';
+const srcset = (ext) =>
+  `/assets/people/${slug}-320.${ext} 320w, /assets/people/${slug}-640.${ext} 640w`;
+---
+
+{slug ? (
+  <picture class="bio-portrait">
+    <source type="image/avif" sizes={SIZES} srcset={srcset('avif')} />
+    <source type="image/webp" sizes={SIZES} srcset={srcset('webp')} />
+    <img
+      src={`/assets/people/${slug}-320.jpg`}
+      sizes={SIZES}
+      srcset={srcset('jpg')}
+      width={W}
+      height={H}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+    />
+  </picture>
+) : (
+  <div class="bio-portrait is-pending" aria-hidden="true"></div>
+)}

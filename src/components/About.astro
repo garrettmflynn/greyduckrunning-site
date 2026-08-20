@@ -1,5 +1,7 @@
 ---
-import { site, coverage, people } from '../data/site.js';
+import Icon from './Icon.astro';
+import Portrait from './Portrait.astro';
+import { coverage, people, support } from '../data/site.js';
 
 /**
  * The About page: what the show is, who makes it, what it covers.
@@ -12,14 +14,22 @@ import { site, coverage, people } from '../data/site.js';
   <div class="wrap">
     <div class="about reveal">
       <h2>About Us</h2>
+      {/* Deliberately not the hero's line again. The home page makes the case
+          for the show; by the time someone is here they have heard it, so this
+          says what actually happens in an episode instead. */}
       <p class="body-lg">
-        Two mediocre runners and a dog with strong opinions.
+        Two mediocre runners and a dog with strong opinions. Every week we pick
+        two or three Midwest races and talk about what makes them worth the
+        drive — the course, the town, and where to get a decent cup of coffee
+        afterwards.
       </p>
     </div>
 
     <div class="bios">
       {people.map((person, i) => (
         <article class="bio reveal" data-delay={i === 0 ? '1' : '2'}>
+          <Portrait slug={person.portrait} alt={person.portraitAlt} />
+
           <header class="bio-head">
             <h3 class="bio-name">{person.name}</h3>
             <p class="bio-role">{person.role}</p>
@@ -48,6 +58,17 @@ import { site, coverage, people } from '../data/site.js';
           </li>
         ))}
       </ul>
+    </div>
+
+    <div class="support reveal" data-delay="2">
+      <div class="support-copy">
+        <h2>{support.title}</h2>
+        <p>{support.body}</p>
+      </div>
+      <a class="cta" data-brand="patreon" href={support.href} target="_blank" rel="noopener">
+        <Icon name="patreon" />
+        <span>{support.cta}</span>
+      </a>
     </div>
   </div>
 </section>

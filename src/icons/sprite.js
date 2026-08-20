@@ -13,6 +13,8 @@ export const symbols = `<symbol id="i-spotify" viewBox="0 0 24 24"><path d="M12 
 
     <symbol id="i-strava" viewBox="0 0 24 24"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></symbol>
 
+    <symbol id="i-patreon" viewBox="0 0 24 24"><path d="M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.54c-.039 3.411.302 12.396 5.369 12.46 3.765.047 4.326-4.804 6.068-7.141 1.24-1.662 2.836-2.132 4.801-2.618 3.376-.836 5.678-3.501 5.673-7.031Z"/></symbol>
+
     <!-- Stroked, not filled: both are simple geometry, and drawing them as
          outlines avoids hand-authoring a filled crescent path. -->
     <!-- Calendar: stroked geometry like the sun and moon, so the subscribe

@@ -52,12 +52,19 @@
 .cta:hover { border-color: currentColor; background: color-mix(in srgb, var(--ink) 7%, transparent); }
 .cta[data-brand="spotify"]:hover { color: #1DB954; }
 .cta[data-brand="strava"]:hover  { color: #FC4C02; }
+.cta[data-brand="patreon"]:hover { color: #FF424D; }
 .cta .ico { width: 17px; height: 17px; }
 /* Two labelled actions plus the toggle will not fit a phone bar, so the labels
-   go and the glyphs stay. aria-label on each link keeps them announced. */
+   go and the glyphs stay. aria-label on each link keeps them announced.
+   Scoped to the header: unscoped, this stripped the label off every .cta on the
+   site at phone width, which turned "Subscribe to Races" and "Become a member"
+   into unlabelled circles standing alone in the middle of a page. Those have
+   the room the header bar does not. */
 @media (max-width: 620px) {
-  .cta span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  .cta { padding: 0; width: 40px; justify-content: center; }
+  .header-actions .cta span {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);
+  }
+  .header-actions .cta { padding: 0; width: 40px; justify-content: center; }
 }
 
 /* Header carries the marks alone. Glyphs use the text colour rather than each
