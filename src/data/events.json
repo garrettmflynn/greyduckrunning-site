@@ -8,7 +8,7 @@
     "monthKey": "2026-08",
     "monthLabel": "August 2026",
     "monthShort": "Aug",
-    "past": false,
+    "past": true,
     "location": "Augusta, WI",
     "url": "https://coonforkgravel.com/"
   },
@@ -21,7 +21,7 @@
     "monthKey": "2026-08",
     "monthLabel": "August 2026",
     "monthShort": "Aug",
-    "past": false,
+    "past": true,
     "location": "Ozark, IL",
     "url": "https://www.shawneehills100.com/#/"
   },
@@ -34,7 +34,7 @@
     "monthKey": "2026-08",
     "monthLabel": "August 2026",
     "monthShort": "Aug",
-    "past": false,
+    "past": true,
     "location": "Wausau, WI",
     "url": "https://www.visitwausau.com/event/the-wausau-marathon/563/"
   },
