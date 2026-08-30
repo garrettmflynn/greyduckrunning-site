@@ -47,7 +47,7 @@
     "monthKey": "2026-08",
     "monthLabel": "August 2026",
     "monthShort": "Aug",
-    "past": false,
+    "past": true,
     "location": "Park Falls, WI",
     "url": "https://trailhead.ultrasignup.com/races/midwest-trail-running-races/"
   },
@@ -60,7 +60,7 @@
     "monthKey": "2026-08",
     "monthLabel": "August 2026",
     "monthShort": "Aug",
-    "past": false,
+    "past": true,
     "location": "Marysville, OH",
     "url": "https://racepenguin.com/events/the-shady-city-race/"
   },
