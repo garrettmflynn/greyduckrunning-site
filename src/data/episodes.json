@@ -1,5 +1,15 @@
 [
   {
+    "title": "Midwest States and the Shady City",
+    "audio": "https://anchor.fm/s/114a97fbc/podcast/play/125059366/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-8-1%2F5a0dea1b-2833-5a96-be60-c415d71fb8a2.mp3",
+    "duration": "55 min",
+    "seconds": 3352,
+    "iso": "2026-09-02",
+    "label": "2 Sep 2026",
+    "blurb": "Welcome to episode 9 of the Grey Duck Running Podcast. This week we talk a bit about a world record being broken, Tadej (sadly) being broken during stage 8 of the…",
+    "art": "/assets/episodes/ep00.jpg"
+  },
+  {
     "title": "Are We Out of the Woods???",
     "audio": "https://anchor.fm/s/114a97fbc/podcast/play/124685902/https%3A%2F%2Fd3ctxlq1ktw2nl.cloudfront.net%2Fstaging%2F2026-7-25%2Fd392287c-6bed-af2d-a994-d0608b91092b.mp3",
     "duration": "1 hr 7 min",
@@ -7,7 +17,7 @@
     "iso": "2026-08-25",
     "label": "25 Aug 2026",
     "blurb": "Welcome back to Grey Duck Running! Lauren made it out of the Coon Forks 40 with just a few scratches (and a bruised ego).",
-    "art": "/assets/episodes/ep00.jpg"
+    "art": "/assets/episodes/ep01.jpg"
   },
   {
     "title": "Shawshanked",
@@ -17,7 +27,7 @@
     "iso": "2026-08-19",
     "label": "19 Aug 2026",
     "blurb": "Welcome back to the Grey Duck Running Podcast! This week we have an exciting announcment; we have offically launched a website!",
-    "art": "/assets/episodes/ep01.jpg"
+    "art": "/assets/episodes/ep02.jpg"
   },
   {
     "title": "Pure Water Days 2026",
@@ -27,7 +37,7 @@
     "iso": "2026-08-11",
     "label": "11 Aug 2026",
     "blurb": "Hello, welcome to episode six of the Grey Duck Running podcast and this week we are here to talk about Pure Water Days in Chippew Falls Wisconsin!",
-    "art": "/assets/episodes/ep02.jpg"
+    "art": "/assets/episodes/ep03.jpg"
   },
   {
     "title": "Free Throw Contest + Valentine Marathon and Badger Trail Races",
@@ -37,7 +47,7 @@
     "iso": "2026-08-05",
     "label": "5 Aug 2026",
     "blurb": "Happy August from us here at Grey Duck Running! This week we are back from vacation and ready to talk about some racing.",
-    "art": "/assets/episodes/ep03.jpg"
+    "art": "/assets/episodes/ep04.jpg"
   },
   {
     "title": "Vaycay Mode!!!",
@@ -47,7 +57,7 @@
     "iso": "2026-07-28",
     "label": "28 Jul 2026",
     "blurb": "On this weeks episode we interview Christian's Mom, Stephine! She tells us about what it is like spectating running events and a bit about her business Awake and…",
-    "art": "/assets/episodes/ep04.jpg"
+    "art": "/assets/episodes/ep05.jpg"
   },
   {
     "title": "Fight Night Preview and Storm The Farm Recap",
@@ -57,7 +67,7 @@
     "iso": "2026-07-21",
     "label": "21 Jul 2026",
     "blurb": "Welcome back to Grey Duck Running! In this episode we have our first interview with Lauren's sister, Brianne!",
-    "art": "/assets/episodes/ep05.jpg"
+    "art": "/assets/episodes/ep06.jpg"
   },
   {
     "title": "Ride Across Wisconsin Recap and Twin Cities Marathon News",
@@ -67,7 +77,7 @@
     "iso": "2026-07-14",
     "label": "14 Jul 2026",
     "blurb": "Welcome back to The Grey Duck Running Podcast! This week Lauren recaps her Ride Across Wisconsin (RAW) century ride.",
-    "art": "/assets/episodes/ep06.jpg"
+    "art": "/assets/episodes/ep07.jpg"
   },
   {
     "title": "Uncle Sam Wants YOU to Listen to Our Podcast",
@@ -77,6 +87,6 @@
     "iso": "2026-07-07",
     "label": "7 Jul 2026",
     "blurb": "Introducing the Grey Duck Running Podcast. Get to know us, how we got into running and some of our other passions.",
-    "art": "/assets/episodes/ep07.jpg"
+    "art": "/assets/episodes/ep08.jpg"
   }
 ]
