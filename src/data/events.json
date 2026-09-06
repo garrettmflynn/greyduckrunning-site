@@ -73,7 +73,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Geneva, IL",
     "url": "https://www.bq2races.com/"
   },
@@ -86,7 +86,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Eau Claire, WI",
     "url": "https://www.lecdc.org/event/45th-annual-buckshot-run-5/register"
   },
@@ -99,7 +99,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Dover, OH",
     "url": "https://tuscazoar.org/past-events/tuscazoar-100-50-mile-ultra-endurance-race/"
   },
