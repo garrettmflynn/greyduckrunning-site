@@ -112,7 +112,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Dousman, WI",
     "url": "https://anvil-ultratri.com/2026-wisconsin-anvil"
   },
@@ -125,7 +125,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Lawrence, KS",
     "url": "https://hawkhundred.com/"
   },
@@ -138,7 +138,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Terre Haute, IN",
     "url": "https://wvrr.org/wabash-valley-half-marathon-and-5k/"
   },
