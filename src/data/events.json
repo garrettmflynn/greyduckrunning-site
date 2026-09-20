@@ -151,7 +151,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Bismarck, ND",
     "url": "https://thebismarckmarathon.com/"
   },
@@ -164,7 +164,7 @@
     "monthKey": "2026-09",
     "monthLabel": "September 2026",
     "monthShort": "Sep",
-    "past": false,
+    "past": true,
     "location": "Ontonagon, MI",
     "url": "https://www.porkiestrailrace.com/"
   },
