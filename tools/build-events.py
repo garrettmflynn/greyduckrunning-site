@@ -161,6 +161,22 @@ def tidy_location(raw):
     return state if STREETISH.search(city) else f"{city}, {state}"
 
 
+def calendar_content(body):
+    """The calendar minus fetch-time noise: DTSTAMP dropped, events unordered."""
+    raw = unfold(body.decode("utf-8", "replace"))
+    blocks = re.findall(r"BEGIN:VEVENT(.*?)END:VEVENT", raw, re.S)
+    head = raw.split("BEGIN:VEVENT", 1)[0]
+
+    def strip(text):
+        return tuple(l for l in text.splitlines() if l and not l.startswith("DTSTAMP"))
+
+    return strip(head), sorted(strip(b) for b in blocks)
+
+
+def same_calendar(old, new):
+    return calendar_content(old) == calendar_content(new)
+
+
 def build():
     url = os.environ.get("CALENDAR_ICS_URL", "").strip() or DEFAULT_ICS
     body = fetch(url)
@@ -179,9 +195,19 @@ def build():
         )
 
     # The mirror people subscribe to: byte-for-byte, so UID/SEQUENCE survive.
+    # Google stamps every event with the fetch time (DTSTAMP) and does not keep
+    # a stable event order, so two fetches of an unchanged calendar never match.
+    # Rewriting on that alone made every scheduled run commit and deploy. Keep
+    # the existing file unless the calendar's content actually changed.
     os.makedirs(os.path.dirname(ICS_OUT), exist_ok=True)
-    with open(ICS_OUT, "wb") as f:
-        f.write(body)
+    try:
+        with open(ICS_OUT, "rb") as f:
+            unchanged = same_calendar(f.read(), body)
+    except FileNotFoundError:
+        unchanged = False
+    if not unchanged:
+        with open(ICS_OUT, "wb") as f:
+            f.write(body)
 
     raw = unfold(body.decode("utf-8", "replace"))
     today = dt.date.today()
