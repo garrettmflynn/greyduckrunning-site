@@ -216,7 +216,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Waynesville, MO",
     "url": "http://www.froghillhalf.com/"
   },
@@ -229,7 +229,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Twin Cities, MN",
     "url": "https://www.tcmevents.org/alleventsandraces/medtronictwincitiesmarathonweekend"
   },
