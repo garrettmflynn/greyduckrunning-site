@@ -242,7 +242,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Chicago, IL",
     "url": "https://www.chicagomarathon.com/"
   },
@@ -255,7 +255,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Minnesota City, MN",
     "url": "https://www.stormsportingevents.org/event-details/storm-the-day-(sunrise-to-sunset)"
   },
@@ -268,7 +268,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Decorah, IA",
     "url": "https://iowagravelseries.com/goliath/?srsltid=AfmBOoqabjGWEgWlxyVq1G1cvx8sTf2ar2YdO8Ivj_SjBzWzboj4cTEO"
   },
