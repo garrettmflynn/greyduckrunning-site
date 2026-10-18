@@ -281,7 +281,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Mankato, MN",
     "url": "https://www.mankatomarathon.com/"
   },
@@ -294,7 +294,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Dubuque, IA",
     "url": "https://minesofspain100.com/"
   },
