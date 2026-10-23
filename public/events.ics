@@ -8,181 +8,91 @@ X-WR-TIMEZONE:America/Chicago
 X-WR-CALDESC:The events that The Grey Duck Running Podcast will be covering
   throughout the year
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261031
-DTEND;VALUE=DATE:20261101
-DTSTAMP:20260926T095416Z
-UID:2ih09b3qt2j6lh8mb3hu43ih1b@google.com
-CREATED:20260818T014000Z
-DESCRIPTION:<u>https://runsignup.com/Race/MN/Rochester/HauntedHalfie?aflt_t
- oken=vkmwDmweQ4iCYn8otSOOnKQ3vCO8buOw</u>
-LAST-MODIFIED:20260818T014001Z
-LOCATION:Rochester\, MN\, USA
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+DTSTAMP:20261023T100645Z
+UID:3ftu4do3p0gtce5e9fhadka2c4@google.com
+CREATED:20261023T004138Z
+DESCRIPTION:<a href="https://runsignup.com/Race/MO/KnobNoster/TheMidwestUlt
+ raTrailClassic">https://runsignup.com/Race/MO/KnobNoster/TheMidwestUltraTra
+ ilClassic</a>
+LAST-MODIFIED:20261023T004138Z
+LOCATION:Knob Noster\, MO 65336\, USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:Haunted Halfie
+SUMMARY:Midwest Ultra Classic
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261031
-DTEND;VALUE=DATE:20261101
-DTSTAMP:20260926T095416Z
-UID:1flflii4j3nkuc4pe7tivtgp4g@google.com
-CREATED:20260818T014054Z
-DESCRIPTION:<u><a href="https://www.pricklypineultrarunning.com/100k-50k" t
- arget="_blank">https://www.pricklypineultrarunning.com/100k-50k</a></u>
-LAST-MODIFIED:20260818T014054Z
-LOCATION:Dousman\, WI\, USA
-SEQUENCE:0
-STATUS:CONFIRMED
-SUMMARY:Among the Trees
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261010
-DTEND;VALUE=DATE:20261011
-DTSTAMP:20260926T095416Z
-UID:4iv7r7mtcbv2hutml2kpu99qmf@google.com
-CREATED:20260818T013430Z
-DESCRIPTION:<u><a href="https://www.chicagomarathon.com/" target="_blank">h
- ttps://www.chicagomarathon.com/</a></u>
-LAST-MODIFIED:20260818T013437Z
+DTSTART;VALUE=DATE:20270116
+DTEND;VALUE=DATE:20270117
+DTSTAMP:20261023T100645Z
+UID:4teqr5sqb6h6p6rd5osi7fj49h@google.com
+CREATED:20261023T005757Z
+DESCRIPTION:<u><a href="https://runsignup.com/Race/IL/Chicago/MLKJrFreedomR
+ unCHICAGOEVANSTON" target="_blank">https://runsignup.com/Race/IL/Chicago/ML
+ KJrFreedomRunCHICAGOEVANSTON</a></u>
+LAST-MODIFIED:20261023T005757Z
 LOCATION:Chicago\, IL\, USA
-SEQUENCE:1
-STATUS:CONFIRMED
-SUMMARY:Chicago Marathon
-TRANSP:OPAQUE
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260926
-DTEND;VALUE=DATE:20260927
-DTSTAMP:20260926T095416Z
-UID:7ma9t09206bn9jldipdrd7r6s0@google.com
-CREATED:20260818T013010Z
-DESCRIPTION:<u><a href="https://ultraversesupplements.com/our-races/the-cow
- boy-200-ultra?srsltid=AfmBOooVCesCgVyrrzL5ps4TBsvYLPTGnkn1EesiQgiXSCBhIkEJf
- ZKX" target="_blank">https://ultraversesupplements.com/our-races/the-cowboy
- -200-ultra?srsltid=AfmBOooVCesCgVyrrzL5ps4TBsvYLPTGnkn1EesiQgiXSCBhIkEJfZKX
- </a></u>
-LAST-MODIFIED:20260818T013022Z
-LOCATION:Norfolk\, NE 68701\, USA
-SEQUENCE:1
-STATUS:CONFIRMED
-SUMMARY:Cowboy 200
-TRANSP:OPAQUE
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260829
-DTEND;VALUE=DATE:20260830
-DTSTAMP:20260926T095416Z
-UID:2naqpmgcr3bsn7p9100jq0b053@google.com
-CREATED:20260818T011901Z
-DESCRIPTION:<u><a href="https://racepenguin.com/events/the-shady-city-race/
- " target="_blank">https://racepenguin.com/events/the-shady-city-race/</a></
- u>
-LAST-MODIFIED:20260818T011902Z
-LOCATION:Marysville\, OH 43040\, USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:The Shady City Race
+SUMMARY:MLK JR Freedom Run
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260919
-DTEND;VALUE=DATE:20260920
-DTSTAMP:20260926T095416Z
-UID:6l4mlv2jjo0qkbd4n4kck5h00s@google.com
-CREATED:20260818T012751Z
-DESCRIPTION:<u><a href="https://thebismarckmarathon.com/" target="_blank">h
- ttps://thebismarckmarathon.com/</a></u>
-LAST-MODIFIED:20260818T012751Z
-LOCATION:Bismarck\, ND\, USA
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+DTSTAMP:20261023T100645Z
+UID:2ss00rljfji54d9uegq8eemlev@google.com
+CREATED:20261023T004516Z
+DESCRIPTION:<a href="https://runsignup.com/Race/MI/CommerceTownship/BlackTo
+ enailFridayHalf">https://runsignup.com/Race/MI/CommerceTownship/BlackToenai
+ lFridayHalf</a>
+LAST-MODIFIED:20261023T004517Z
+LOCATION:Proud Lake Recreation Area\, 2700 Glengary Rd\, Commerce Township\
+ , MI 48390\, USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:Bismark Marathon
+SUMMARY:Black Toe Nail Friday
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261024
-DTEND;VALUE=DATE:20261025
-DTSTAMP:20260926T095416Z
-UID:2lvu5ku4r3vh32nsoutrvj0a1b@google.com
-CREATED:20260818T013900Z
-DESCRIPTION:<a href="https://endracing.com/end-trails">https://endracing.co
- m/end-trails</a>
-LAST-MODIFIED:20260818T013900Z
-LOCATION:Turtle River State Park\, 3084 Park Ave NE\, Arvilla\, ND 58214\, 
- USA
+DTSTART;VALUE=DATE:20270123
+DTEND;VALUE=DATE:20270124
+DTSTAMP:20261023T100645Z
+UID:5vgho5s92u1bpm117i32t5snun@google.com
+CREATED:20261023T005941Z
+DESCRIPTION:<u><a href="https://runsignup.com/Race/MO/Independence/Viking5K
+ 10KAtIndependenceMO?aflt_token=QZt1KFBDIiIun5smo9vi7y59qq2fNLcB" target="_b
+ lank">https://runsignup.com/Race/MO/Independence/Viking5K10KAtIndependenceM
+ O?aflt_token=QZt1KFBDIiIun5smo9vi7y59qq2fNLcB</a></u>
+LAST-MODIFIED:20261023T005941Z
+LOCATION:Independence\, MO\, USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:End Trails (6\,12\,24hr)
+SUMMARY:Viking 5k & 10k
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260822
-DTEND;VALUE=DATE:20260824
-DTSTAMP:20260926T095416Z
-UID:7j7srmk19fajphds8biru5jl6r@google.com
-CREATED:20260818T011238Z
-DESCRIPTION:<i><u>https://www.visitwausau.com/event/the-wausau-marathon/563
- /</u></i>
-LAST-MODIFIED:20260818T011239Z
-LOCATION:Wausau\, WI\, USA
+DTSTART;VALUE=DATE:20270123
+DTEND;VALUE=DATE:20270124
+DTSTAMP:20261023T100645Z
+UID:3potbt8pdd11f4msdfpbkbrabt@google.com
+CREATED:20261023T005859Z
+DESCRIPTION:<a href="https://arrowheadultra.com/">https://www.google.com/ur
+ l?q=https://arrowheadultra.com/&amp\;sa=D&amp\;source=editors&amp\;ust=1792
+ 720699883172&amp\;usg=AOvVaw0_PUniGsxyh-aDAiLJLFb5</a>
+LAST-MODIFIED:20261023T005859Z
+LOCATION:International Falls\, MN 56649\, USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:Wausa Marathon
+SUMMARY:Arrowhead 135 Mile Winter Ultramarathon
 TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261003
-DTEND;VALUE=DATE:20261004
-DTSTAMP:20260926T095416Z
-UID:0hu7cvdgr6tfclbi7k5a73078s@google.com
-CREATED:20260818T013223Z
-DESCRIPTION:<u><a href="http://www.froghillhalf.com/" target="_blank">http:
- //www.froghillhalf.com/</a></u>
-LAST-MODIFIED:20260818T013223Z
-LOCATION:Waynesville\, MO 65583\, USA
-SEQUENCE:0
-STATUS:CONFIRMED
-SUMMARY:Frog Hill Half Marathon
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260912
-DTEND;VALUE=DATE:20260913
-DTSTAMP:20260926T095416Z
-UID:44rhkr108a8ik6futrkusti6t9@google.com
-CREATED:20260818T012339Z
-DESCRIPTION:<u><a href="https://hawkhundred.com/" target="_blank">https://h
- awkhundred.com/</a></u>
-LAST-MODIFIED:20260818T012340Z
-LOCATION:Lawrence\, KS\, USA
-SEQUENCE:0
-STATUS:CONFIRMED
-SUMMARY:Hawk Hundred
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261010
-DTEND;VALUE=DATE:20261011
-DTSTAMP:20260926T095416Z
-UID:0rtso407hsnk6fjgqr5a0s8ur4@google.com
-CREATED:20260818T013257Z
-DESCRIPTION:<u><a href="https://iowagravelseries.com/goliath/?srsltid=AfmBO
- oqabjGWEgWlxyVq1G1cvx8sTf2ar2YdO8Ivj_SjBzWzboj4cTEO" target="_blank">https:
- //iowagravelseries.com/goliath/?srsltid=AfmBOoqabjGWEgWlxyVq1G1cvx8sTf2ar2Y
- dO8Ivj_SjBzWzboj4cTEO</a></u>
-LAST-MODIFIED:20260818T013311Z
-LOCATION:Decorah\, IA 52101\, USA
-SEQUENCE:1
-STATUS:CONFIRMED
-SUMMARY:Toppling Gravel Grinder
-TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260905
 DTEND;VALUE=DATE:20260906
-DTSTAMP:20260926T095416Z
+DTSTAMP:20261023T100645Z
 UID:25i49gtqjuja3thl50npv4sk71@google.com
 CREATED:20260818T012024Z
 DESCRIPTION:<u><a href="https://www.lecdc.org/event/45th-annual-buckshot-ru
@@ -196,102 +106,72 @@ SUMMARY:Buckshot Run
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260926
-DTEND;VALUE=DATE:20260927
-DTSTAMP:20260926T095416Z
-UID:5i7on8immvjufsas3385ef9m82@google.com
-CREATED:20260818T013054Z
-DESCRIPTION:<u><a href="https://www.qcmarathon.org/" target="_blank">https:
- //www.qcmarathon.org/</a></u>
-LAST-MODIFIED:20260818T013055Z
-LOCATION:Davenport\, IA\, USA
+DTSTART;VALUE=DATE:20260920
+DTEND;VALUE=DATE:20260921
+DTSTAMP:20261023T100645Z
+UID:1u6doe36h6mmtir0gfd07aia7e@google.com
+CREATED:20260818T012648Z
+DESCRIPTION:<u><a href="https://terryfox.org/" target="_blank">https://terr
+ yfox.org/</a></u>
+LAST-MODIFIED:20260818T012649Z
+LOCATION:Father Hennepin Park Road\, Father Hennepin Park Rd\, Minnesota\, 
+ USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:Quad Cities Marathon
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261017
-DTEND;VALUE=DATE:20261018
-DTSTAMP:20260926T095416Z
-UID:5lbtc4fs6cjvv1rtjbfhouho3j@google.com
-CREATED:20260818T013607Z
-DESCRIPTION:<u><a href="https://minesofspain100.com/" target="_blank">https
- ://minesofspain100.com/</a></u>
-LAST-MODIFIED:20260818T013607Z
-LOCATION:Dubuque\, IA\, USA
-SEQUENCE:0
-STATUS:CONFIRMED
-SUMMARY:Mines of Spain 100
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260912
-DTEND;VALUE=DATE:20260913
-DTSTAMP:20260926T095416Z
-UID:2p25mtp48nut5s5i99glo0f46g@google.com
-CREATED:20260818T012446Z
-DESCRIPTION:<u><a href="https://anvil-ultratri.com/2026-wisconsin-anvil" ta
- rget="_blank">https://anvil-ultratri.com/2026-wisconsin-anvil</a></u>
-LAST-MODIFIED:20260818T012705Z
-LOCATION:Dousman\, WI\, USA
-SEQUENCE:1
-STATUS:CONFIRMED
-SUMMARY:Anvil Ultra Triathalon
-TRANSP:OPAQUE
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260905
-DTEND;VALUE=DATE:20260906
-DTSTAMP:20260926T095416Z
-UID:4uq5nss31bb4cou0e56jjbc68j@google.com
-CREATED:20260818T012000Z
-DESCRIPTION:<u><a href="https://www.bq2races.com/" target="_blank">https://
- www.bq2races.com/</a></u>
-LAST-MODIFIED:20260818T012000Z
-LOCATION:Geneva\, IL\, USA
-SEQUENCE:0
-STATUS:CONFIRMED
-SUMMARY:BQ.2
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260829
-DTEND;VALUE=DATE:20260830
-DTSTAMP:20260926T095416Z
-UID:6fi0hlks1ib1jj6ce54nhqdnab@google.com
-CREATED:20260818T011806Z
-DESCRIPTION:<u><a href="https://trailhead.ultrasignup.com/races/midwest-tra
- il-running-races/" target="_blank">https://trailhead.ultrasignup.com/races/
- midwest-trail-running-races/</a></u>
-LAST-MODIFIED:20260818T011806Z
-LOCATION:Chequamegon-Nicolet National Forest\, 1170 4th Ave S\, Park Falls\
- , WI 54552\, USA
-SEQUENCE:0
-STATUS:CONFIRMED
-SUMMARY:Midwest States 100
+SUMMARY:Terry Fox Run
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
-DTSTAMP:20260926T095416Z
-UID:6g1sjk28inlpiefcbvueb8eo2u@google.com
-CREATED:20260818T013131Z
-DESCRIPTION:<u><a href="https://www.tcmevents.org/alleventsandraces/medtron
- ictwincitiesmarathonweekend" target="_blank">https://www.tcmevents.org/alle
- ventsandraces/medtronictwincitiesmarathonweekend</a></u>
-LAST-MODIFIED:20260818T013132Z
-LOCATION:Twin Cities\, MN\, USA
+DTSTAMP:20261023T100645Z
+UID:0hu7cvdgr6tfclbi7k5a73078s@google.com
+CREATED:20260818T013223Z
+DESCRIPTION:<u><a href="http://www.froghillhalf.com/" target="_blank">http:
+ //www.froghillhalf.com/</a></u>
+LAST-MODIFIED:20260818T013223Z
+LOCATION:Waynesville\, MO 65583\, USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:Twin Cities Marathon
+SUMMARY:Frog Hill Half Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260829
+DTEND;VALUE=DATE:20260830
+DTSTAMP:20261023T100645Z
+UID:2naqpmgcr3bsn7p9100jq0b053@google.com
+CREATED:20260818T011901Z
+DESCRIPTION:<u><a href="https://racepenguin.com/events/the-shady-city-race/
+ " target="_blank">https://racepenguin.com/events/the-shady-city-race/</a></
+ u>
+LAST-MODIFIED:20260818T011902Z
+LOCATION:Marysville\, OH 43040\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:The Shady City Race
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261212
+DTEND;VALUE=DATE:20261213
+DTSTAMP:20261023T100645Z
+UID:43hm1kh1eet20hhaklo9u113rm@google.com
+CREATED:20261023T004927Z
+DESCRIPTION:<a href="https://sites.google.com/namicv.org/positive-vector-ch
+ ippewavalley/home?pli=1&amp\;authuser=0">https://sites.google.com/namicv.or
+ g/positive-vector-chippewavalley/home?pli=1&amp\;authuser=0</a>
+LAST-MODIFIED:20261023T004927Z
+LOCATION:Bloomer\, WI 54724\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Positive vector
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260905
 DTEND;VALUE=DATE:20260906
-DTSTAMP:20260926T095416Z
+DTSTAMP:20261023T100645Z
 UID:5dfp828sqi58enboh5a2m7for9@google.com
 CREATED:20260818T012140Z
 DESCRIPTION:<u><a href="https://tuscazoar.org/past-events/tuscazoar-100-50-
@@ -307,25 +187,100 @@ SUMMARY:Tuscazoar Endurance Race
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261024
-DTEND;VALUE=DATE:20261025
-DTSTAMP:20260926T095416Z
-UID:22hv5d65r5h90hhttam0107l8p@google.com
-CREATED:20260818T013727Z
-DESCRIPTION:<u><a href="https://www.como.gov/parks-and-recreation/special-e
- vents/bear-creek-run/" target="_blank">https://www.como.gov/parks-and-recre
- ation/special-events/bear-creek-run/</a></u>
-LAST-MODIFIED:20260818T013741Z
-LOCATION:Columbia\, MO\, USA
-SEQUENCE:1
+DTSTART;VALUE=DATE:20261031
+DTEND;VALUE=DATE:20261101
+DTSTAMP:20261023T100645Z
+UID:2ih09b3qt2j6lh8mb3hu43ih1b@google.com
+CREATED:20260818T014000Z
+DESCRIPTION:<u>https://runsignup.com/Race/MN/Rochester/HauntedHalfie?aflt_t
+ oken=vkmwDmweQ4iCYn8otSOOnKQ3vCO8buOw</u>
+LAST-MODIFIED:20260818T014001Z
+LOCATION:Rochester\, MN\, USA
+SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:Bear Creek Run
-TRANSP:OPAQUE
+SUMMARY:Haunted Halfie
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270109
+DTEND;VALUE=DATE:20270110
+DTSTAMP:20261023T100645Z
+UID:6o1ghld6gqvuhf8em99i8c92gd@google.com
+CREATED:20261023T005535Z
+DESCRIPTION:<u><a href="https://www.runfrozengnome.com/" target="_blank">ht
+ tps://www.runfrozengnome.com/</a></u>
+LAST-MODIFIED:20261023T005536Z
+LOCATION:Crystal Lake\, IL\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Frozen Gnome
+TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260912
 DTEND;VALUE=DATE:20260913
-DTSTAMP:20260926T095416Z
+DTSTAMP:20261023T100645Z
+UID:2p25mtp48nut5s5i99glo0f46g@google.com
+CREATED:20260818T012446Z
+DESCRIPTION:<u><a href="https://anvil-ultratri.com/2026-wisconsin-anvil" ta
+ rget="_blank">https://anvil-ultratri.com/2026-wisconsin-anvil</a></u>
+LAST-MODIFIED:20260818T012705Z
+LOCATION:Dousman\, WI\, USA
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Anvil Ultra Triathalon
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261212
+DTEND;VALUE=DATE:20261213
+DTSTAMP:20261023T100645Z
+UID:6qhqa3r6o7vsidssrdid9c6vi1@google.com
+CREATED:20261023T005030Z
+DESCRIPTION:<a href="https://runsignup.com/Race/OH/Wellington/WinterThorn">
+ https://runsignup.com/Race/OH/Wellington/WinterThorn</a>
+LAST-MODIFIED:20261023T005031Z
+LOCATION:Wellington\, OH 44090\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Winter Thorn Trail Race
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270102
+DTEND;VALUE=DATE:20270103
+DTSTAMP:20261023T100645Z
+UID:7js5vd8dhe74jj83ei5i4eh6pe@google.com
+CREATED:20261023T005416Z
+DESCRIPTION:<u><a href="https://tuscobiawinterultra.com/" target="_blank">h
+ ttps://tuscobiawinterultra.com/</a></u>
+LAST-MODIFIED:20261023T005416Z
+LOCATION:Rice Lake\, WI\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Tuscobia Winter ultra
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261024
+DTEND;VALUE=DATE:20261025
+DTSTAMP:20261023T100645Z
+UID:2lvu5ku4r3vh32nsoutrvj0a1b@google.com
+CREATED:20260818T013900Z
+DESCRIPTION:<a href="https://endracing.com/end-trails">https://endracing.co
+ m/end-trails</a>
+LAST-MODIFIED:20260818T013900Z
+LOCATION:Turtle River State Park\, 3084 Park Ave NE\, Arvilla\, ND 58214\, 
+ USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:End Trails (6\,12\,24hr)
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260912
+DTEND;VALUE=DATE:20260913
+DTSTAMP:20261023T100645Z
 UID:203mo79kb793qmc2o48bb4o24q@google.com
 CREATED:20260818T012245Z
 DESCRIPTION:<u><a href="https://wvrr.org/wabash-valley-half-marathon-and-5k
@@ -339,40 +294,72 @@ SUMMARY:Wabasha Valley Half Marathon
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260822
-DTEND;VALUE=DATE:20260823
-DTSTAMP:20260926T095416Z
-UID:2h5ggesqeh1esrbp65ohqs3ked@google.com
-CREATED:20260818T011534Z
-DESCRIPTION:<u><a href="https://www.shawneehills100.com/#/" target="_blank"
- >https://www.shawneehills100.com/#/</a></u>
-LAST-MODIFIED:20260818T011642Z
-LOCATION:Ozark\, IL 62972\, USA
+DTSTART;VALUE=DATE:20261031
+DTEND;VALUE=DATE:20261101
+DTSTAMP:20261023T100645Z
+UID:1flflii4j3nkuc4pe7tivtgp4g@google.com
+CREATED:20260818T014054Z
+DESCRIPTION:<u><a href="https://www.pricklypineultrarunning.com/100k-50k" t
+ arget="_blank">https://www.pricklypineultrarunning.com/100k-50k</a></u>
+LAST-MODIFIED:20260818T014054Z
+LOCATION:Dousman\, WI\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Among the Trees
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260912
+DTEND;VALUE=DATE:20260913
+DTSTAMP:20261023T100645Z
+UID:44rhkr108a8ik6futrkusti6t9@google.com
+CREATED:20260818T012339Z
+DESCRIPTION:<u><a href="https://hawkhundred.com/" target="_blank">https://h
+ awkhundred.com/</a></u>
+LAST-MODIFIED:20260818T012340Z
+LOCATION:Lawrence\, KS\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Hawk Hundred
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261010
+DTEND;VALUE=DATE:20261011
+DTSTAMP:20261023T100645Z
+UID:0rtso407hsnk6fjgqr5a0s8ur4@google.com
+CREATED:20260818T013257Z
+DESCRIPTION:<u><a href="https://iowagravelseries.com/goliath/?srsltid=AfmBO
+ oqabjGWEgWlxyVq1G1cvx8sTf2ar2YdO8Ivj_SjBzWzboj4cTEO" target="_blank">https:
+ //iowagravelseries.com/goliath/?srsltid=AfmBOoqabjGWEgWlxyVq1G1cvx8sTf2ar2Y
+ dO8Ivj_SjBzWzboj4cTEO</a></u>
+LAST-MODIFIED:20260818T013311Z
+LOCATION:Decorah\, IA 52101\, USA
 SEQUENCE:1
 STATUS:CONFIRMED
-SUMMARY:Shawnee Hills Trail Races
+SUMMARY:Toppling Gravel Grinder
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260920
-DTEND;VALUE=DATE:20260921
-DTSTAMP:20260926T095416Z
-UID:1u6doe36h6mmtir0gfd07aia7e@google.com
-CREATED:20260818T012648Z
-DESCRIPTION:<u><a href="https://terryfox.org/" target="_blank">https://terr
- yfox.org/</a></u>
-LAST-MODIFIED:20260818T012649Z
-LOCATION:Father Hennepin Park Road\, Father Hennepin Park Rd\, Minnesota\, 
- USA
-SEQUENCE:0
+DTSTART;VALUE=DATE:20261010
+DTEND;VALUE=DATE:20261011
+DTSTAMP:20261023T100645Z
+UID:4hsjltd783qiffjnoclcuusush@google.com
+CREATED:20260818T013335Z
+DESCRIPTION:<u><a href="https://www.stormsportingevents.org/event-details/s
+ torm-the-day-(sunrise-to-sunset)" target="_blank">https://www.stormsporting
+ events.org/event-details/storm-the-day-(sunrise-to-sunset)</a></u>
+LAST-MODIFIED:20260818T013349Z
+LOCATION:Minnesota City\, MN 55959\, USA
+SEQUENCE:1
 STATUS:CONFIRMED
-SUMMARY:Terry Fox Run
-TRANSP:TRANSPARENT
+SUMMARY:Storm the Day
+TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261017
 DTEND;VALUE=DATE:20261018
-DTSTAMP:20260926T095416Z
+DTSTAMP:20261023T100645Z
 UID:2sf58teaojdon0de26c70v5j9t@google.com
 CREATED:20260818T013519Z
 DESCRIPTION:<u><a href="https://www.mankatomarathon.com/" target="_blank">h
@@ -385,24 +372,215 @@ SUMMARY:Mankato Marathon
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260822
-DTEND;VALUE=DATE:20260823
-DTSTAMP:20260926T095416Z
-UID:0127cv017f1nmo7mpkm0iinql4@google.com
-CREATED:20260818T011452Z
-DESCRIPTION:<i><u><a href="https://coonforkgravel.com/" target="_blank">htt
- ps://coonforkgravel.com/</a></u></i>
-LAST-MODIFIED:20260818T011452Z
-LOCATION:Augusta\, WI 54722\, USA
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+DTSTAMP:20261023T100645Z
+UID:619j41645v6dnru1adj4v51fd1@google.com
+CREATED:20261023T003723Z
+DESCRIPTION:<a href="https://monumentalmarathon.com/">https://monumentalmar
+ athon.com/</a>
+LAST-MODIFIED:20261023T003839Z
+LOCATION:Indianapolis\, IN\, USA
 SEQUENCE:0
 STATUS:CONFIRMED
-SUMMARY:Coon Fork 40
+SUMMARY:Inianapolis Monumental Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261121
+DTEND;VALUE=DATE:20261122
+DTSTAMP:20261023T100645Z
+UID:2rukrb9099lnoae60e0loh73o8@google.com
+CREATED:20261023T004339Z
+DESCRIPTION:<u><a href="https://gobblergrindmarathon.com/" target="_blank">
+ https://gobblergrindmarathon.com/</a></u>
+LAST-MODIFIED:20261023T004339Z
+LOCATION:Overland Park\, KS\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Gobbler Grind Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+DTSTAMP:20261023T100645Z
+UID:4lk17iljonps9eb70g3leriiqi@google.com
+CREATED:20261023T003826Z
+DESCRIPTION:<u><a href="https://registration.midohiorm.com/events/the-17th-
+ annual-fuzzy-fandango-trail-races-06222026104" target="_blank">https://regi
+ stration.midohiorm.com/events/the-17th-annual-fuzzy-fandango-trail-races-06
+ 222026104</a></u>
+LAST-MODIFIED:20261023T003826Z
+LOCATION:Perrysville\, OH 44864\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Fuzzy Fandango 
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261128
+DTEND;VALUE=DATE:20261129
+DTSTAMP:20261023T100645Z
+UID:2m3akoan4nu4h9h59qo5jma09d@google.com
+CREATED:20261023T004548Z
+DESCRIPTION:<a href="https://eauclaire.festivalfoodsturkeytrot.com/">https:
+ //www.google.com/url?q=https://eauclaire.festivalfoodsturkeytrot.com/&amp\;
+ sa=D&amp\;source=editors&amp\;ust=1792719925065760&amp\;usg=AOvVaw0rk1gUEnl
+ Typr0Up1cWK0L</a>
+LAST-MODIFIED:20261023T004548Z
+LOCATION:Eau Claire\, WI\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Turkey Trot Eau Claire
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261024
+DTEND;VALUE=DATE:20261025
+DTSTAMP:20261023T100645Z
+UID:22hv5d65r5h90hhttam0107l8p@google.com
+CREATED:20260818T013727Z
+DESCRIPTION:<u><a href="https://www.como.gov/parks-and-recreation/special-e
+ vents/bear-creek-run/" target="_blank">https://www.como.gov/parks-and-recre
+ ation/special-events/bear-creek-run/</a></u>
+LAST-MODIFIED:20260818T013741Z
+LOCATION:Columbia\, MO\, USA
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Bear Creek Run
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270130
+DTEND;VALUE=DATE:20270131
+DTSTAMP:20261023T100645Z
+UID:3p8nt2v2ujcri50n4buds3b3kt@google.com
+CREATED:20261023T010118Z
+DESCRIPTION:<u><a href="https://runsignup.com/Race/MI/Marquette/MardiGrasMQ
+ T" target="_blank">https://runsignup.com/Race/MI/Marquette/MardiGrasMQT</a>
+ </u>
+LAST-MODIFIED:20261023T010118Z
+LOCATION:Marquette\, MI 49855\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Mardi Gras 5k
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260829
+DTEND;VALUE=DATE:20260830
+DTSTAMP:20261023T100645Z
+UID:6fi0hlks1ib1jj6ce54nhqdnab@google.com
+CREATED:20260818T011806Z
+DESCRIPTION:<u><a href="https://trailhead.ultrasignup.com/races/midwest-tra
+ il-running-races/" target="_blank">https://trailhead.ultrasignup.com/races/
+ midwest-trail-running-races/</a></u>
+LAST-MODIFIED:20260818T011806Z
+LOCATION:Chequamegon-Nicolet National Forest\, 1170 4th Ave S\, Park Falls\
+ , WI 54552\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Midwest States 100
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+DTSTAMP:20261023T100645Z
+UID:4cjpbb13koeelg2sq724hv0t8t@google.com
+CREATED:20261023T005221Z
+DESCRIPTION:<a href="https://runsignup.com/Race/OH/Fairborn/RunOhioRacesChr
+ istmas5MileFunRun5k10k15k?aflt_token=vkmwDmweQ4iCYn8otSOOnKQ3vCO8buOw">http
+ s://runsignup.com/Race/OH/Fairborn/RunOhioRacesChristmas5MileFunRun5k10k15k
+ ?aflt_token=vkmwDmweQ4iCYn8otSOOnKQ3vCO8buOw</a>
+LAST-MODIFIED:20261023T005221Z
+LOCATION:Fairborn\, OH\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Run Ohio Races
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260926
+DTEND;VALUE=DATE:20260927
+DTSTAMP:20261023T100645Z
+UID:5i7on8immvjufsas3385ef9m82@google.com
+CREATED:20260818T013054Z
+DESCRIPTION:<u><a href="https://www.qcmarathon.org/" target="_blank">https:
+ //www.qcmarathon.org/</a></u>
+LAST-MODIFIED:20260818T013055Z
+LOCATION:Davenport\, IA\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Quad Cities Marathon
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260919
 DTEND;VALUE=DATE:20260920
-DTSTAMP:20260926T095416Z
+DTSTAMP:20261023T100645Z
+UID:6l4mlv2jjo0qkbd4n4kck5h00s@google.com
+CREATED:20260818T012751Z
+DESCRIPTION:<u><a href="https://thebismarckmarathon.com/" target="_blank">h
+ ttps://thebismarckmarathon.com/</a></u>
+LAST-MODIFIED:20260818T012751Z
+LOCATION:Bismarck\, ND\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Bismark Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270116
+DTEND;VALUE=DATE:20270117
+DTSTAMP:20261023T100645Z
+UID:0els0t57tcv1uambbpuveo4dc5@google.com
+CREATED:20261023T005704Z
+DESCRIPTION:<a href="http://tripledrace.com/">https://www.google.com/url?q=
+ http://tripledrace.com/&amp\;sa=D&amp\;source=editors&amp\;ust=179272058122
+ 6807&amp\;usg=AOvVaw11PI_NWc6IysWuL205ljma</a>
+LAST-MODIFIED:20261023T005704Z
+LOCATION:Dubuque\, IA\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Triple D Winter Race
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261219
+DTEND;VALUE=DATE:20261220
+DTSTAMP:20261023T100645Z
+UID:38u737e2ji4sl6794mp7snigjc@google.com
+CREATED:20261023T005140Z
+DESCRIPTION:<a href="https://www.reindeerrun.com/">https://www.reindeerrun.
+ com/</a>
+LAST-MODIFIED:20261023T005141Z
+LOCATION:Minneapolis\, MN\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Reindeer Run
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260822
+DTEND;VALUE=DATE:20260824
+DTSTAMP:20261023T100645Z
+UID:7j7srmk19fajphds8biru5jl6r@google.com
+CREATED:20260818T011238Z
+DESCRIPTION:<i><u>https://www.visitwausau.com/event/the-wausau-marathon/563
+ /</u></i>
+LAST-MODIFIED:20260818T011239Z
+LOCATION:Wausau\, WI\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Wausa Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260919
+DTEND;VALUE=DATE:20260920
+DTSTAMP:20261023T100645Z
 UID:6pse6khm2t1b275c6u3e751gdr@google.com
 CREATED:20260818T012849Z
 DESCRIPTION:<u><a href="https://www.porkiestrailrace.com/" target="_blank">
@@ -416,19 +594,268 @@ SUMMARY:Porkies Wilderness Race
 TRANSP:OPAQUE
 END:VEVENT
 BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261107
+DTEND;VALUE=DATE:20261108
+DTSTAMP:20261023T100645Z
+UID:30j7haqs9imq7e035tdtj77nl4@google.com
+CREATED:20261023T003514Z
+DESCRIPTION:<a href="https://www.mmraces.com/baldeaglehalf">https://www.mmr
+ aces.com/baldeaglehalf</a>
+LAST-MODIFIED:20261023T003514Z
+LOCATION:White Bear Lake\, MN\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Bald Eagle Half
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270109
+DTEND;VALUE=DATE:20270110
+DTSTAMP:20261023T100645Z
+UID:72flc4r0r28t9bs9h5lvmnmt70@google.com
+CREATED:20261023T005609Z
+DESCRIPTION:<u><a href="https://runsignup.com/Race/IL/Normal/FrozenFrostyFa
+ irwaysRun" target="_blank">https://runsignup.com/Race/IL/Normal/FrozenFrost
+ yFairwaysRun</a></u>
+LAST-MODIFIED:20261023T005609Z
+LOCATION:Normal\, IL\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Frozen Fairway 5k
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+DTSTAMP:20261023T100645Z
+UID:1iu12pl8ouis83igjrre2ldcqe@google.com
+CREATED:20261023T004044Z
+DESCRIPTION:<a href="https://madisonmarathon.org/">https://madisonmarathon.
+ org/</a>
+LAST-MODIFIED:20261023T004044Z
+LOCATION:Madison\, WI\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Madison Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260822
+DTEND;VALUE=DATE:20260823
+DTSTAMP:20261023T100645Z
+UID:0127cv017f1nmo7mpkm0iinql4@google.com
+CREATED:20260818T011452Z
+DESCRIPTION:<i><u><a href="https://coonforkgravel.com/" target="_blank">htt
+ ps://coonforkgravel.com/</a></u></i>
+LAST-MODIFIED:20260818T011452Z
+LOCATION:Augusta\, WI 54722\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Coon Fork 40
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261226
+DTEND;VALUE=DATE:20261227
+DTSTAMP:20261023T100645Z
+UID:65d7skm7s675tvfjt09n7sa3it@google.com
+CREATED:20261023T005254Z
+DESCRIPTION:<a href="https://runsignup.com/Race/MI/Flushing/NewYearsResolut
+ ionRace">https://runsignup.com/Race/MI/Flushing/NewYearsResolutionRace</a>
+LAST-MODIFIED:20261023T005255Z
+LOCATION:Flushing\, MI 48433\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Bauman's New Year's Resolution
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270130
+DTEND;VALUE=DATE:20270131
+DTSTAMP:20261023T100645Z
+UID:6k2ianpih93ui6597ltlj9onfq@google.com
+CREATED:20261023T010058Z
+DESCRIPTION:<a href="https://bigrivertrailseries.com/castlewoodcup/">https:
+ //bigrivertrailseries.com/castlewoodcup/</a>
+LAST-MODIFIED:20261023T010059Z
+LOCATION:Foristell\, MO\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Castlewood Cup
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261010
 DTEND;VALUE=DATE:20261011
-DTSTAMP:20260926T095416Z
-UID:4hsjltd783qiffjnoclcuusush@google.com
-CREATED:20260818T013335Z
-DESCRIPTION:<u><a href="https://www.stormsportingevents.org/event-details/s
- torm-the-day-(sunrise-to-sunset)" target="_blank">https://www.stormsporting
- events.org/event-details/storm-the-day-(sunrise-to-sunset)</a></u>
-LAST-MODIFIED:20260818T013349Z
-LOCATION:Minnesota City\, MN 55959\, USA
+DTSTAMP:20261023T100645Z
+UID:4iv7r7mtcbv2hutml2kpu99qmf@google.com
+CREATED:20260818T013430Z
+DESCRIPTION:<u><a href="https://www.chicagomarathon.com/" target="_blank">h
+ ttps://www.chicagomarathon.com/</a></u>
+LAST-MODIFIED:20260818T013437Z
+LOCATION:Chicago\, IL\, USA
 SEQUENCE:1
 STATUS:CONFIRMED
-SUMMARY:Storm the Day
+SUMMARY:Chicago Marathon
 TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261003
+DTEND;VALUE=DATE:20261004
+DTSTAMP:20261023T100645Z
+UID:6g1sjk28inlpiefcbvueb8eo2u@google.com
+CREATED:20260818T013131Z
+DESCRIPTION:<u><a href="https://www.tcmevents.org/alleventsandraces/medtron
+ ictwincitiesmarathonweekend" target="_blank">https://www.tcmevents.org/alle
+ ventsandraces/medtronictwincitiesmarathonweekend</a></u>
+LAST-MODIFIED:20260818T013132Z
+LOCATION:Twin Cities\, MN\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Twin Cities Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261205
+DTEND;VALUE=DATE:20261206
+DTSTAMP:20261023T100645Z
+UID:146f2ua2944ou2e67g5bqs7d4b@google.com
+CREATED:20261023T004820Z
+DESCRIPTION:<a href="https://clearlakeiowa.com/light-up-the-night-at-the-li
+ ghts-on-5k/">https://clearlakeiowa.com/light-up-the-night-at-the-lights-on-
+ 5k/</a>
+LAST-MODIFIED:20261023T004821Z
+LOCATION:Clear Lake\, IA 50428\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Lights on 5K
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261219
+DTEND;VALUE=DATE:20261220
+DTSTAMP:20261023T100645Z
+UID:49q3dvqu7uq9jag0lf05gampk1@google.com
+CREATED:20261023T005104Z
+DESCRIPTION:<u><a href="https://runsignup.com/Race/IL/Rockford/TourdeTrails
+ " target="_blank">https://runsignup.com/Race/IL/Rockford/TourdeTrails</a></
+ u>
+LAST-MODIFIED:20261023T005104Z
+LOCATION:Rockford\, IL\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Toure De Trails
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260926
+DTEND;VALUE=DATE:20260927
+DTSTAMP:20261023T100645Z
+UID:7ma9t09206bn9jldipdrd7r6s0@google.com
+CREATED:20260818T013010Z
+DESCRIPTION:<u><a href="https://ultraversesupplements.com/our-races/the-cow
+ boy-200-ultra?srsltid=AfmBOooVCesCgVyrrzL5ps4TBsvYLPTGnkn1EesiQgiXSCBhIkEJf
+ ZKX" target="_blank">https://ultraversesupplements.com/our-races/the-cowboy
+ -200-ultra?srsltid=AfmBOooVCesCgVyrrzL5ps4TBsvYLPTGnkn1EesiQgiXSCBhIkEJfZKX
+ </a></u>
+LAST-MODIFIED:20260818T013022Z
+LOCATION:Norfolk\, NE 68701\, USA
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Cowboy 200
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270102
+DTEND;VALUE=DATE:20270103
+DTSTAMP:20261023T100645Z
+UID:2d8dpjp8mjvk1d3osjhre1hq97@google.com
+CREATED:20261023T005453Z
+DESCRIPTION:<u><a href="https://runsignup.com/Race/WI/Milwaukee/TimeTravelH
+ alfMarathonand5k10kMilwaukee" target="_blank">https://runsignup.com/Race/WI
+ /Milwaukee/TimeTravelHalfMarathonand5k10kMilwaukee</a></u>
+LAST-MODIFIED:20261023T005454Z
+LOCATION:Milwaukee\, WI\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Time Travel Half Marathon
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260822
+DTEND;VALUE=DATE:20260823
+DTSTAMP:20261023T100645Z
+UID:2h5ggesqeh1esrbp65ohqs3ked@google.com
+CREATED:20260818T011534Z
+DESCRIPTION:<u><a href="https://www.shawneehills100.com/#/" target="_blank"
+ >https://www.shawneehills100.com/#/</a></u>
+LAST-MODIFIED:20260818T011642Z
+LOCATION:Ozark\, IL 62972\, USA
+SEQUENCE:1
+STATUS:CONFIRMED
+SUMMARY:Shawnee Hills Trail Races
+TRANSP:OPAQUE
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261017
+DTEND;VALUE=DATE:20261018
+DTSTAMP:20261023T100645Z
+UID:5lbtc4fs6cjvv1rtjbfhouho3j@google.com
+CREATED:20260818T013607Z
+DESCRIPTION:<u><a href="https://minesofspain100.com/" target="_blank">https
+ ://minesofspain100.com/</a></u>
+LAST-MODIFIED:20260818T013607Z
+LOCATION:Dubuque\, IA\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Mines of Spain 100
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261115
+DTSTAMP:20261023T100645Z
+UID:6schuffq8fq35nabgaenqkr5ph@google.com
+CREATED:20261023T004004Z
+DESCRIPTION:<a href="https://raceroster.com/events/2026/112627/bigfoot-half
+ -trail-run">https://raceroster.com/events/2026/112627/bigfoot-half-trail-ru
+ n</a>
+LAST-MODIFIED:20261023T004004Z
+LOCATION:Hebron\, IN 46341\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Bigfoot Half
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261205
+DTEND;VALUE=DATE:20261206
+DTSTAMP:20261023T100645Z
+UID:3nud7bn8auvec6ubemm3aaf0da@google.com
+CREATED:20261023T004739Z
+DESCRIPTION:<a href="https://www.stormsportingevents.org/event-details/stor
+ m-the-bluffs">https://www.stormsportingevents.org/event-details/storm-the-b
+ luffs</a>
+LAST-MODIFIED:20261023T004739Z
+LOCATION:Minnesota City\, MN 55959\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Storm the Bluffs
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260905
+DTEND;VALUE=DATE:20260906
+DTSTAMP:20261023T100645Z
+UID:4uq5nss31bb4cou0e56jjbc68j@google.com
+CREATED:20260818T012000Z
+DESCRIPTION:<u><a href="https://www.bq2races.com/" target="_blank">https://
+ www.bq2races.com/</a></u>
+LAST-MODIFIED:20260818T012000Z
+LOCATION:Geneva\, IL\, USA
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:BQ.2
+TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR
