@@ -307,7 +307,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Columbia, MO",
     "url": "https://www.como.gov/parks-and-recreation/special-events/bear-creek-run/"
   },
@@ -320,7 +320,7 @@
     "monthKey": "2026-10",
     "monthLabel": "October 2026",
     "monthShort": "Oct",
-    "past": false,
+    "past": true,
     "location": "Arvilla, ND",
     "url": "https://endracing.com/end-trails"
   },
