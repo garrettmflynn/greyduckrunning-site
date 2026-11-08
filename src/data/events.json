@@ -359,7 +359,7 @@
     "monthKey": "2026-11",
     "monthLabel": "November 2026",
     "monthShort": "Nov",
-    "past": false,
+    "past": true,
     "location": "White Bear Lake, MN",
     "url": "https://www.mmraces.com/baldeaglehalf"
   },
@@ -372,7 +372,7 @@
     "monthKey": "2026-11",
     "monthLabel": "November 2026",
     "monthShort": "Nov",
-    "past": false,
+    "past": true,
     "location": "Perrysville, OH",
     "url": "https://registration.midohiorm.com/events/the-17th-annual-fuzzy-fandango-trail-races-06222026104"
   },
@@ -385,7 +385,7 @@
     "monthKey": "2026-11",
     "monthLabel": "November 2026",
     "monthShort": "Nov",
-    "past": false,
+    "past": true,
     "location": "Indianapolis, IN",
     "url": "https://monumentalmarathon.com/"
   },
