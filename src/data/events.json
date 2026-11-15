@@ -398,7 +398,7 @@
     "monthKey": "2026-11",
     "monthLabel": "November 2026",
     "monthShort": "Nov",
-    "past": false,
+    "past": true,
     "location": "Hebron, IN",
     "url": "https://raceroster.com/events/2026/112627/bigfoot-half-trail-run"
   },
@@ -411,7 +411,7 @@
     "monthKey": "2026-11",
     "monthLabel": "November 2026",
     "monthShort": "Nov",
-    "past": false,
+    "past": true,
     "location": "Madison, WI",
     "url": "https://madisonmarathon.org/"
   },
